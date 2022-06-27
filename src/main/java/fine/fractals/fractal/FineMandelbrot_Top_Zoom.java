@@ -28,38 +28,4 @@ public class FineMandelbrot_Top_Zoom extends Fractal {
         hh.square();
         hh.plus(originRe, originIm);
     }
-
-    @Override
-    public boolean optimize(double reT, double imX) {
-        return true;
-    }
-
-    public void colorsFor(HH hh, int counter, int size) {
-        hh.calculation.r = false;
-        hh.calculation.g = false;
-        hh.calculation.b = false;
-        boolean change = false;
-
-        if (mathematician.isPrime(counter)) {
-            hh.calculation.r = true;
-            change = true;
-        }
-        if (mathematician.isPrime(size)) {
-            hh.calculation.r = true;
-            change = true;
-        }
-
-        if (counter % 3 == 0) {
-            hh.calculation.g = true;
-            change = true;
-        }
-        if (size % counter == 0) {
-            hh.calculation.g = true;
-            change = true;
-        }
-
-        if (!change) {
-            hh.calculation.b = true;
-        }
-    }
 }

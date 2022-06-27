@@ -23,12 +23,9 @@ public abstract class Fractal {
 	public static double INIT_DOMAIN_TARGET_re;
 	public static double INIT_DOMAIN_TARGET_im;
 
-
-	public static boolean ONLY_LONG_ORBITS = false;
-	public static boolean OPTIMIZE_SYMMETRY = false;
-
-	/* 4 worked well for all fractals so far */
-	// TODO update this?
+	/* 4 worked well for all fractals so far
+	 * 4 is distance from (0, 0)
+	 */
 	public static int CALCULATION_BOUNDARY = 4;
 
 	public static Fractal ME;
@@ -44,26 +41,12 @@ public abstract class Fractal {
  	 */
 	public abstract void math(HH hh, double reT, double imX);
 
-	public abstract boolean optimize(double reT, double imX);
-
-	/**
-	 * Coloring magic
-	 */
-	abstract public void colorsFor(HH hh, int counter, int size);
-
-	private static double sizeNow;
-	private static double sizePrev;
 	private static int iterationMax0;
-	private static int iterationMaxNow;
 
 	public static void update(AreaImage areaImage, int i) {
 		if (iterationMax0 == 0) {
-			sizePrev = areaImage.sizeImX * (1 + Application.ZOOM);
 			iterationMax0 = ITERATION_MAX;
 		}
-		iterationMaxNow = ITERATION_MAX;
-		sizePrev = sizeNow;
-
 		final double size0 = INIT_AREA_IMAGE_SIZE;
 		final double sizeNow = areaImage.sizeImX;
 
@@ -80,8 +63,6 @@ public abstract class Fractal {
 		}
 
 		log.info(i + " : " + Formatter.roundString(areaImage.sizeReT) + " : " + ITERATION_MAX);
-
-		sizePrev = sizeNow;
 	}
 
 }
