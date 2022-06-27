@@ -4,6 +4,7 @@ import fine.fractals.color.things.ColorTest;
 import fine.fractals.color.things.Palette;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class PaletteViridis extends Palette {
@@ -12,7 +13,7 @@ public class PaletteViridis extends Palette {
     public PaletteViridis() {
         super("PaletteViridis");
 
-        final LinkedList<Color> colors = new LinkedList<>();
+        final ArrayList<Color> colors = new ArrayList<>();
         colors.add(new Color(254, 229, 19));
         colors.add(new Color(209, 225, 21));
         colors.add(new Color(160, 218, 36));
@@ -24,8 +25,7 @@ public class PaletteViridis extends Palette {
         colors.add(new Color(54, 31, 106));
         colors.add(new Color(48, 3, 67));
 
-        // TODO
-        // super.spectrumColorsToLinear(colors);
+        super.spectrumColorsToLinear(colors);
     }
 
     public static void main(String[] args) {

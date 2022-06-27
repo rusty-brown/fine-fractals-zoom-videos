@@ -9,7 +9,6 @@ import java.util.LinkedList;
 
 public class PalettePlasma extends Palette {
 
-    @Deprecated
     public PalettePlasma() {
         super("PalettePlasma");
 
@@ -27,8 +26,7 @@ public class PalettePlasma extends Palette {
         colors.add(new Color(37, 1, 133));
         colors.add(new Color(7, 1, 116));
 
-        // TODO
-        // super.spectrumColorsToLinear(colors);
+        super.spectrumColorsToLinear(colors);
     }
 
     public static void main(String[] args) {

@@ -10,10 +10,7 @@ public class ColorTest extends JComponent {
 
     private static JFrame frame;
     private static Palette palette;
-    private static Integer resolutionR = null;
-    private static Integer resolutionG = null;
-    private static Integer resolutionB = null;
-    private static Integer res = null;
+    private static Integer resolution = null;
     private boolean painted = false;
     private BufferedImage testImage = null;
 
@@ -21,11 +18,7 @@ public class ColorTest extends JComponent {
     }
 
     public static void execute(Palette palette) {
-        resolutionR = palette.colorResolutionR();
-        resolutionG = palette.colorResolutionG();
-        resolutionB = palette.colorResolutionB();
-
-        res = Palette.max(resolutionR, resolutionG, resolutionB);
+        resolution = palette.colorResolution();
 
         ColorTest.palette = palette;
         ColorTest app = new ColorTest();
@@ -49,23 +42,11 @@ public class ColorTest extends JComponent {
 
     private BufferedImage applyTestColorPalette() {
 
-        BufferedImage testImage = new BufferedImage(res, 300, BufferedImage.TYPE_INT_RGB);
+        BufferedImage testImage = new BufferedImage(resolution, 100, BufferedImage.TYPE_INT_RGB);
 
         for (int y = 0; y < 100; y++) {
-            for (int x = 0; x < resolutionR; x++) {
-                testImage.setRGB(x, y, palette.getSpectrumValueR(x).getRGB());
-            }
-        }
-
-        for (int y = 100; y < 200; y++) {
-            for (int x = 0; x < resolutionG; x++) {
-                testImage.setRGB(x, y, palette.getSpectrumValueG(x).getRGB());
-            }
-        }
-
-        for (int y = 200; y < 300; y++) {
-            for (int x = 0; x < resolutionB; x++) {
-                testImage.setRGB(x, y, palette.getSpectrumValueB(x).getRGB());
+            for (int x = 0; x < resolution; x++) {
+                testImage.setRGB(x, y, palette.getSpectrumValue(x).getRGB());
             }
         }
         return testImage;
@@ -79,13 +60,13 @@ public class ColorTest extends JComponent {
             painted = true;
             testImage = applyTestColorPalette();
         }
-        g2d.drawImage(testImage, 0, 0, res, 300, null);
+        g2d.drawImage(testImage, 0, 0, resolution, 100, null);
         g2d.dispose();
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(res, 300);
+        return new Dimension(resolution, 100);
     }
 
 }

@@ -14,12 +14,10 @@ public abstract class Palette {
     private static String name;
     protected Color white = new Color(255, 255, 255);
     protected Color black = new Color(0, 0, 0);
-    protected Color red = new Color(207, 68, 4);
-    protected ArrayList<Color> spectrumR;
-    protected ArrayList<Color> spectrumG;
-    protected ArrayList<Color> spectrumB;
-    private int[] currentMaxValue3 = null;
-    private int[] currentMinValue3 = null;
+
+    private ArrayList<Color> spectrum = new ArrayList<>();
+    private int currentMaxValue = 0;
+    private int currentMinValue = 0;
 
     protected Palette(String name) {
         if (Palette.name != null) {
@@ -50,19 +48,19 @@ public abstract class Palette {
         return Palette.name;
     }
 
-    protected void spectrumColorsToLinear(ArrayList<Color> spec, LinkedList<Color> colors) {
+    protected void spectrumColorsToLinear(ArrayList<Color> colors) {
         double step = 1;
         Color colorA = colors.get(0);
         Color colorB = colors.get(1);
-        this.fromToLinear(spec, colorA, colorB, step);
+        this.fromToLinear(spectrum, colorA, colorB, step);
         for (int i = 1; i < colors.size(); i++) {
             colorA = colorB;
             colorB = colors.get(i);
-            this.fromToLinear(spec, colorA, colorB, step);
+            this.fromToLinear(spectrum, colorA, colorB, step);
         }
     }
 
-    protected void fromTo(ArrayList<Color> spec, Color from, Color to, String function) {
+    protected void fromTo(Color from, Color to, String function) {
         final int rFrom = from.getRed();
         final int gFrom = from.getGreen();
         final int bFrom = from.getBlue();
@@ -146,7 +144,7 @@ public abstract class Palette {
                     stop = true;
                 }
 
-                spec.add(new Color(rr, gg, bb));
+                spectrum.add(new Color(rr, gg, bb));
 
                 if (stop) {
                     break;
@@ -190,41 +188,19 @@ public abstract class Palette {
         }
     }
 
-    public Color getSpectrumValueR(int index) {
-        return spectrumR.get(index);
+    public Color getSpectrumValue(int index) {
+        return spectrum.get(index);
     }
 
-    public Color getSpectrumValueG(int index) {
-        return spectrumG.get(index);
-    }
-
-    public Color getSpectrumValueB(int index) {
-        return spectrumB.get(index);
-    }
-
-    public void update3(int[] maxValueScr, int minValueScr[]) {
-        if (currentMaxValue3 == null) {
-            currentMaxValue3 = new int[3];
-            currentMaxValue3[0] = maxValueScr[0];
-            currentMaxValue3[1] = maxValueScr[1];
-            currentMaxValue3[2] = maxValueScr[2];
-            currentMinValue3 = new int[3];
-            currentMinValue3[0] = minValueScr[0];
-            currentMinValue3[1] = minValueScr[1];
-            currentMinValue3[2] = minValueScr[2];
+    public void update(int maxValueScr, int minValueScr) {
+        if (currentMaxValue == 0) {
+            currentMaxValue = maxValueScr;
+            currentMinValue = minValueScr;
         }
     }
 
-    public int colorResolutionR() {
-        return spectrumR.size();
-    }
-
-    public int colorResolutionG() {
-        return spectrumG.size();
-    }
-
-    public int colorResolutionB() {
-        return spectrumB.size();
+    public int colorResolution() {
+        return spectrum.size();
     }
 
 }
