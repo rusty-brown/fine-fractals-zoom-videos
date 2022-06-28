@@ -3,7 +3,7 @@ package fine.fractals.ui;
 import fine.fractals.Application;
 import fine.fractals.ApplicationWindow;
 import fine.fractals.Main;
-import fine.fractals.color.PaletteBW3;
+import fine.fractals.color.PaletteBW;
 import fine.fractals.engine.CalculationThread;
 import fine.fractals.engine.FractalEngine;
 import org.apache.logging.log4j.LogManager;
@@ -28,10 +28,6 @@ public class UIKeyAdapter extends KeyAdapter {
         int code = ke.getKeyCode();
         log.info(KeyEvent.getKeyText(code) + " | " + code + " | " + ke.getKeyChar());
         switch (code) {
-            case KeyEvent.VK_T:
-                /* Switch Mouse display mode */
-                Application.ME.toggleRectangle();
-                break;
 
             case KeyEvent.VK_S:
                 FractalEngine.save();
@@ -65,7 +61,7 @@ public class UIKeyAdapter extends KeyAdapter {
 
             case KeyEvent.VK_NUMPAD2:
             case KeyEvent.VK_2:
-                Main.colorPalette = new PaletteBW3();
+                Main.colorPalette = new PaletteBW();
                 FractalEngine.ME.calculateFractalColoring();
                 break;
 
@@ -116,19 +112,6 @@ public class UIKeyAdapter extends KeyAdapter {
             case KeyEvent.VK_Z:
                 break;
 
-            case KeyEvent.VK_P:
-                /* Pause or start calculation */
-                synchronized (this) {
-                    if (start) {
-                        Application.REPEAT = true;
-                        CalculationThread.calculate(0);
-                    } else {
-                        Application.REPEAT = false;
-                    }
-                    start = !start;
-                }
-                break;
-
             case KeyEvent.VK_L:
 
                 break;
@@ -138,61 +121,6 @@ public class UIKeyAdapter extends KeyAdapter {
             case KeyEvent.VK_B:
 
                 break;
-        }
-
-        if (!Application.REPEAT) {
-            switch (code) {
-
-                case KeyEvent.VK_N:
-                    break;
-
-                case KeyEvent.VK_LEFT:
-                    Application.ME.getTarget().move(-1, 0);
-                    break;
-                case KeyEvent.VK_UP:
-                    Application.ME.getTarget().move(0, -1);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    Application.ME.getTarget().move(1, 0);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    Application.ME.getTarget().move(0, 1);
-                    break;
-
-                case KeyEvent.VK_ESCAPE:
-                    /* EXIT */
-                    Application.ME.dispose();
-                    break;
-
-                case KeyEvent.VK_SPACE:
-                    /* ZOOM in with no move */
-                    if (!FractalEngine.calculationInProgress) {
-                        Application.ME.zoomIn();
-                        CalculationThread.calculate(0);
-                    } else {
-                        log.info("no action space");
-                    }
-                    break;
-
-                case KeyEvent.VK_BACK_SPACE:
-                    /* ZOOM out and recalculate */
-                    if (!FractalEngine.calculationInProgress) {
-                        Application.ME.zoomOut();
-                        log.info("Zoomed out, to recalculate Enter");
-                    } else {
-                        log.info("no action back space");
-                    }
-                    break;
-
-                case KeyEvent.VK_ENTER:
-                    /* Recalculate with no Move or Zoom */
-                    if (!FractalEngine.calculationInProgress) {
-                        CalculationThread.calculate(0);
-                    } else {
-                        log.info("no action enter");
-                    }
-                    break;
-            }
         }
     }
 

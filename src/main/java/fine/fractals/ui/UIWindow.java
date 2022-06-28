@@ -47,9 +47,6 @@ public class UIWindow extends JComponent {
 			g.setColor(Color.GREEN);
 		}
 
-		if (Application.ME.getDrawRectangle()) {
-			g.drawRect(target.getScreenFromCornerT() - halfX, target.getScreenFromCornerX() - halfX, sizeT, sizeX);
-		}
 		int line = 3;
 		g.drawLine(target.getScreenFromCornerT() + line, target.getScreenFromCornerX(), target.getScreenFromCornerT() - line, target.getScreenFromCornerX());
 		g.drawLine(target.getScreenFromCornerT(), target.getScreenFromCornerX() + line, target.getScreenFromCornerT(), target.getScreenFromCornerX() - line);
