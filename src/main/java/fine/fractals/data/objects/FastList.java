@@ -8,39 +8,23 @@ public class FastList implements Iterable<Double>, Iterator<Double> {
 
     /* ArrayList is simply faster */
     private ArrayList<Double> list = new ArrayList<>();
-    private Set<Double> set = null;
 
     private int count = 0;
 
     public FastList() {
-        if (Fractal.ONLY_LONG_ORBITS) {
-            this.set = new HashSet<>();
-        }
     }
 
     public int size() {
         return list.size();
     }
 
-    public boolean contains(Double d) {
-        return set.contains(d);
-    }
 
     public void add(Double d) {
-        if (Fractal.ONLY_LONG_ORBITS) {
-            set.add(d);
-        }
         list.add(d);
     }
 
     public Double get(Integer i) {
         return list.get(i);
-    }
-
-    public void remove(int i) {
-        list.remove(i);
-        // TODO set
-        // TODO try with linkedList again
     }
 
     @Override

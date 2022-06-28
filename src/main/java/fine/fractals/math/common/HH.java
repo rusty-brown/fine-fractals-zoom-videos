@@ -34,11 +34,6 @@ public class HH {
 
 		public int pxRe;
 		public int pxIm;
-
-		/* For fractals coloring to screen */
-		public boolean r;
-		public boolean g;
-		public boolean b;
 	}
 
 	public HH() {
