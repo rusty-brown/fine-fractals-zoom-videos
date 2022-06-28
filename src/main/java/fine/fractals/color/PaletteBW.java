@@ -4,13 +4,10 @@ import fine.fractals.color.things.ColorTest;
 import fine.fractals.color.things.Function;
 import fine.fractals.color.things.Palette;
 
-import java.util.ArrayList;
-
 public class PaletteBW extends Palette {
 
     public PaletteBW() {
-        super("PaletteBW3");
-
+        super("PaletteBW");
         fromTo(black, white, Function.circleUp);
     }
 
