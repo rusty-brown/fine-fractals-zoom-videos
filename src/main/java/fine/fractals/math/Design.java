@@ -17,17 +17,10 @@ public class Design {
 
     public Screen screen;
     public Dynamic dynamic;
-    private AreaImage areaImage;
 
     private int counterAll = 0;
-    private ColoredValueIntegral coloredValueIntegral;
 
     private HashMap<Integer, Color> finalColors;
-
-    private int allPixels;
-    private int allColorsCount;
-
-    private Color co;
 
     public Design() {
         log.info("Design constructor");
@@ -65,10 +58,10 @@ public class Design {
 
         this.finalColors = new HashMap<>();
 
-        this.coloredValueIntegral = new ColoredValueIntegral(this.screen);
-        /** pixelCountToColorByOneColor */
-        this.allPixels = Main.RESOLUTION_IMAGE_WIDTH * Main.RESOLUTION_IMAGE_HIGHT;
-        this.allColorsCount = Main.colorPalette.colorResolution();
+        ColoredValueIntegral coloredValueIntegral = new ColoredValueIntegral(this.screen);
+        /* pixelCountToColorByOneColor */
+        int allPixels = Main.RESOLUTION_IMAGE_WIDTH * Main.RESOLUTION_IMAGE_HEIGHT;
+        int allColorsCount = Main.colorPalette.colorResolution();
         final int fullColoring = ((int) ((double) allPixels / (double) allColorsCount));
         final int left = allPixels - (allColorsCount * fullColoring);
 
@@ -77,8 +70,8 @@ public class Design {
         log.info("fullColoring: " + fullColoring);
         log.info("left*: " + left);
 
-        this.coloredValueIntegral.setColorLeft(left);
-        this.coloredValueIntegral.setFullColoring(fullColoring);
+        coloredValueIntegral.setColorLeft(left);
+        coloredValueIntegral.setFullColoring(fullColoring);
 
         int colorIndex = 0;
 
@@ -96,7 +89,7 @@ public class Design {
             }
         }
 
-        this.coloredValueIntegral.finalize(this.finalColors);
+        coloredValueIntegral.finalize(this.finalColors);
     }
 
     public Color colorAt(int t, int x) {
@@ -112,7 +105,6 @@ public class Design {
     }
 
     public void setAreaImage(AreaImage areaImage) {
-        this.areaImage = areaImage;
         if (dynamic != null) {
             this.dynamic.setAreaImage(areaImage);
         }

@@ -10,7 +10,7 @@ public class Screen {
     private int minScrValue;
 
     public Screen() {
-        this.elementsStaticScreen = new int[Main.RESOLUTION_IMAGE_WIDTH][Main.RESOLUTION_IMAGE_HIGHT];
+        this.elementsStaticScreen = new int[Main.RESOLUTION_IMAGE_WIDTH][Main.RESOLUTION_IMAGE_HEIGHT];
     }
 
     public void updateMiniMax() {
@@ -19,7 +19,7 @@ public class Screen {
         int maxScrValue = 0;
 
         for (int i = 0; i < Main.RESOLUTION_IMAGE_WIDTH; i++) {
-            for (int j = 0; j < Main.RESOLUTION_IMAGE_HIGHT; j++) {
+            for (int j = 0; j < Main.RESOLUTION_IMAGE_HEIGHT; j++) {
                 int v = this.elementsStaticScreen[i][j];
                 if (minScrValue > v) {
                     minScrValue = v;
@@ -52,7 +52,7 @@ public class Screen {
     }
 
     public void clear() {
-        for (int x = 0; x < Main.RESOLUTION_IMAGE_HIGHT; x++) {
+        for (int x = 0; x < Main.RESOLUTION_IMAGE_HEIGHT; x++) {
             for (int t = 0; t < Main.RESOLUTION_IMAGE_WIDTH; t++) {
                 elementsStaticScreen[t][x] = 0;
             }

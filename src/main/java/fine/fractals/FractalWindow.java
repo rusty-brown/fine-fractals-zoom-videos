@@ -68,6 +68,6 @@ public class FractalWindow extends UIWindow {
 			return new Dimension(1000, 1000);
 		}
 		// return new Dimension(resolutionT, resolutionX);
-		return new Dimension(Main.RESOLUTION_IMAGE_WIDTH, Main.RESOLUTION_IMAGE_HIGHT);
+		return new Dimension(Main.RESOLUTION_IMAGE_WIDTH, Main.RESOLUTION_IMAGE_HEIGHT);
 	}
 }

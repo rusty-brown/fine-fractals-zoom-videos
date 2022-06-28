@@ -18,7 +18,7 @@ public class ColoredValueIntegral {
 
 	private final HashMap<Integer, Pivot> valueIntegralWithColorLimits;
 
-	private LinkedList<Integer> designValues;
+	private final LinkedList<Integer> designValues;
 
 	private Integer currentlyColoredPivotValue = null;
 
@@ -96,7 +96,7 @@ public class ColoredValueIntegral {
 		this.valueIntegralWithColorLimits = new HashMap<>();
 
 		// Initialize
-		for (int x = 0; x < Main.RESOLUTION_IMAGE_HIGHT; x++) {
+		for (int x = 0; x < Main.RESOLUTION_IMAGE_HEIGHT; x++) {
 			for (int t = 0; t < Main.RESOLUTION_IMAGE_WIDTH; t++) {
 				int designValue = screen.colorFor(t, x);
 				if (valueIntegralWithColorLimits.containsKey(designValue)) {
@@ -142,6 +142,7 @@ public class ColoredValueIntegral {
 		final Pivot pivot = this.valueIntegralWithColorLimits.get(currentlyColoredPivotValue);
 
 		if (pivot == null) {
+			// TODO
 			verify();
 		}
 
@@ -167,10 +168,9 @@ public class ColoredValueIntegral {
 				No paint with this color will be left
 			*/
 
-			int exactPaintAmount = paintAmount;
-			pivot.paintMe(colorIndex, exactPaintAmount);
+			pivot.paintMe(colorIndex, paintAmount);
 
-			usedPaintTotal += exactPaintAmount;
+			usedPaintTotal += paintAmount;
 
 			colorLeft = 0;
 		} else {
@@ -178,10 +178,9 @@ public class ColoredValueIntegral {
 				Pivot will be colored exactly.
 				No paint with this color will be left
 			*/
-			int exactPaintAmount = paintAmount;
-			pivot.paintMe(colorIndex, exactPaintAmount);
+			pivot.paintMe(colorIndex, paintAmount);
 
-			usedPaintTotal += exactPaintAmount;
+			usedPaintTotal += paintAmount;
 
 			colorLeft = 0;
 
@@ -194,7 +193,7 @@ public class ColoredValueIntegral {
 	private void verify() {
 		/* ========================================== */
 
-		ArrayList<Integer> values = new ArrayList(this.valueIntegralWithColorLimits.keySet());
+		ArrayList<Integer> values = new ArrayList<>(this.valueIntegralWithColorLimits.keySet());
 		Collections.sort(values);
 
 		HashMap<Integer, Integer> paintUsed = new HashMap<>();

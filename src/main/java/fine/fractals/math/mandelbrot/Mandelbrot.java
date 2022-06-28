@@ -21,14 +21,11 @@ import java.util.concurrent.Executors;
 public class Mandelbrot {
 
     private static final Logger log = LogManager.getLogger(Mandelbrot.class);
-    private final int[] RING_SEQUENCE_TT = new int[24];
-    private final int[] RING_SEQUENCE_XX = new int[24];
     public MandelbrotDomain DOMAIN;
     protected int maxScrValueNow = 0;
     protected int maxScrValueTotal = 0;
     /* Also initialize to zero. New min values are update when smaller min value drifts out of the screen. */
     protected int minScrValue = 0;
-    private final AreaDomain areaDomain;
     private final AreaImage areaImage;
     private final Design design;
 
@@ -39,14 +36,11 @@ public class Mandelbrot {
      */
     public Mandelbrot(Design design, AreaDomain areaDomain, AreaImage areaImage) {
         this.design = design;
-        this.areaDomain = areaDomain;
         this.areaImage = areaImage;
         /* Create new points for calculation */
 
         DOMAIN = new MandelbrotDomain(areaDomain, areaImage);
         DOMAIN.domainScreenCreateInitialization();
-
-        FractalMachine.initRingSequence(RING_SEQUENCE_TT, RING_SEQUENCE_XX);
     }
 
     public void resetAsNew() {
@@ -157,7 +151,7 @@ public class Mandelbrot {
         }
     }
 
-    public boolean fixOptimizationBreak() {
+    public void fixOptimizationBreak() {
 
         log.info(" === fixOptimizationBreak ===");
 
@@ -198,7 +192,6 @@ public class Mandelbrot {
                 }
             }
         }
-        return !failedNumbersRe.isEmpty();
     }
 
     public void fixOptimizationOnClick(int xx, int yy) {

@@ -115,7 +115,7 @@ public class FractalEngine {
 
         Color color;
         log.info("ScreenValuesToImages Design");
-        for (int x = 0; x < Main.RESOLUTION_IMAGE_HIGHT; x++) {
+        for (int x = 0; x < Main.RESOLUTION_IMAGE_HEIGHT; x++) {
             for (int t = 0; t < Main.RESOLUTION_IMAGE_WIDTH; t++) {
                 /* Design pattern */
                 color = design.colorAt(t, x);

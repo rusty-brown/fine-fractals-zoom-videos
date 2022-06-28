@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.image.BufferedImage;
 
+import static fine.fractals.Main.RESOLUTION_IMAGE_HEIGHT;
+import static fine.fractals.Main.RESOLUTION_IMAGE_WIDTH;
+
 public class Application {
 
     public static final double ZOOM = 0.98;
@@ -27,13 +30,12 @@ public class Application {
 
     public static boolean REPEAT = true;
 
-    public static int TIME_OUT = 100; // ms
     /* Increase this only in CalculationThread */
     public static int iteration = 0;
 
     public static Application ME;
 
-    final BufferedImage designImage = new BufferedImage(Main.RESOLUTION_IMAGE_WIDTH, Main.RESOLUTION_IMAGE_HIGHT, BufferedImage.TYPE_INT_RGB);
+    final BufferedImage designImage = new BufferedImage(RESOLUTION_IMAGE_WIDTH, RESOLUTION_IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
     private final ApplicationWindow applicationWindow;
     private final OneTarget target;
     public AreaDomain areaDomain;
@@ -49,7 +51,7 @@ public class Application {
 
         /* moveToInitialCoordinates immediately */
         this.areaDomain = new AreaDomain(Fractal.INIT_AREA_DOMAIN_SIZE, Fractal.INIT_DOMAIN_TARGET_re, Fractal.INIT_DOMAIN_TARGET_im, RESOLUTION_DOMAIN_WIDTH, RESOLUTION_DOMAIN_HEIGHT);
-        this.areaImage = new AreaImage(Fractal.INIT_AREA_IMAGE_SIZE, Fractal.INIT_IMAGE_TARGET_reT, Fractal.INIT_IMAGE_TARGET_imX, Main.RESOLUTION_IMAGE_WIDTH, Main.RESOLUTION_IMAGE_HIGHT);
+        this.areaImage = new AreaImage(Fractal.INIT_AREA_IMAGE_SIZE, Fractal.INIT_IMAGE_TARGET_reT, Fractal.INIT_IMAGE_TARGET_imX, RESOLUTION_IMAGE_WIDTH, RESOLUTION_IMAGE_HEIGHT);
 
         this.target = new OneTarget();
         UIMouseListener uiMouseListener = new UIMouseListener();
@@ -59,7 +61,7 @@ public class Application {
         this.fractalEngine = new FractalEngine(designImage);
 
         this.applicationWindow = new ApplicationWindow(target, uiMouseListener, uiMouseWheelListener, uiKeyDispatcher, RESOLUTION_DOMAIN_WIDTH, RESOLUTION_DOMAIN_HEIGHT, "Application - " + Fractal.NAME + " - " + APP_NAME);
-        this.fractalWindow = new FractalWindow(target, uiMouseListener, uiMouseWheelListener, uiKeyDispatcher, designImage, Main.RESOLUTION_IMAGE_WIDTH, Main.RESOLUTION_IMAGE_HIGHT, Fractal.NAME + " - " + APP_NAME);
+        this.fractalWindow = new FractalWindow(target, uiMouseListener, uiMouseWheelListener, uiKeyDispatcher, designImage, RESOLUTION_IMAGE_WIDTH, RESOLUTION_IMAGE_HEIGHT, Fractal.NAME + " - " + APP_NAME);
 
         this.fractalWindow.setApplicationWindow(applicationWindow);
         this.applicationWindow.setDesignWindow(fractalWindow);
@@ -68,10 +70,10 @@ public class Application {
         /* set window positions*/
         int scrWidth = 1920;
         int scrHeight = 1080;
-        if (Main.RESOLUTION_IMAGE_HIGHT < scrHeight && Main.RESOLUTION_IMAGE_WIDTH < scrWidth) {
+        if (RESOLUTION_IMAGE_HEIGHT < scrHeight && RESOLUTION_IMAGE_WIDTH < scrWidth) {
             int panel = 50;
             int borders = 2;
-            int top = scrHeight - panel - Main.RESOLUTION_IMAGE_HIGHT;
+            int top = scrHeight - panel - RESOLUTION_IMAGE_HEIGHT;
             if (top < 0) {
                 top = 0;
             }
@@ -94,11 +96,6 @@ public class Application {
 
     public void repaintMandelbrot() {
         applicationWindow.frame.repaint();
-    }
-
-    public void dispose() {
-        this.fractalWindow.frame.dispose();
-        this.applicationWindow.frame.dispose();
     }
 
     public OneTarget getTarget() {

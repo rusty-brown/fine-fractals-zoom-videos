@@ -1,6 +1,6 @@
 package fine.fractals;
 
-import fine.fractals.color.PalettePlasma;
+import fine.fractals.color.PaletteBWBW;
 import fine.fractals.color.things.Palette;
 import fine.fractals.fractal.FineMandelbrot_Side_Zoom;
 import fine.fractals.fractal.Fractal;
@@ -24,8 +24,7 @@ public class Main {
 	 * Calculation points per pixel
 	 * m x m
 	 * Keep it odd, so that the center point is in the center of a pixel
-	 * TODO 2 for zoom is best
-	 * 101
+	 * values: 1 or 2
 	 */
 	private static final int m = 1;
 
@@ -37,12 +36,12 @@ public class Main {
 	public static final String FILE_PATH = Application.USER_HOME + "/Fractals/";
 
 
-	public static Palette colorPalette = new PalettePlasma();
+	public static Palette colorPalette = new PaletteBWBW();
 
 	public static final int neighbours = 4;
 	public static final int RESOLUTION_MULTIPLIER = m;
 	public static final int RESOLUTION_IMAGE_WIDTH = rw;
-	public static final int RESOLUTION_IMAGE_HIGHT = rh;
+	public static final int RESOLUTION_IMAGE_HEIGHT = rh;
 
 	public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
 
@@ -62,12 +61,12 @@ public class Main {
 		if (RESOLUTION_IMAGE_WIDTH < 1000) {
 			Application.RESOLUTION_DOMAIN_WIDTH = RESOLUTION_IMAGE_WIDTH;
 		}
-		if (RESOLUTION_IMAGE_HIGHT < 1000) {
-			Application.RESOLUTION_DOMAIN_HEIGHT = RESOLUTION_IMAGE_HIGHT;
+		if (RESOLUTION_IMAGE_HEIGHT < 1000) {
+			Application.RESOLUTION_DOMAIN_HEIGHT = RESOLUTION_IMAGE_HEIGHT;
 		}
 
 		log.info(Application.RESOLUTION_DOMAIN_WIDTH + " <-> " + RESOLUTION_IMAGE_WIDTH);
-		log.info(Application.RESOLUTION_DOMAIN_HEIGHT + " <-> " + RESOLUTION_IMAGE_HIGHT);
+		log.info(Application.RESOLUTION_DOMAIN_HEIGHT + " <-> " + RESOLUTION_IMAGE_HEIGHT);
 
 
 		new Application().execute();
