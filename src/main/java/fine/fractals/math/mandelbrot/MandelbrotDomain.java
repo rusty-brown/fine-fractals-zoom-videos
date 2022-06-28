@@ -5,7 +5,6 @@ import fine.fractals.Main;
 import fine.fractals.color.things.ScreenColor;
 import fine.fractals.data.objects.Bool;
 import fine.fractals.engine.FractalMachine;
-import fine.fractals.fractal.Fractal;
 import fine.fractals.math.AreaDomain;
 import fine.fractals.math.AreaImage;
 import fine.fractals.math.common.Element;
@@ -52,13 +51,6 @@ public class MandelbrotDomain {
 		for (int t = 0; t < Application.RESOLUTION_DOMAIN_WIDTH; t++) {
 			for (int x = 0; x < Application.RESOLUTION_DOMAIN_HEIGHT; x++) {
 				Element element = new Element(areaDomain.screenToDomainReT(t), areaDomain.screenToDomainImX(x));
-
-				if (Fractal.OPTIMIZE_SYMMETRY && element.originImX < 0) {
-					continue;
-				}
-
-				/* OPTIMIZATION will have elements on screen (pink) but won't be fetched for calculation */
-
 				elementsScreen[t][x] = element;
 			}
 		}
@@ -78,16 +70,11 @@ public class MandelbrotDomain {
 		Element[] wrapping = null;
 
 		final boolean wrapDomain = Main.RESOLUTION_MULTIPLIER > 2;
-		//final boolean wrapDomain2 = Main.RESOLUTION_MULTIPLIER == 2;
 		log.info("wrapDomainS " + wrapDomain);
-		//log.info("wrapDomain2 " + wrapDomain2);
 
 		if (wrapDomain) {
 			wrapping = new Element[Main.RESOLUTION_MULTIPLIER * Main.RESOLUTION_MULTIPLIER];
 		}
-//		if (wrapDomain2) {
-//			wrapping = new Element[2];
-//		}
 
 		final int MAX = 4_000_000;
 		long elementCountPart = 0;
@@ -105,15 +92,10 @@ public class MandelbrotDomain {
 				elementZero = elementsScreen[t][x];
 
 				boolean isActive = elementZero != null && elementZero.isActiveAny();
-				boolean optimizationPassed = elementZero != null && Fractal.ME.optimize(elementZero.originReT, elementZero.originImX);
 
-				if (!optimizationPassed && isActive) {
-					elementZero.setColor(ScreenColor._OPTIMIZATION);
-					continue;
-				}
 				if (!wrapDomain) {
 					/* First calculation */
-					if (isActive && optimizationPassed) {
+					if (isActive) {
 						elementCountPart++;
 						domainPart.add(elementZero);
 					}
@@ -123,7 +105,7 @@ public class MandelbrotDomain {
 					if (shouldBeWrapped) {
 						wrappedCount++;
 
-						areaDomain.wrapS(elementZero, wrapping);
+						areaDomain.wrap(elementZero, wrapping);
 
 						for (Element el : wrapping) {
 							elementCountPart++;
@@ -159,7 +141,7 @@ public class MandelbrotDomain {
 					if (elementZero != null && elementZero.isActiveRecalculate()) {
 						// don't set any state, will be set again properly by calculation
 
-						areaDomain.wrapS(elementZero, wrapping);
+						areaDomain.wrap(elementZero, wrapping);
 						for (Element el : wrapping) {
 							reWrapped++;
 							domainPart.add(el);

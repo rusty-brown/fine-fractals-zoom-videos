@@ -54,19 +54,18 @@ public class FractalEngine {
         design.clearScreenValues();
 
         calculationInProgress = true;
-        try {
 
-            // Calculate Design
-            if (updateDomain) {
-                mandelbrot.DOMAIN.domainForThisZoom();
-                log.info("new domain done");
-                updateDomain = false;
-            }
-            log.info("CALCULATE");
-            mandelbrot.calculate();
+        // Calculate Design
+        if (updateDomain) {
+            mandelbrot.DOMAIN.domainForThisZoom();
+            log.info("new domain done");
+            updateDomain = false;
+        }
+        log.info("CALCULATE");
+        mandelbrot.calculate();
 
-            /* sort escape path to spectrum for ZOOM */
-            // design.addAllEscapePathsToSpectra();
+        /* sort escape path to spectrum for ZOOM */
+        // design.addAllEscapePathsToSpectra();
 
 
             if (Application.REPEAT) {
@@ -74,23 +73,14 @@ public class FractalEngine {
                 mandelbrot.fixOptimizationBreak();
             }
 
-            log.info("ScreenValuesToImages 1");
-            screenValuesToImages();
+        log.info("ScreenValuesToImages 1");
+        screenValuesToImages();
 
-            /* save file based on screen height; don't save it for testing */
-            if (Main.RESOLUTION_IMAGE_WIDTH >= Application.RESOLUTION_IMAGE_SAVE_FOR) {
-                log.info("Save images");
-                FractalMachine.saveImage(designImage);
-                log.info("Save images DONE");
-            }
-        } catch (Exception e) {
-            log.fatal("calculateFromThread()", e);
-            log.fatal("-----------------------------------------");
-            log.fatal("Images not saved, press 's' to save them.");
-            log.fatal("-----------------------------------------");
-
-            Application.REPEAT = false;
-            e.printStackTrace();
+        /* save file based on screen height; don't save it for testing */
+        if (Main.RESOLUTION_IMAGE_WIDTH >= Application.RESOLUTION_IMAGE_SAVE_FOR) {
+            log.info("Save images");
+            FractalMachine.saveImage(designImage);
+            log.info("Save images DONE");
         }
         log.info("DONE");
         calculationInProgress = false;

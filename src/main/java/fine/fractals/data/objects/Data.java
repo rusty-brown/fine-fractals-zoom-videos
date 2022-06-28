@@ -60,7 +60,4 @@ public class Data {
         return "(" + s + ")";
     }
 
-    public static String spar(int s) {
-        return " " + Data.par(s);
-    }
 }

@@ -107,19 +107,6 @@ public class AreaDomain {
             hh.calculation.pxIm = HH.NOT;
             return false;
         }
-
-        // y = (int) Math.round(((super.resolution.y * (imY - this.center.imY)) / this.size.imY) + super.resolutionHalf.y);
-        // if (y >= super.resolution.y || y < 0) {
-        // 	y = HH.NOT;
-        // 	return false;
-        // }
-        //
-        // z = (int) Math.round(((super.resolution.z * (imZ - this.center.imZ)) / this.size.imZ) + super.resolutionHalf.z);
-        // if (z >= super.resolution.z || z < 0) {
-        // 	z = HH.NOT;
-        // 	return false;
-        // }
-
         return true;
     }
 
@@ -132,24 +119,12 @@ public class AreaDomain {
         this.borderLowImX = centerImX - (sizeImX / 2);
         this.borderHighImX = centerImX + (sizeImX / 2);
 
-        // this.borderLow.imY = center.imY - (size.imY / 2);
-        // this.borderHigh.imY = center.imY + (size.imY / 2);
-        // this.borderLow.imZ = center.imZ - (size.imZ / 2);
-        // this.borderHigh.imZ = center.imZ + (size.imZ / 2);
-
         calculatePoints();
     }
 
     public void zoomIn() {
         sizeReT = sizeReT * Application.ZOOM;
         sizeImX = sizeImX * Application.ZOOM;
-        this.plank = sizeReT / resolutionT;
-        initiate();
-    }
-
-    public void zoomOut() {
-        sizeReT = sizeReT * (1 / Application.ZOOM);
-        sizeImX = sizeImX * (1 / Application.ZOOM);
         this.plank = sizeReT / resolutionT;
         initiate();
     }
@@ -170,19 +145,9 @@ public class AreaDomain {
     }
 
 
-    public String sizeTString4() {
-        return Formatter.round4(this.sizeReT);
-    }
-
-    public String sizeImXString4() {
-        return Formatter.round4(this.sizeImX);
-    }
-
     public void moveToCoordinates(OneTarget target) {
         this.centerReT = screenToDomainReT(target.getScreenFromCornerT());
         this.centerImX = screenToDomainImX(target.getScreenFromCornerX());
-        //this.center.imY = screenToDomainImY(target.getScreenFromCorner());;
-        //this.center.imZ = screenToDomainImZ(target.getScreenFromCorner());;
         log.info("Move to: " + this.centerReT + "," + this.centerImX);
     }
 
@@ -194,13 +159,6 @@ public class AreaDomain {
         for (int xx = 0; xx < resolutionX; xx++) {
             numbersImX[xx] = borderLowImX + (this.plank * xx);
         }
-
-        //for (int yy = 0; yy < resolution.y; yy++) {
-        //	numbersImY[yy] = borderLow.imY + (this.plank * yy);
-        //}
-        //for (int zz = 0; zz < resolution.z; zz++) {
-        //	numbersImZ[zz] = borderLow.imZ + (this.plank * zz);
-        //}
     }
 
     public double plank() {
@@ -216,37 +174,7 @@ public class AreaDomain {
     }
 
 
-    /**
-     * Call only if RESOLUTION_MULTIPLIER > (1 or odd)
-     * If RM = 4 then wrapping will be 25... from -2 to +2 including zero
-     * <p>
-     * As zoom progress elements move further away from each other.
-     * So there won're be any conflicts with already calculated elements.
-     */
-    public void wrapS(Element elementZero, Element[] wrapping) {
-        if (Main.RESOLUTION_MULTIPLIER > 1 && Main.RESOLUTION_MULTIPLIER % 2 == 1) {
-            int index = 0;
-            double pn = this.plank / Main.RESOLUTION_MULTIPLIER;
-            int half = (Main.RESOLUTION_MULTIPLIER - 1) / 2;
-            for (int t = -half; t <= half; t++) {
-                for (int x = -half; x <= half; x++) {
-                    if (t == 0 && x == 0) {
-                        // This was already calculated without wrap
-                        wrapping[index++] = elementZero;
-                    } else {
-                        /* This only fills the pixel with multiple points */
-                        double a = elementZero.originReT + (t * pn);
-                        double b = elementZero.originImX + (x * pn);
-                        wrapping[index++] = new Element(a, b);
-                    }
-                }
-            }
-        } else {
-            throw new RuntimeException("AreaDomain: RESOLUTION_MULTIPLIER can be only 1 or odd");
-        }
-    }
-
-    public void wrap2(Element elementZero, Element[] wrapping) {
+    public void wrap(Element elementZero, Element[] wrapping) {
         if (Main.RESOLUTION_MULTIPLIER == 2) {
             int index = 0;
             double pn = this.plank / 3;
@@ -263,13 +191,5 @@ public class AreaDomain {
         } else {
             throw new RuntimeException("AreaDomain: RESOLUTION_MULTIPLIER can be only 1 or odd");
         }
-    }
-
-    public double left() {
-        return this.borderLowReT;
-    }
-
-    public double right() {
-        return this.borderHighReT;
     }
 }

@@ -28,7 +28,6 @@ public abstract class FractalMachine {
 
 	private static int counter = 0;
 
-
 	public static void saveImage(BufferedImage image) {
 		try {
 			JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
@@ -44,10 +43,6 @@ public abstract class FractalMachine {
 			log.info("Image: " + fileName);
 			final ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
 
-			if (Application.addText) {
-				FractalMachine.addText(image);
-			}
-
 			try (FileImageOutputStream fis = new FileImageOutputStream(outputFile)) {
 				writer.setOutput(fis);
 				writer.write(null, new IIOImage(image, null, null), jpegParams);
@@ -62,10 +57,7 @@ public abstract class FractalMachine {
 	}
 
 	private static String iteration() {
-		if (Application.REPEAT) {
-			return "_" + String.format("%06d", Application.iteration);
-		}
-		return "";
+		return "_" + String.format("%06d", Application.iteration);
 	}
 
 	public static void addText(BufferedImage image) {

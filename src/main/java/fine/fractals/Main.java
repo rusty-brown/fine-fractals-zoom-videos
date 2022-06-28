@@ -1,6 +1,6 @@
 package fine.fractals;
 
-import fine.fractals.color.Palette3_RGB;
+import fine.fractals.color.PalettePlasma;
 import fine.fractals.color.things.Palette;
 import fine.fractals.fractal.FineMandelbrot_Side_Zoom;
 import fine.fractals.fractal.Fractal;
@@ -17,13 +17,14 @@ public class Main {
     /**
      * Image resolution height & width
      */
-    private static final int rh = 1280;
-	private static final int rw = 720;
+    private static final int rh = 800;
+	private static final int rw = 800;
 
 	/**
 	 * Calculation points per pixel
 	 * m x m
 	 * Keep it odd, so that the center point is in the center of a pixel
+	 * TODO 2 for zoom is best
 	 * 101
 	 */
 	private static final int m = 1;
@@ -36,7 +37,7 @@ public class Main {
 	public static final String FILE_PATH = Application.USER_HOME + "/Fractals/";
 
 
-	public static Palette colorPalette = new Palette3_RGB();
+	public static Palette colorPalette = new PalettePlasma();
 
 	public static final int neighbours = 4;
 	public static final int RESOLUTION_MULTIPLIER = m;

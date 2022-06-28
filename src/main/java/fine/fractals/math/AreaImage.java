@@ -148,36 +148,12 @@ public class AreaImage {
 		initiate();
 	}
 
-	public void zoomOut() {
-		sizeReT = sizeReT * (1 / Application.ZOOM);
-		sizeImX = sizeImX * (1 / Application.ZOOM);
-		this.plank = sizeReT / resolutionT;
-		initiate();
-	}
-
-	public String[] cToString(HH hh, int t, int x) {
-		screenToDomainCarry(hh, t, x);
-		return new String[]{
-				Formatter.roundString(hh.calculation.re),
-				Formatter.roundString(hh.calculation.im)
-		};
-	}
-
 	public String sizeReTString() {
 		return Formatter.roundString(this.sizeReT);
 	}
 
 	public String sizeImXString() {
 		return Formatter.roundString(this.sizeImX);
-	}
-
-
-	public String sizeTString4() {
-		return Formatter.round4(this.sizeReT);
-	}
-
-	public String sizeImXString4() {
-		return Formatter.round4(this.sizeImX);
 	}
 
 	public void moveToCoordinates(OneTarget target) {
@@ -196,29 +172,6 @@ public class AreaImage {
 		for (int xx = 0; xx < resolutionX; xx++) {
 			numbersImX[xx] = borderLowIm + (this.plank * xx);
 		}
-
-		//for (int yy = 0; yy < resolution.y; yy++) {
-		//	numbersImY[yy] = borderLow.imY + (this.plank * yy);
-		//}
-		//for (int zz = 0; zz < resolution.z; zz++) {
-		//	numbersImZ[zz] = borderLow.imZ + (this.plank * zz);
-		//}
-	}
-
-	public double left() {
-		return this.borderLowRe;
-	}
-
-	public double right() {
-		return this.borderHighRe;
-	}
-
-	public double top() {
-		return this.borderHighIm;
-	}
-
-	public double bottom() {
-		return this.borderLowIm;
 	}
 
 	/**

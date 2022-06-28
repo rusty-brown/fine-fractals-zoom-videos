@@ -25,29 +25,12 @@ public class Application {
     public static int RESOLUTION_DOMAIN_WIDTH = 1000;
     public static int RESOLUTION_DOMAIN_HEIGHT = 1000;
     public static int RESOLUTION_IMAGE_SAVE_FOR = 720;
-    /**
-     * To Render Images for a ZOOM Video.
-     * 1.
-     * set REPEAT = true
-     * Don't use any fractals with optimization.
-     * Try FineMandelbrotZoom()
-     * <p>
-     * 2.
-     * set DESIGN_STATIC = Boolean.FALSE; To remember all the element paths calculated in the previous iterations
-     */
-    public static boolean REPEAT = true;
 
-    /**
-     * Use:
-     * - TRUE to make images
-     * - FALSE to make videos
-     */
-    public static boolean DESIGN_STATIC = Boolean.FALSE;
+    public static boolean REPEAT = true;
 
     public static int TIME_OUT = 100; // ms
     /* Increase this only in CalculationThread */
     public static int iteration = 0;
-    public static boolean addText = false;
 
     public static Application ME;
 
@@ -56,7 +39,7 @@ public class Application {
     private final OneTarget target;
     public AreaDomain areaDomain;
     public AreaImage areaImage;
-    private boolean drawRectangle = false;
+
     private FractalEngine fractalEngine;
     private FractalWindow fractalWindow;
 
@@ -83,12 +66,6 @@ public class Application {
         this.applicationWindow.setDesignWindow(fractalWindow);
 
 
-        /* Minimize windows */
-        if (Main.RESOLUTION_IMAGE_HIGHT > 1000) {
-            log.info("== hide fractal window");
-            this.fractalWindow.frame.setState(Frame.ICONIFIED);
-        }
-
         /* set window positions*/
         int scrWidth = 1920;
         int scrHeight = 1080;
@@ -108,16 +85,6 @@ public class Application {
     public void execute() {
         CalculationThread.calculate(0);
         CalculationThread.joinMe();
-    }
-
-    /*********************************************************************************************/
-
-    public boolean getDrawRectangle() {
-        return this.drawRectangle;
-    }
-
-    public void toggleRectangle() {
-        this.drawRectangle = !this.drawRectangle;
     }
 
     public void repaint() {
@@ -143,13 +110,6 @@ public class Application {
         log.info("ZOOM IN");
         this.areaDomain.zoomIn();
         this.areaImage.zoomIn();
-        this.fractalEngine.updateDomain();
-    }
-
-    public void zoomOut() {
-        log.info("ZOOM OUT");
-        this.areaImage.zoomOut();
-        this.areaDomain.zoomOut();
         this.fractalEngine.updateDomain();
     }
 

@@ -16,44 +16,24 @@ public class ColoredValueIntegral {
 
 	private static final Logger log = LogManager.getLogger(ColoredValueIntegral.class);
 
-	private final HashMap<Integer, Pivot> valueIntegralWithColorLimitsR;
-	private final HashMap<Integer, Pivot> valueIntegralWithColorLimitsG;
-	private final HashMap<Integer, Pivot> valueIntegralWithColorLimitsB;
+	private final HashMap<Integer, Pivot> valueIntegralWithColorLimits;
 
-	private LinkedList<Integer> designValuesR;
-	private LinkedList<Integer> designValuesG;
-	private LinkedList<Integer> designValuesB;
+	private LinkedList<Integer> designValues;
 
-	private Integer currentlyColoredPivotValueR = null;
-	private Integer currentlyColoredPivotValueG = null;
-	private Integer currentlyColoredPivotValueB = null;
+	private Integer currentlyColoredPivotValue = null;
 
-	private int leftR;
-	private int leftG;
-	private int leftB;
-	private Integer fullColoringR;
-	private Integer fullColoringG;
-	private Integer fullColoringB;
+	private int left;
+	private Integer fullColoring;
 
-	public void setFullColoringR(int fullColoringR) {
-		this.fullColoringR = fullColoringR;
+	public void setFullColoring(int fullColoring) {
+		this.fullColoring = fullColoring;
 	}
 
-	public void setFullColoringG(int fullColoringG) {
-		this.fullColoringG = fullColoringG;
-	}
+	public void finalize(HashMap<Integer, Color> finalColors) {
+		ArrayList<Integer> values = new ArrayList<>(this.valueIntegralWithColorLimits.keySet());
 
-	public void setFullColoringB(int fullColoringB) {
-		this.fullColoringB = fullColoringB;
-	}
-
-	public void finalize(HashMap<Integer, Color> finalColorsR, HashMap<Integer, Color> finalColorsG, HashMap<Integer, Color> finalColorsB) {
-		ArrayList<Integer> valuesR = new ArrayList<>(this.valueIntegralWithColorLimitsR.keySet());
-		ArrayList<Integer> valuesG = new ArrayList<>(this.valueIntegralWithColorLimitsG.keySet());
-		ArrayList<Integer> valuesB = new ArrayList<>(this.valueIntegralWithColorLimitsB.keySet());
-
-		for (Integer val : valuesR) {
-			Pivot p = this.valueIntegralWithColorLimitsR.get(val);
+		for (Integer val : values) {
+			Pivot p = this.valueIntegralWithColorLimits.get(val);
 
 			double r = 0;
 			double g = 0;
@@ -62,49 +42,13 @@ public class ColoredValueIntegral {
 
 			Color colorUsed;
 			for (Coloring c : p.appliedColors) {
-				colorUsed = Main.colorPalette.getSpectrumValueR(c.colorIndex);
+				colorUsed = Main.colorPalette.getSpectrumValue(c.colorIndex);
 				r += c.amount * colorUsed.getRed();
 				g += c.amount * colorUsed.getGreen();
 				b += c.amount * colorUsed.getBlue();
 				cAmount += c.amount;
 			}
-			finalColorsR.put(val, new Color((int) (r / cAmount), (int) (g / cAmount), (int) (b / cAmount)));
-		}
-		for (Integer val : valuesG) {
-			Pivot p = this.valueIntegralWithColorLimitsG.get(val);
-
-			double r = 0;
-			double g = 0;
-			double b = 0;
-			double cAmount = 0;
-
-			Color colorUsed;
-			for (Coloring c : p.appliedColors) {
-				colorUsed = Main.colorPalette.getSpectrumValueG(c.colorIndex);
-				r += c.amount * colorUsed.getRed();
-				g += c.amount * colorUsed.getGreen();
-				b += c.amount * colorUsed.getBlue();
-				cAmount += c.amount;
-			}
-			finalColorsG.put(val, new Color((int) (r / cAmount), (int) (g / cAmount), (int) (b / cAmount)));
-		}
-		for (Integer val : valuesB) {
-			Pivot p = this.valueIntegralWithColorLimitsB.get(val);
-
-			double r = 0;
-			double g = 0;
-			double b = 0;
-			double cAmount = 0;
-
-			Color colorUsed;
-			for (Coloring c : p.appliedColors) {
-				colorUsed = Main.colorPalette.getSpectrumValueB(c.colorIndex);
-				r += c.amount * colorUsed.getRed();
-				g += c.amount * colorUsed.getGreen();
-				b += c.amount * colorUsed.getBlue();
-				cAmount += c.amount;
-			}
-			finalColorsB.put(val, new Color((int) (r / cAmount), (int) (g / cAmount), (int) (b / cAmount)));
+			finalColors.put(val, new Color((int) (r / cAmount), (int) (g / cAmount), (int) (b / cAmount)));
 		}
 	}
 
@@ -149,103 +93,53 @@ public class ColoredValueIntegral {
 	 */
 	public ColoredValueIntegral(Screen screen) {
 
-		this.valueIntegralWithColorLimitsR = new HashMap<>();
-		this.valueIntegralWithColorLimitsG = new HashMap<>();
-		this.valueIntegralWithColorLimitsB = new HashMap<>();
+		this.valueIntegralWithColorLimits = new HashMap<>();
 
 		// Initialize
 		for (int x = 0; x < Main.RESOLUTION_IMAGE_HIGHT; x++) {
 			for (int t = 0; t < Main.RESOLUTION_IMAGE_WIDTH; t++) {
-				int designValueR = screen.red(t, x);
-				if (valueIntegralWithColorLimitsR.containsKey(designValueR)) {
-					valueIntegralWithColorLimitsR.get(designValueR).increase();
+				int designValue = screen.colorFor(t, x);
+				if (valueIntegralWithColorLimits.containsKey(designValue)) {
+					valueIntegralWithColorLimits.get(designValue).increase();
 				} else {
-					valueIntegralWithColorLimitsR.put(designValueR, new Pivot(designValueR, 1));
-				}
-
-				int designValueG = screen.green(t, x);
-				if (valueIntegralWithColorLimitsG.containsKey(designValueG)) {
-					valueIntegralWithColorLimitsG.get(designValueG).increase();
-				} else {
-					valueIntegralWithColorLimitsG.put(designValueG, new Pivot(designValueG, 1));
-				}
-
-				int designValueB = screen.blue(t, x);
-				if (valueIntegralWithColorLimitsB.containsKey(designValueB)) {
-					valueIntegralWithColorLimitsB.get(designValueB).increase();
-				} else {
-					valueIntegralWithColorLimitsB.put(designValueB, new Pivot(designValueB, 1));
+					valueIntegralWithColorLimits.put(designValue, new Pivot(designValue, 1));
 				}
 			}
 		}
 
-		this.designValuesR = new LinkedList<>(this.valueIntegralWithColorLimitsR.keySet());
-		this.designValuesG = new LinkedList<>(this.valueIntegralWithColorLimitsG.keySet());
-		this.designValuesB = new LinkedList<>(this.valueIntegralWithColorLimitsB.keySet());
-		Collections.sort(designValuesR);
-		Collections.sort(designValuesG);
-		Collections.sort(designValuesB);
+		this.designValues = new LinkedList<>(this.valueIntegralWithColorLimits.keySet());
+		Collections.sort(designValues);
 
-		log.info("R - All values to paint: " + designValuesR.size());
-		log.info("R - smallest: " + designValuesR.get(0));
-		log.info("R - largest:  " + designValuesR.get(designValuesR.size() - 1));
-		log.info("R - All colors: " + Main.colorPalette.colorResolutionR());
-
-		log.info("G - All values to paint: " + designValuesG.size());
-		log.info("G - smallest: " + designValuesG.get(0));
-		log.info("G - largest:  " + designValuesG.get(designValuesG.size() - 1));
-		log.info("G - All colors: " + Main.colorPalette.colorResolutionG());
-
-		log.info("B - All values to paint: " + designValuesB.size());
-		log.info("B - smallest: " + designValuesB.get(0));
-		log.info("B - largest:  " + designValuesB.get(designValuesB.size() - 1));
-		log.info("B - All colors: " + Main.colorPalette.colorResolutionB());
+		log.info(" - All values to paint: " + designValues.size());
+		log.info(" - smallest: " + designValues.get(0));
+		log.info(" - largest:  " + designValues.get(designValues.size() - 1));
+		log.info(" - All colors: " + Main.colorPalette.colorResolution());
 	}
 
 
-	private Integer getNextValueToPaintR() {
-		if (designValuesR.isEmpty()) {
+	private Integer getNextValueToPaint() {
+		// TODO This should be perfect match
+		if (designValues.isEmpty()) {
 			return null;
 		}
-		final Integer ret = designValuesR.get(0);
-		designValuesR.remove(0);
+		final Integer ret = designValues.get(0);
+		designValues.remove(0);
 		return ret;
 	}
 
-	private Integer getNextValueToPaintG() {
-		if (designValuesG.isEmpty()) {
-			return null;
-		}
-		final Integer ret = designValuesG.get(0);
-		designValuesG.remove(0);
-		return ret;
-	}
+	int usedPaintTotal = 0;
 
-	private Integer getNextValueToPaintB() {
-		if (designValuesB.isEmpty()) {
-			return null;
-		}
-		final Integer ret = designValuesB.get(0);
-		designValuesB.remove(0);
-		return ret;
-	}
-
-	int usedPaintTotalR = 0;
-	int usedPaintTotalG = 0;
-	int usedPaintTotalB = 0;
-
-
-	public int applyPaintR(int colorIndex, int paintAmount) {
-		if (currentlyColoredPivotValueR == null) {
-			currentlyColoredPivotValueR = getNextValueToPaintR();
+	public int applyPaint(int colorIndex, int paintAmount) {
+		if (currentlyColoredPivotValue == null) {
+			currentlyColoredPivotValue = getNextValueToPaint();
 		}
 		// Image pixel amount couldn't be divided precisely into the number of colors without reminder left */
-		if (leftR > 0) {
-			paintAmount += leftR;
-			leftR = 0;
+		if (left > 0) {
+			paintAmount += left;
+			left = 0;
 		}
 
-		final Pivot pivot = this.valueIntegralWithColorLimitsR.get(currentlyColoredPivotValueR);
+		final Pivot pivot = this.valueIntegralWithColorLimits.get(currentlyColoredPivotValue);
 
 		if (pivot == null) {
 			verify();
@@ -261,12 +155,12 @@ public class ColoredValueIntegral {
 			int exactPaintAmount = pivot.needsToBePainted;
 			pivot.paintMe(colorIndex, exactPaintAmount);
 
-			usedPaintTotalR += exactPaintAmount;
+			usedPaintTotal += exactPaintAmount;
 
 			colorLeft = paintAmount - exactPaintAmount;
 
 			// switch to next pivot
-			currentlyColoredPivotValueR = getNextValueToPaintR();
+			currentlyColoredPivotValue = getNextValueToPaint();
 		} else if (pivot.needsToBePainted > paintAmount) {
 			/*
 				Pivot will be colored only partially.
@@ -276,7 +170,7 @@ public class ColoredValueIntegral {
 			int exactPaintAmount = paintAmount;
 			pivot.paintMe(colorIndex, exactPaintAmount);
 
-			usedPaintTotalR += exactPaintAmount;
+			usedPaintTotal += exactPaintAmount;
 
 			colorLeft = 0;
 		} else {
@@ -287,135 +181,11 @@ public class ColoredValueIntegral {
 			int exactPaintAmount = paintAmount;
 			pivot.paintMe(colorIndex, exactPaintAmount);
 
-			usedPaintTotalR += exactPaintAmount;
+			usedPaintTotal += exactPaintAmount;
 
 			colorLeft = 0;
 
-			currentlyColoredPivotValueR = getNextValueToPaintR();
-		}
-
-		return colorLeft;
-	}
-
-	public int applyPaintG(int colorIndex, int paintAmount) {
-		if (currentlyColoredPivotValueG == null) {
-			currentlyColoredPivotValueG = getNextValueToPaintG();
-		}
-		// Image pixel amount couldn't be divided precisely into the number of colors without reminder left */
-		if (leftG > 0) {
-			paintAmount += leftG;
-			leftG = 0;
-		}
-
-		final Pivot pivot = this.valueIntegralWithColorLimitsG.get(currentlyColoredPivotValueG);
-
-		if (pivot == null) {
-			verify();
-		}
-
-		final int colorLeft;
-		if (pivot.needsToBePainted < paintAmount) {
-			/*
-				Pivot coloring will be finished
-				This color will be left to color next pivot
-			 */
-
-			int exactPaintAmount = pivot.needsToBePainted;
-			pivot.paintMe(colorIndex, exactPaintAmount);
-
-			usedPaintTotalG += exactPaintAmount;
-
-			colorLeft = paintAmount - exactPaintAmount;
-
-			// switch to next pivot
-			currentlyColoredPivotValueG = getNextValueToPaintG();
-		} else if (pivot.needsToBePainted > paintAmount) {
-			/*
-				Pivot will be colored only partially.
-				No paint with this color will be left
-			*/
-
-			int exactPaintAmount = paintAmount;
-			pivot.paintMe(colorIndex, exactPaintAmount);
-
-			usedPaintTotalG += exactPaintAmount;
-
-			colorLeft = 0;
-		} else {
-			/*
-				Pivot will be colored exactly.
-				No paint with this color will be left
-			*/
-			int exactPaintAmount = paintAmount;
-			pivot.paintMe(colorIndex, exactPaintAmount);
-
-			usedPaintTotalG += exactPaintAmount;
-
-			colorLeft = 0;
-
-			currentlyColoredPivotValueG = getNextValueToPaintG();
-		}
-
-		return colorLeft;
-	}
-
-	public int applyPaintB(int colorIndex, int paintAmount) {
-		if (currentlyColoredPivotValueB == null) {
-			currentlyColoredPivotValueB = getNextValueToPaintB();
-		}
-		// Image pixel amount couldn't be divided precisely into the number of colors without reminder left */
-		if (leftB > 0) {
-			paintAmount += leftB;
-			leftB = 0;
-		}
-
-		final Pivot pivot = this.valueIntegralWithColorLimitsB.get(currentlyColoredPivotValueB);
-
-		if (pivot == null) {
-			verify();
-		}
-
-		final int colorLeft;
-		if (pivot.needsToBePainted < paintAmount) {
-			/*
-				Pivot coloring will be finished
-				This color will be left to color next pivot
-			 */
-
-			int exactPaintAmount = pivot.needsToBePainted;
-			pivot.paintMe(colorIndex, exactPaintAmount);
-
-			usedPaintTotalB += exactPaintAmount;
-
-			colorLeft = paintAmount - exactPaintAmount;
-
-			// switch to next pivot
-			currentlyColoredPivotValueB = getNextValueToPaintB();
-		} else if (pivot.needsToBePainted > paintAmount) {
-			/*
-				Pivot will be colored only partially.
-				No paint with this color will be left
-			*/
-
-			int exactPaintAmount = paintAmount;
-			pivot.paintMe(colorIndex, exactPaintAmount);
-
-			usedPaintTotalB += exactPaintAmount;
-
-			colorLeft = 0;
-		} else {
-			/*
-				Pivot will be colored exactly.
-				No paint with this color will be left
-			*/
-			int exactPaintAmount = paintAmount;
-			pivot.paintMe(colorIndex, exactPaintAmount);
-
-			usedPaintTotalB += exactPaintAmount;
-
-			colorLeft = 0;
-
-			currentlyColoredPivotValueB = getNextValueToPaintB();
+			currentlyColoredPivotValue = getNextValueToPaint();
 		}
 
 		return colorLeft;
@@ -424,82 +194,32 @@ public class ColoredValueIntegral {
 	private void verify() {
 		/* ========================================== */
 
-		ArrayList<Integer> valuesR = new ArrayList(this.valueIntegralWithColorLimitsR.keySet());
-		ArrayList<Integer> valuesG = new ArrayList(this.valueIntegralWithColorLimitsG.keySet());
-		ArrayList<Integer> valuesB = new ArrayList(this.valueIntegralWithColorLimitsB.keySet());
-		Collections.sort(valuesR);
-		Collections.sort(valuesG);
-		Collections.sort(valuesB);
+		ArrayList<Integer> values = new ArrayList(this.valueIntegralWithColorLimits.keySet());
+		Collections.sort(values);
 
-		HashMap<Integer, Integer> paintUsedR = new HashMap<>();
-		HashMap<Integer, Integer> paintUsedG = new HashMap<>();
-		HashMap<Integer, Integer> paintUsedB = new HashMap<>();
+		HashMap<Integer, Integer> paintUsed = new HashMap<>();
 
-		for (Integer val : valuesR) {
-			Pivot p = this.valueIntegralWithColorLimitsR.get(val);
+		for (Integer val : values) {
+			Pivot p = this.valueIntegralWithColorLimits.get(val);
 			int paintedBy = 0;
 			for (Coloring c : p.appliedColors) {
 				paintedBy += c.amount;
-				if (paintUsedR.containsKey(c.colorIndex)) {
-					int amt = paintUsedR.get(c.colorIndex);
-					paintUsedR.put(c.colorIndex, c.amount + amt);
+				if (paintUsed.containsKey(c.colorIndex)) {
+					int amt = paintUsed.get(c.colorIndex);
+					paintUsed.put(c.colorIndex, c.amount + amt);
 				} else {
-					paintUsedR.put(c.colorIndex, c.amount);
+					paintUsed.put(c.colorIndex, c.amount);
 				}
 			}
 			log.info(p.designValue + "(" + p.valuePixelCount + " = " + paintedBy + "), 0=" + p.needsToBePainted + ", " + p.appliedColors.size() + "{" + usedColors(p.appliedColors) + "}" + usedPaint(p.appliedColors));
 			Assert.assertEquals(p.valuePixelCount, paintedBy);
 			Assert.assertEquals(0, p.needsToBePainted);
 		}
-		for (int ind = 0; ind < paintUsedR.size(); ind++) {
-			log.info("colorR: " + ind + ":" + paintUsedR.get(ind));
-			Assert.assertEquals(paintUsedR.get(ind), fullColoringR);
+		for (int ind = 0; ind < paintUsed.size(); ind++) {
+			log.info("colorR: " + ind + ":" + paintUsed.get(ind));
+			Assert.assertEquals(paintUsed.get(ind), fullColoring);
 		}
-		Assert.assertEquals(paintUsedR.size(), Main.colorPalette.colorResolutionR());
-
-		for (Integer val : valuesG) {
-			Pivot p = this.valueIntegralWithColorLimitsG.get(val);
-			int paintedBy = 0;
-			for (Coloring c : p.appliedColors) {
-				paintedBy += c.amount;
-				if (paintUsedG.containsKey(c.colorIndex)) {
-					int amt = paintUsedG.get(c.colorIndex);
-					paintUsedG.put(c.colorIndex, c.amount + amt);
-				} else {
-					paintUsedG.put(c.colorIndex, c.amount);
-				}
-			}
-			log.info(p.designValue + "(" + p.valuePixelCount + " = " + paintedBy + "), 0=" + p.needsToBePainted + ", " + p.appliedColors.size() + "{" + usedColors(p.appliedColors) + "}" + usedPaint(p.appliedColors));
-			Assert.assertEquals(p.valuePixelCount, paintedBy);
-			Assert.assertEquals(0, p.needsToBePainted);
-		}
-		for (int ind = 0; ind < paintUsedG.size(); ind++) {
-			log.info("colorG: " + ind + ":" + paintUsedG.get(ind));
-			Assert.assertEquals(paintUsedG.get(ind), fullColoringG);
-		}
-		Assert.assertEquals(paintUsedG.size(), Main.colorPalette.colorResolutionG());
-
-		for (Integer val : valuesB) {
-			Pivot p = this.valueIntegralWithColorLimitsB.get(val);
-			int paintedBy = 0;
-			for (Coloring c : p.appliedColors) {
-				paintedBy += c.amount;
-				if (paintUsedB.containsKey(c.colorIndex)) {
-					int amt = paintUsedB.get(c.colorIndex);
-					paintUsedB.put(c.colorIndex, c.amount + amt);
-				} else {
-					paintUsedB.put(c.colorIndex, c.amount);
-				}
-			}
-			log.info(p.designValue + "(" + p.valuePixelCount + " = " + paintedBy + "), 0=" + p.needsToBePainted + ", " + p.appliedColors.size() + "{" + usedColors(p.appliedColors) + "}" + usedPaint(p.appliedColors));
-			Assert.assertEquals(p.valuePixelCount, paintedBy);
-			Assert.assertEquals(0, p.needsToBePainted);
-		}
-		for (int ind = 0; ind < paintUsedB.size(); ind++) {
-			log.info("color: " + ind + ":" + paintUsedB.get(ind));
-			Assert.assertEquals(paintUsedB.get(ind), fullColoringB);
-		}
-		Assert.assertEquals(paintUsedB.size(), Main.colorPalette.colorResolutionB());
+		Assert.assertEquals(paintUsed.size(), Main.colorPalette.colorResolution());
 	}
 
 	private String usedColors(ArrayList<Coloring> appliedColors) {
@@ -524,15 +244,7 @@ public class ColoredValueIntegral {
 		return ret + ")";
 	}
 
-	public void setLeftR(int leftR) {
-		this.leftR = leftR;
-	}
-
-	public void setLeftG(int leftG) {
-		this.leftG = leftG;
-	}
-
-	public void setLeftB(int leftB) {
-		this.leftB = leftB;
+	public void setColorLeft(int left) {
+		this.left = left;
 	}
 }
