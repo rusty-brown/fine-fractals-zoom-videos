@@ -109,10 +109,6 @@ public class HH {
 		return (calculation.re * calculation.re) + (calculation.im * calculation.im);
 	}
 
-	public String quadranceGPU() {
-		return "(reT * reT) + (imX * imX) + (imY * imY) + (imZ * imZ)";
-	}
-
 	public void innerProduct(double reT, double imX) {
 		calculation.re = calculation.re * reT;
 		calculation.im = calculation.im * imX;

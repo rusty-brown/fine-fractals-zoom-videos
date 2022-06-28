@@ -20,223 +20,215 @@ import java.util.concurrent.Executors;
 
 public class Mandelbrot {
 
-	private static final Logger log = LogManager.getLogger(Mandelbrot.class);
+    private static final Logger log = LogManager.getLogger(Mandelbrot.class);
+    private final int[] RING_SEQUENCE_TT = new int[24];
+    private final int[] RING_SEQUENCE_XX = new int[24];
+    public MandelbrotDomain DOMAIN;
+    protected int maxScrValueNow = 0;
+    protected int maxScrValueTotal = 0;
+    /* Also initialize to zero. New min values are update when smaller min value drifts out of the screen. */
+    protected int minScrValue = 0;
+    private final AreaDomain areaDomain;
+    private final AreaImage areaImage;
+    private final Design design;
 
-	private AreaDomain areaDomain;
+    // private final GPU GPU = new GPU();
 
-	private AreaImage areaImage;
+    /*
+     * MANDELBROT FRACTAL IS THE DOMAIN
+     */
+    public Mandelbrot(Design design, AreaDomain areaDomain, AreaImage areaImage) {
+        this.design = design;
+        this.areaDomain = areaDomain;
+        this.areaImage = areaImage;
+        /* Create new points for calculation */
 
-	public MandelbrotDomain DOMAIN;
+        DOMAIN = new MandelbrotDomain(areaDomain, areaImage);
+        DOMAIN.domainScreenCreateInitialization();
 
-	private Design design;
+        FractalMachine.initRingSequence(RING_SEQUENCE_TT, RING_SEQUENCE_XX);
+    }
 
-	private final int[] RING_SEQUENCE_TT = new int[24];
-	private final int[] RING_SEQUENCE_XX = new int[24];
+    public void resetAsNew() {
+        DOMAIN.elementsScreen = new Element[Application.RESOLUTION_DOMAIN_WIDTH][Application.RESOLUTION_DOMAIN_HEIGHT];
+        DOMAIN.domainScreenCreateInitialization();
 
-	protected int maxScrValueNow = 0;
-	protected int maxScrValueTotal = 0;
-	/* Also initialize to zero. New min values are update when smaller min value drifts out of the screen. */
-	protected int minScrValue = 0;
+        DOMAIN.elementsToRemember.clear();
+        DOMAIN.domainNotFinished = true;
 
-	// private final GPU GPU = new GPU();
+        maxScrValueNow = 0;
+        maxScrValueTotal = 0;
+        minScrValue = 0;
 
-	/*
-	 * MANDELBROT FRACTAL IS THE DOMAIN
-	 */
-	public Mandelbrot(Design design, AreaDomain areaDomain, AreaImage areaImage) {
-		this.design = design;
-		this.areaDomain = areaDomain;
-		this.areaImage = areaImage;
-		/* Create new points for calculation */
+        DOMAIN.partStartT = 0;
+        DOMAIN.partRowT = 0;
+        // DOMAIN.wrapDomain = false;
 
-		DOMAIN = new MandelbrotDomain(areaDomain, areaImage);
-		DOMAIN.domainScreenCreateInitialization();
+        DOMAIN.conflictsResolved = 0;
+        DOMAIN.bestMatch = null;
+        DOMAIN.bestMatchAtT = 0;
+        DOMAIN.bestMatchAtX = 0;
+        DOMAIN.dist = 0;
 
-		FractalMachine.initRingSequence(RING_SEQUENCE_TT, RING_SEQUENCE_XX);
-	}
+        MandelbrotDomain.maskDone = true;
+    }
 
-	public void resetAsNew() {
-		DOMAIN.elementsScreen = new Element[Application.RESOLUTION_DOMAIN_WIDTH][Application.RESOLUTION_DOMAIN_HEIGHT];
-		DOMAIN.domainScreenCreateInitialization();
+    /*
+     * Calculate Domain Values
+     */
+    public void calculate() {
+        log.info("CALCULATE");
 
-		DOMAIN.elementsToRemember.clear();
-		DOMAIN.domainNotFinished = true;
+        ArrayList<Element> domainPart;
 
-		maxScrValueNow = 0;
-		maxScrValueTotal = 0;
-		minScrValue = 0;
+        int index = 0;
+        while (DOMAIN.domainNotFinished) {
+            domainPart = DOMAIN.fetchDomainPart();
 
-		DOMAIN.partStartT = 0;
-		DOMAIN.partRowT = 0;
-		// DOMAIN.wrapDomain = false;
+            log.info("CALCULATE: " + domainPart.size() + ", domain part remains: " + DOMAIN.domainNotFinished);
 
-		DOMAIN.conflictsResolved = 0;
-		DOMAIN.bestMatch = null;
-		DOMAIN.bestMatchAtT = 0;
-		DOMAIN.bestMatchAtX = 0;
-		DOMAIN.dist = 0;
+            final ExecutorService executor = Executors.newFixedThreadPool(Main.COREs);
 
-		DOMAIN.maskDone = true;
-	}
+            for (Element el : domainPart) {
+                Runnable worker = new PathThread(index++, el, areaImage, design);
+                executor.execute(worker);
+            }
 
-	/*
-	 * Calculate Domain Values
-	 */
-	public void calculate() {
-		log.info("CALCULATE");
+            executor.shutdown();
+            while (!executor.isTerminated()) {
+                try {
+                    // TODO FIX ME REALLY
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            log.info("Finished all threads");
+        }
 
-		ArrayList<Element> domainPart;
+        log.info("CALCULATE while END");
 
-		int index = 0;
-		while (DOMAIN.domainNotFinished) {
-			log.info("******************************** 1");
-			domainPart = DOMAIN.fetchDomainPart();
+        design.calculationFinished();
 
-			log.info("CALCULATE: " + domainPart.size() + ", domain part remains: " + DOMAIN.domainNotFinished);
-
-			final ExecutorService executor = Executors.newFixedThreadPool(Main.COREs);
-
-			for (Element el : domainPart) {
-				Runnable worker = new PathThread(index++, el, areaImage, design);
-				executor.execute(worker);
-			}
-
-			executor.shutdown();
-			while (!executor.isTerminated()) {
-				try {
-					// TODO
-					Thread.currentThread().sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			log.info("Finished all threads");
-			log.info("******************************** 2");
-		}
-
-		log.info("CALCULATE while END");
-
-		design.calculationFinished();
-
-		FractalEngine.calculationProgress = "";
+        FractalEngine.calculationProgress = "";
 
 
-		DOMAIN.domainNotFinished = true;
+        DOMAIN.domainNotFinished = true;
 
-		Fractal.update(areaImage, 0);
+        Fractal.update(areaImage, 0);
 
-		log.info("-------------CALCULATE END---------------");
-	}
+        log.info("-------------CALCULATE END---------------");
+    }
 
-	public void resetOptimizationSoft() {
-		Element element;
-		for (int t = 0; t < Application.RESOLUTION_DOMAIN_WIDTH; t++) {
-			for (int x = 0; x < Application.RESOLUTION_DOMAIN_HEIGHT; x++) {
-				element = DOMAIN.elementsScreen[t][x];
-				if (element.isHibernatedBlack() || element.isHibernatedBlack_Neighbour()) {
-					element.resetForOptimization();
-				}
-			}
-		}
-	}
+    public void resetOptimizationSoft() {
+        Element element;
+        for (int t = 0; t < Application.RESOLUTION_DOMAIN_WIDTH; t++) {
+            for (int x = 0; x < Application.RESOLUTION_DOMAIN_HEIGHT; x++) {
+                element = DOMAIN.elementsScreen[t][x];
+                if (element.isHibernatedBlack() || element.isHibernatedBlack_Neighbour()) {
+                    element.resetForOptimization();
+                }
+            }
+        }
+    }
 
-	public void resetOptimizationHard() {
-		// Application.colorPaletteMandelbrot.reset();
-		Element element;
-		for (int t = 0; t < Application.RESOLUTION_DOMAIN_WIDTH; t++) {
-			for (int x = 0; x < Application.RESOLUTION_DOMAIN_HEIGHT; x++) {
-				element = DOMAIN.elementsScreen[t][x];
-				if (!element.isActiveMoved()
-						&& !element.isHibernatedFinished()
-						&& !element.isHibernatedFinishedInside()) {
-					element.resetAsNew();
-				}
-			}
-		}
-	}
+    public void resetOptimizationHard() {
+        // Application.colorPaletteMandelbrot.reset();
+        Element element;
+        for (int t = 0; t < Application.RESOLUTION_DOMAIN_WIDTH; t++) {
+            for (int x = 0; x < Application.RESOLUTION_DOMAIN_HEIGHT; x++) {
+                element = DOMAIN.elementsScreen[t][x];
+                if (!element.isActiveMoved()
+                        && !element.isHibernatedFinished()
+                        && !element.isHibernatedFinishedInside()) {
+                    element.resetAsNew();
+                }
+            }
+        }
+    }
 
-	/* Used for OneTarget */
-	public Element getElementAt(int t, int x) {
-		try {
-			return DOMAIN.elementsScreen[t][x];
-		} catch (Exception e) {
-			log.fatal("getElementAt()", e);
-			return null;
-		}
-	}
+    /* Used for OneTarget */
+    public Element getElementAt(int t, int x) {
+        try {
+            return DOMAIN.elementsScreen[t][x];
+        } catch (Exception e) {
+            log.fatal("getElementAt()", e);
+            return null;
+        }
+    }
 
-	public boolean fixOptimizationBreak() {
+    public boolean fixOptimizationBreak() {
 
-		log.info(" === fixOptimizationBreak ===");
+        log.info(" === fixOptimizationBreak ===");
 
-		/* Last tested pixel is Hibernated as Converged (Calculation finished) */
-		Bool lastIsWhite = new Bool();
-		/* Last tested pixel is Hibernated as Skipped for calculation (Deep black) */
-		Bool lastIsBlack = new Bool();
-		ArrayList<Integer> failedNumbersRe = new ArrayList<>();
-		ArrayList<Integer> failedNumbersIm = new ArrayList<>();
-		/* Test lines left and right */
-		for (int yy = 0; yy < Application.RESOLUTION_DOMAIN_HEIGHT; yy++) {
-			for (int xx = 0; xx < Application.RESOLUTION_DOMAIN_WIDTH; xx++) {
-				FractalMachine.testOptimizationBreakElement(xx, yy, DOMAIN.elementsScreen[xx][yy], failedNumbersRe, failedNumbersIm, lastIsWhite, lastIsBlack);
-			}
-			lastIsBlack.setFalse();
-			lastIsWhite.setFalse();
-		}
-		/* Test lines up and down */
-		for (int xx = 0; xx < Application.RESOLUTION_DOMAIN_WIDTH; xx++) {
-			for (int yy = 0; yy < Application.RESOLUTION_DOMAIN_HEIGHT; yy++) {
-				FractalMachine.testOptimizationBreakElement(xx, yy, DOMAIN.elementsScreen[xx][yy], failedNumbersRe, failedNumbersIm, lastIsWhite, lastIsBlack);
-			}
-			lastIsBlack.setFalse();
-			lastIsWhite.setFalse();
-		}
-		/* Fix failed positions */
-		/* In worst case failed positions contains same position twice */
-		int size = failedNumbersRe.size();
-		for (int i = 0; i < size; i++) {
-			// Time.now("FIXING: " + position.x + ". " + position.y);
-			final int r = Application.TEST_OPTIMIZATION_FIX_SIZE;
-			for (int x = -r; x < r; x++) {
-				for (int y = -r; y < r; y++) {
-					if ((x * x) + (y * y) < (r * r)) {
-						// These thing should be much optimized to not do same for points it was already done
-						FractalMachine.setActiveMovedIfBlack(failedNumbersRe.get(i) + x, failedNumbersIm.get(i) + y, DOMAIN.elementsScreen);
-					}
-				}
-			}
-		}
-		return !failedNumbersRe.isEmpty();
-	}
+        /* Last tested pixel is Hibernated as Converged (Calculation finished) */
+        Bool lastIsWhite = new Bool();
+        /* Last tested pixel is Hibernated as Skipped for calculation (Deep black) */
+        Bool lastIsBlack = new Bool();
+        ArrayList<Integer> failedNumbersRe = new ArrayList<>();
+        ArrayList<Integer> failedNumbersIm = new ArrayList<>();
+        /* Test lines left and right */
+        for (int yy = 0; yy < Application.RESOLUTION_DOMAIN_HEIGHT; yy++) {
+            for (int xx = 0; xx < Application.RESOLUTION_DOMAIN_WIDTH; xx++) {
+                FractalMachine.testOptimizationBreakElement(xx, yy, DOMAIN.elementsScreen[xx][yy], failedNumbersRe, failedNumbersIm, lastIsWhite, lastIsBlack);
+            }
+            lastIsBlack.setFalse();
+            lastIsWhite.setFalse();
+        }
+        /* Test lines up and down */
+        for (int xx = 0; xx < Application.RESOLUTION_DOMAIN_WIDTH; xx++) {
+            for (int yy = 0; yy < Application.RESOLUTION_DOMAIN_HEIGHT; yy++) {
+                FractalMachine.testOptimizationBreakElement(xx, yy, DOMAIN.elementsScreen[xx][yy], failedNumbersRe, failedNumbersIm, lastIsWhite, lastIsBlack);
+            }
+            lastIsBlack.setFalse();
+            lastIsWhite.setFalse();
+        }
+        /* Fix failed positions */
+        /* In worst case failed positions contains same position twice */
+        int size = failedNumbersRe.size();
+        for (int i = 0; i < size; i++) {
+            // Time.now("FIXING: " + position.x + ". " + position.y);
+            final int r = Application.TEST_OPTIMIZATION_FIX_SIZE;
+            for (int x = -r; x < r; x++) {
+                for (int y = -r; y < r; y++) {
+                    if ((x * x) + (y * y) < (r * r)) {
+                        // These thing should be much optimized to not do same for points it was already done
+                        FractalMachine.setActiveMovedIfBlack(failedNumbersRe.get(i) + x, failedNumbersIm.get(i) + y, DOMAIN.elementsScreen);
+                    }
+                }
+            }
+        }
+        return !failedNumbersRe.isEmpty();
+    }
 
-	public void fixOptimizationOnClick(int xx, int yy) {
-		final int r = 10;
-		for (int x = -r; x < r; x++) {
-			for (int y = -r; y < r; y++) {
-				if ((x * x) + (y * y) < (r * r)) {
-					FractalMachine.setActiveMovedIfBlack(xx + x, yy + y, DOMAIN.elementsScreen);
-				}
-			}
-		}
-	}
+    public void fixOptimizationOnClick(int xx, int yy) {
+        final int r = 10;
+        for (int x = -r; x < r; x++) {
+            for (int y = -r; y < r; y++) {
+                if ((x * x) + (y * y) < (r * r)) {
+                    FractalMachine.setActiveMovedIfBlack(xx + x, yy + y, DOMAIN.elementsScreen);
+                }
+            }
+        }
+    }
 
-	public void fixDomainOptimizationOnClick(int xx, int yy) {
-		final int r = Main.neighbours;
-		for (int x = -r; x < r; x++) {
-			for (int y = -r; y < r; y++) {
-				if ((x * x) + (y * y) < (r * r)) {
-					FractalMachine.setActiveToAddToCalculation(xx + x, yy + y, DOMAIN.elementsScreen);
-				}
-			}
-		}
-	}
+    public void fixDomainOptimizationOnClick(int xx, int yy) {
+        final int r = Main.neighbours;
+        for (int x = -r; x < r; x++) {
+            for (int y = -r; y < r; y++) {
+                if ((x * x) + (y * y) < (r * r)) {
+                    FractalMachine.setActiveToAddToCalculation(xx + x, yy + y, DOMAIN.elementsScreen);
+                }
+            }
+        }
+    }
 
-	public Element elementAt(int t, int x) {
-		return DOMAIN.elementsScreen[t][x];
-	}
+    public Element elementAt(int t, int x) {
+        return DOMAIN.elementsScreen[t][x];
+    }
 
-	public int getMinScrValue() {
-		return this.minScrValue;
-	}
+    public int getMinScrValue() {
+        return this.minScrValue;
+    }
 }
 	

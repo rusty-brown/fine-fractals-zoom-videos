@@ -10,7 +10,6 @@ import fine.fractals.ui.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Application {
@@ -40,8 +39,8 @@ public class Application {
     public AreaDomain areaDomain;
     public AreaImage areaImage;
 
-    private FractalEngine fractalEngine;
-    private FractalWindow fractalWindow;
+    private final FractalEngine fractalEngine;
+    private final FractalWindow fractalWindow;
 
     public Application() {
         ME = this;
@@ -83,11 +82,12 @@ public class Application {
 
 
     public void execute() {
-        CalculationThread.calculate(0);
+        CalculationThread.calculate();
         CalculationThread.joinMe();
     }
 
     public void repaint() {
+        log.info("repaint");
         this.fractalWindow.frame.repaint();
         this.applicationWindow.frame.repaint();
     }

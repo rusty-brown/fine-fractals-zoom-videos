@@ -16,18 +16,10 @@ public class CalculationThread extends Thread {
         ME = this;
     }
 
-    synchronized public static void calculate(int counter) {
-        calculate(counter, null);
-    }
-
-    synchronized public static void calculate(int counter, String message) {
+    synchronized public static void calculate() {
         CalculationThread thread = new CalculationThread();
         thread.start();
         Application.ME.repaint();
-
-        if (message != null) {
-            CalculationThread.message = message;
-        }
     }
 
     public static void joinMe() {

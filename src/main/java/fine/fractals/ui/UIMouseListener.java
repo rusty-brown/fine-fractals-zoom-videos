@@ -26,7 +26,7 @@ public class UIMouseListener implements MouseListener {
                     Application.ME.areaDomain.moveToCoordinates(Application.ME.getTarget());
                     Application.ME.areaImage.moveToCoordinates(Application.ME.getTarget());
                     Application.ME.zoomIn();
-                    CalculationThread.calculate(0);
+                    CalculationThread.calculate();
                 }
             } else {
                 log.info("Left click, FIX, then use Enter");
