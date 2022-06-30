@@ -1,60 +1,47 @@
 package fine.fractals.engine;
 
-import fine.fractals.Application;
-import fine.fractals.data.objects.Data;
-import fine.fractals.ui.UIRefreshThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.context.FractalEngineImpl.FractalEngine;
+import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+
 public class CalculationThread extends Thread {
 
-    public static CalculationThread ME;
     private static final Logger log = LogManager.getLogger(CalculationThread.class);
-    private static String message;
 
     private CalculationThread() {
-        ME = this;
+        log.info("init");
     }
 
-    synchronized public static void calculate() {
+    public static void calculate() {
+        log.info("calculate");
         CalculationThread thread = new CalculationThread();
         thread.start();
-        Application.ME.repaint();
-    }
-
-    public static void joinMe() {
-        try {
-            ME.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Application.repaint();
     }
 
     @Override
     public void run() {
+        log.info("run");
         do {
-            Data.archive();
-            log.info("Iteration: " + Application.iteration++);
-
-            UIRefreshThread.runRefreshThread();
+            log.info("Iteration: " + iteration++);
 
             /* Calculate Fractal values */
-            FractalEngine.ME.calculateFromThread();
+            FractalEngine.calculateFromThread();
 
-            if (Application.REPEAT) {
-                Application.ME.zoomIn();
-                Application.ME.repaint();
+            if (REPEAT) {
+                Application.zoomIn();
+                Application.repaint();
             }
-            if (Application.iteration == 1) {
+            if (iteration == 1) {
                 /* Move to coordinates after initialization of FractalEngine, Mandelbrot initial domain */
-                Application.ME.areaDomain.moveToInitialCoordinates();
-                Application.ME.areaImage.moveToInitialCoordinates();
+                AreaMandelbrot.moveToInitialCoordinates();
+                AreaFinebrot.moveToInitialCoordinates();
             }
 
-        } while (Application.REPEAT);
-
-        if (message != null) {
-            log.info(message);
-        }
+        } while (REPEAT);
     }
 }

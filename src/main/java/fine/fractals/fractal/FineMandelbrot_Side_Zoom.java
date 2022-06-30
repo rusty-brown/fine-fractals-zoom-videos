@@ -1,11 +1,8 @@
 package fine.fractals.fractal;
 
-import fine.fractals.math.Mathematician;
-import fine.fractals.math.common.HH;
+import fine.fractals.data.Mem;
 
 public class FineMandelbrot_Side_Zoom extends Fractal {
-
-    private Mathematician mathematician = new Mathematician();
 
     public FineMandelbrot_Side_Zoom() {
         super("FineMandelbrot_Side_Zoom");
@@ -17,15 +14,13 @@ public class FineMandelbrot_Side_Zoom extends Fractal {
         INIT_DOMAIN_TARGET_im = -0.8914368889277283;
 
         INIT_AREA_IMAGE_SIZE = INIT_AREA_DOMAIN_SIZE;
-        INIT_IMAGE_TARGET_reT = INIT_DOMAIN_TARGET_re;
-        INIT_IMAGE_TARGET_imX = INIT_DOMAIN_TARGET_im;
-
-        Mathematician.initialize();
+        INIT_IMAGE_TARGET_re = INIT_DOMAIN_TARGET_re;
+        INIT_IMAGE_TARGET_im = INIT_DOMAIN_TARGET_im;
     }
 
     @Override
-    public void math(HH hh, double originRe, double originIm) {
-        hh.square();
-        hh.plus(originRe, originIm);
+    public void math(Mem mem, double originRe, double originIm) {
+        mem.square();
+        mem.plus(originRe, originIm);
     }
 }

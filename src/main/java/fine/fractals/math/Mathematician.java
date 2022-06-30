@@ -15,6 +15,7 @@ public class Mathematician {
 
 	private static boolean initiated = false;
 
+	// TODO
 	public Mathematician() {
 	}
 
@@ -26,6 +27,7 @@ public class Mathematician {
 			throw new RuntimeException("Mathematician already initialized!");
 		}
 
+		// TODO
 		synchronized (Mathematician.class) {
 			if (!initiated) {
 				initPrimes();

@@ -1,35 +1,40 @@
 package fine.fractals.color;
 
-import fine.fractals.color.things.ColorTest;
-import fine.fractals.color.things.Palette;
+import fine.fractals.color.utils.ColorTest;
+import fine.fractals.color.utils.ColorUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 
-public class PalettePlasma extends Palette {
+import static fine.fractals.context.PaletteImpl.Palette;
 
-    public PalettePlasma() {
-        super("PalettePlasma");
+public abstract class PalettePlasma {
 
-        final ArrayList<Color> colors = new ArrayList<>();
-        colors.add(new Color(239, 250, 26));
-        colors.add(new Color(247, 211, 30));
-        colors.add(new Color(251, 160, 38));
-        colors.add(new Color(231, 101, 65));
-        colors.add(new Color(213, 72, 81));
-        colors.add(new Color(177, 34, 109));
-        colors.add(new Color(153, 8, 128));
-        colors.add(new Color(131, 1, 142));
-        colors.add(new Color(90, 0, 150));
-        colors.add(new Color(62, 0, 145));
-        colors.add(new Color(37, 1, 133));
-        colors.add(new Color(7, 1, 116));
+    private static final Logger log = LogManager.getLogger(PalettePlasma.class);
 
-        super.spectrumColorsToLinear(colors);
+    public static void init() {
+        log.info("init");
+        Palette.name("Plasma");
+        ColorUtils.linearSpectrumToPalet(List.of(
+                new Color(239, 250, 26),
+                new Color(247, 211, 30),
+                new Color(251, 160, 38),
+                new Color(231, 101, 65),
+                new Color(213, 72, 81),
+                new Color(177, 34, 109),
+                new Color(153, 8, 128),
+                new Color(131, 1, 142),
+                new Color(90, 0, 150),
+                new Color(62, 0, 145),
+                new Color(37, 1, 133),
+                new Color(7, 1, 116)
+        ));
     }
 
     public static void main(String[] args) {
-        ColorTest.execute(new PalettePlasma());
+        PalettePlasma.init();
+        ColorTest.execute();
     }
 }

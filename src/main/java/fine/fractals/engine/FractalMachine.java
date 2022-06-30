@@ -1,36 +1,39 @@
 package fine.fractals.engine;
 
-import fine.fractals.Application;
 import fine.fractals.Main;
-import fine.fractals.data.objects.Bool;
-import fine.fractals.fractal.Fractal;
-import fine.fractals.math.common.Element;
+import fine.fractals.data.Element;
+import fine.fractals.data.misc.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.FileImageOutputStream;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static fine.fractals.Main.*;
+import static fine.fractals.context.ApplicationImpl.APP_NAME;
+import static fine.fractals.context.ApplicationImpl.iteration;
+import static fine.fractals.fractal.Fractal.NAME;
+import static fine.fractals.images.FractalImage.FinebrotImage;
+import static javax.imageio.ImageWriteParam.MODE_EXPLICIT;
 
 public abstract class FractalMachine {
 
 	private static final Logger log = LogManager.getLogger(FractalMachine.class);
 
-	public static void saveImage(BufferedImage image) {
+	public static void saveImage() {
 		try {
 			JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
-			jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+			jpegParams.setCompressionMode(MODE_EXPLICIT);
 			jpegParams.setCompressionQuality(0.98f);
 
-			String fileName = Main.FILE_PATH
-					+ Fractal.NAME + Application.APP_NAME
+			String fileName = FILE_PATH
+					+ NAME + APP_NAME
 					+ iteration()
 					+ ".jpg";
 
@@ -40,7 +43,7 @@ public abstract class FractalMachine {
 
 			try (FileImageOutputStream fis = new FileImageOutputStream(outputFile)) {
 				writer.setOutput(fis);
-				writer.write(null, new IIOImage(image, null, null), jpegParams);
+				writer.write(null, new IIOImage(FinebrotImage, null, null), jpegParams);
 				fis.flush();
 			}
 		} catch (IOException e) {
@@ -52,7 +55,7 @@ public abstract class FractalMachine {
 	}
 
 	private static String iteration() {
-		return "_" + String.format("%06d", Application.iteration);
+		return "_" + String.format("%06d", iteration);
 	}
 
 	public static boolean isVeryDeepBlack(int tt, int xx, Element[][] elements) {
@@ -100,8 +103,8 @@ public abstract class FractalMachine {
 	}
 
 	public static boolean checkDomain(int t, int x) {
-		return t >= 0 && t < Application.RESOLUTION_DOMAIN_WIDTH
-				&& x >= 0 && x < Application.RESOLUTION_DOMAIN_HEIGHT;
+		return t >= 0 && t < RESOLUTION_WIDTH
+				&& x >= 0 && x < RESOLUTION_HEIGHT;
 	}
 
 	private static Integer valueAt(int t, int x, Element[][] mandelbrot) {
