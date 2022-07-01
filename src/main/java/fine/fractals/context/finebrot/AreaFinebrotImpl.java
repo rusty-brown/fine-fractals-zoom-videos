@@ -20,11 +20,11 @@ public class AreaFinebrotImpl {
 	public double centerIm;
 
 	/* size of image area */
-	public double sizeReT;
-	public double sizeImX;
+	public double sizeRe;
+	public double sizeIm;
 
-	private final double[] numbersReT;
-	private final double[] numbersImX;
+	private final double[] numbersRe;
+	private final double[] numbersIm;
 
 	private double borderLowRe;
 	private double borderLowIm;
@@ -35,8 +35,8 @@ public class AreaFinebrotImpl {
 	/* It depends on Height which is resolution domain Y */
 	private double plank;
 
-	private final int resolutionHalfT;
-	private final int resolutionHalfX;
+	private final int resolutionHalfRe;
+	private final int resolutionHalfIm;
 
 	public static AreaFinebrotImpl AreaFinebrot;
 
@@ -48,20 +48,20 @@ public class AreaFinebrotImpl {
 	}
 
 	private AreaFinebrotImpl() {
-		this.resolutionHalfT = RESOLUTION_WIDTH / 2;
-		this.resolutionHalfX = RESOLUTION_HEIGHT / 2;
+		this.resolutionHalfRe = RESOLUTION_WIDTH / 2;
+		this.resolutionHalfIm = RESOLUTION_HEIGHT / 2;
 
 		final double scrRatioX = (double) RESOLUTION_HEIGHT / (double) RESOLUTION_WIDTH;
-		this.sizeReT = INIT_AREA_IMAGE_SIZE;
-		this.sizeImX = INIT_AREA_IMAGE_SIZE * scrRatioX;
+		this.sizeRe = INIT_AREA_IMAGE_SIZE;
+		this.sizeIm = INIT_AREA_IMAGE_SIZE * scrRatioX;
 
 		this.centerRe = INIT_IMAGE_TARGET_re;
 		this.centerIm = INIT_IMAGE_TARGET_im;
 		this.plank = INIT_AREA_IMAGE_SIZE / RESOLUTION_WIDTH;
 		log.info("plank: " + plank);
 
-		this.numbersReT = new double[RESOLUTION_WIDTH];
-		this.numbersImX = new double[RESOLUTION_HEIGHT];
+		this.numbersRe = new double[RESOLUTION_WIDTH];
+		this.numbersIm = new double[RESOLUTION_HEIGHT];
 	}
 
 	public boolean contains(Mem mem) {
@@ -78,66 +78,66 @@ public class AreaFinebrotImpl {
 				&& im < this.borderHighIm;
 	}
 
-	public void domainToScreenCarry(Mem mem, double reT, double imX) {
-		mem.pxRe = (int) Math.round((RESOLUTION_WIDTH * (reT - this.centerRe) / this.sizeReT) + resolutionHalfT);
+	public void domainToScreenCarry(Mem mem, double re, double im) {
+		mem.pxRe = (int) Math.round((RESOLUTION_WIDTH * (re - this.centerRe) / this.sizeRe) + resolutionHalfRe);
 		if (mem.pxRe >= RESOLUTION_WIDTH || mem.pxRe < 0) {
 			mem.pxRe = Mem.NOT;
 			return;
 		}
-		mem.pxIm = (int) Math.round(((RESOLUTION_HEIGHT * (imX - this.centerIm)) / this.sizeImX) + resolutionHalfX);
+		mem.pxIm = (int) Math.round(((RESOLUTION_HEIGHT * (im - this.centerIm)) / this.sizeIm) + resolutionHalfIm);
 		if (mem.pxIm >= RESOLUTION_HEIGHT || mem.pxIm < 0) {
 			mem.pxIm = Mem.NOT;
 		}
 	}
 
 
-	public double screenToDomainCreateReT(int t) {
-		return numbersReT[t];
+	public double screenToDomainCreateRe(int x) {
+		return numbersRe[x];
 	}
 
-	public double screenToDomainCreateImX(int x) {
-		return numbersImX[x];
+	public double screenToDomainCreateIm(int y) {
+		return numbersIm[y];
 	}
 
 	/**
 	 * call after Zoom in or out
 	 */
 	private void initiate() {
-		this.borderLowRe = centerRe - (sizeReT / 2);
-		this.borderHighRe = centerRe + (sizeReT / 2);
-		this.borderLowIm = centerIm - (sizeImX / 2);
-		this.borderHighIm = centerIm + (sizeImX / 2);
+		this.borderLowRe = centerRe - (sizeRe / 2);
+		this.borderHighRe = centerRe + (sizeRe / 2);
+		this.borderLowIm = centerIm - (sizeIm / 2);
+		this.borderHighIm = centerIm + (sizeIm / 2);
 		calculatePoints();
 	}
 
 	public void zoomIn() {
-		sizeReT = sizeReT * ZOOM;
-		sizeImX = sizeImX * ZOOM;
-		this.plank = sizeReT / RESOLUTION_WIDTH;
+		sizeRe = sizeRe * ZOOM;
+		sizeIm = sizeIm * ZOOM;
+		this.plank = sizeRe / RESOLUTION_WIDTH;
 		initiate();
 	}
 
 	public String sizeReTString() {
-		return Formatter.roundString(this.sizeReT);
+		return Formatter.roundString(this.sizeRe);
 	}
 
 	public String sizeImString() {
-		return Formatter.roundString(this.sizeImX);
+		return Formatter.roundString(this.sizeIm);
 	}
 
 	public void moveToCoordinates() {
-		this.centerRe = screenToDomainCreateReT(Target.getScreenFromCornerT());
-		this.centerIm = screenToDomainCreateImX(Target.getScreenFromCornerX());
+		this.centerRe = screenToDomainCreateRe(Target.getScreenFromCornerX());
+		this.centerIm = screenToDomainCreateIm(Target.getScreenFromCornerY());
 		log.info("Move to: " + this.centerRe + "," + this.centerIm);
 	}
 
 	/* Generate domain elements */
 	private void calculatePoints() {
 		for (int tt = 0; tt < RESOLUTION_WIDTH; tt++) {
-			numbersReT[tt] = borderLowRe + (this.plank * tt);
+			numbersRe[tt] = borderLowRe + (this.plank * tt);
 		}
 		for (int xx = 0; xx < RESOLUTION_HEIGHT; xx++) {
-			numbersImX[xx] = borderLowIm + (this.plank * xx);
+			numbersIm[xx] = borderLowIm + (this.plank * xx);
 		}
 	}
 

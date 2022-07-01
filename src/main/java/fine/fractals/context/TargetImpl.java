@@ -14,13 +14,13 @@ public class TargetImpl {
 
     private static final Logger log = LogManager.getLogger(TargetImpl.class);
 
-    private String cTextReT = "";
-    private String cTextImX = "";
+    private String cTextRe = "";
+    private String cTextIm = "";
     /* Coordinates counted from top left corner */
-    private int scrT;
-    private int scrX;
-    private int scrCornerT;
-    private int scrCornerX;
+    private int scrRe;
+    private int scrIm;
+    private int scrCornerRe;
+    private int scrCornerIm;
 
     private MandelbrotElement mandelbrotElement = null;
 
@@ -35,55 +35,55 @@ public class TargetImpl {
     }
 
     public void update(int mousePositionT, int mousePositionX) {
-        this.scrCornerT = mousePositionT;
-        this.scrCornerX = mousePositionX;
-        this.scrT = this.scrCornerT - (RESOLUTION_WIDTH / 2);
-        this.scrX = this.scrCornerX - (RESOLUTION_HEIGHT / 2);
+        this.scrCornerRe = mousePositionT;
+        this.scrCornerIm = mousePositionX;
+        this.scrRe = this.scrCornerRe - (RESOLUTION_WIDTH / 2);
+        this.scrIm = this.scrCornerIm - (RESOLUTION_HEIGHT / 2);
 
         Mem mem = new Mem();
 
         if (!FractalEngineImpl.calculationInProgress) {
-            String[] tmp = AreaMandelbrot.cToString(mem, this.scrCornerT, this.scrCornerX);
-            this.cTextReT = tmp[0];
-            this.cTextImX = tmp[1];
+            String[] tmp = AreaMandelbrot.cToString(mem, this.scrCornerRe, this.scrCornerIm);
+            this.cTextRe = tmp[0];
+            this.cTextIm = tmp[1];
             mandelbrotElement = Mandelbrot.getElementAt(mousePositionT, mousePositionX);
         } else {
             mandelbrotElement = null;
             try {
-                String[] tmp = AreaMandelbrot.cToString(mem, this.scrCornerT, this.scrCornerX);
-                this.cTextReT = tmp[0];
-                this.cTextImX = tmp[1];
+                String[] tmp = AreaMandelbrot.cToString(mem, this.scrCornerRe, this.scrCornerIm);
+                this.cTextRe = tmp[0];
+                this.cTextIm = tmp[1];
             } catch (Exception e) {
                 log.info("OneTarget.update(" + mousePositionT + ", " + mousePositionX + "): " + e.getMessage());
-                this.cTextReT = "-";
-                this.cTextImX = "-";
+                this.cTextRe = "-";
+                this.cTextIm = "-";
             }
         }
         /* I don't want to Move area domain and area image coordinates in case I want just Zoom in with Space */
     }
 
     public int getScreenFromCenterT() {
-        return this.scrT;
+        return this.scrRe;
     }
 
     public int getScreenFromCenterX() {
-        return this.scrX;
-    }
-
-    public int getScreenFromCornerT() {
-        return this.scrCornerT;
+        return this.scrIm;
     }
 
     public int getScreenFromCornerX() {
-        return this.scrCornerX;
+        return this.scrCornerRe;
+    }
+
+    public int getScreenFromCornerY() {
+        return this.scrCornerIm;
     }
 
     public String getTextRe() {
-        return this.cTextReT;
+        return this.cTextRe;
     }
 
     public String getTextIm() {
-        return this.cTextImX;
+        return this.cTextIm;
     }
 
     public String getMandelbrotValue() {
@@ -106,5 +106,3 @@ public class TargetImpl {
         return "-";
     }
 }
-
-

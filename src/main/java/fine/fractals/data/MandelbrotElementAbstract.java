@@ -2,14 +2,14 @@ package fine.fractals.data;
 
 import fine.fractals.mandelbrot.MandelbrotState;
 
-public abstract class ElementAbstract {
+public abstract class MandelbrotElementAbstract {
 
 	protected int lastIteration;
 	protected Integer value;
 	protected Integer valueCorrected;
 	protected MandelbrotState state = MandelbrotState.ActiveNew;
 
-	public ElementAbstract() {
+	public MandelbrotElementAbstract() {
 		this.lastIteration = 0;
 		this.valueCorrected = 0;
 		this.value = 0;
@@ -118,5 +118,4 @@ public abstract class ElementAbstract {
 	public MandelbrotState getState() {
 		return this.state;
 	}
-
 }

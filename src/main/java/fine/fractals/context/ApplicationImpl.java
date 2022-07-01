@@ -2,8 +2,8 @@ package fine.fractals.context;
 
 import fine.fractals.formatter.Formatter;
 import fine.fractals.machine.CalculationThread;
-import fine.fractals.windows.ApplicationWindow;
-import fine.fractals.windows.FractalWindow;
+import fine.fractals.windows.MandelbrotWindow;
+import fine.fractals.windows.FinebrotWindow;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
 import fine.fractals.windows.listener.UIMouseListener;
 import fine.fractals.windows.listener.UIMouseWheelListener;
@@ -35,17 +35,17 @@ public class ApplicationImpl {
     public static final String USER_HOME = System.getProperty("user.home");
     private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
-    public static int RESOLUTION_IMAGE_SAVE_FOR = 720;
+    public static final int RESOLUTION_IMAGE_SAVE_FOR = 720;
 
-    public static boolean REPEAT = true;
+    public static final boolean REPEAT = true;
 
     /* Increase this only in CalculationThread */
     public static int iteration = 0;
 
-    private final ApplicationWindow applicationWindow;
-    private final FractalWindow fractalWindow;
+    private final MandelbrotWindow mandelbrotWindow;
+    private final FinebrotWindow finebrotWindow;
 
-    public static ApplicationImpl Application;
+    public static final ApplicationImpl Application;
 
     static {
         log.info("init");
@@ -57,13 +57,13 @@ public class ApplicationImpl {
         final UIKeyDispatcher uiKeyDispatcher = new UIKeyDispatcher();
         final UIMouseWheelListener uiMouseWheelListener = new UIMouseWheelListener();
 
-        applicationWindow = new ApplicationWindow(uiMouseListener, uiMouseWheelListener, uiKeyDispatcher);
-        fractalWindow = new FractalWindow(uiMouseListener, uiMouseWheelListener, uiKeyDispatcher);
+        mandelbrotWindow = new MandelbrotWindow(uiMouseListener, uiMouseWheelListener, uiKeyDispatcher);
+        finebrotWindow = new FinebrotWindow(uiMouseListener, uiMouseWheelListener, uiKeyDispatcher);
     }
 
     private void initUIWindows() {
-        fractalWindow.setApplicationWindow(applicationWindow);
-        applicationWindow.setDesignWindow(fractalWindow);
+        finebrotWindow.setApplicationWindow(mandelbrotWindow);
+        mandelbrotWindow.setDesignWindow(finebrotWindow);
         /* set window positions*/
         int scrWidth = 1920;
         int scrHeight = 1080;
@@ -74,8 +74,8 @@ public class ApplicationImpl {
             if (top < 0) {
                 top = 0;
             }
-            fractalWindow.frame.setLocation(scrWidth - (RESOLUTION_WIDTH + borders), top);
-            applicationWindow.frame.setLocation(scrWidth - (2 * (RESOLUTION_WIDTH + borders)), top);
+            finebrotWindow.frame.setLocation(scrWidth - (RESOLUTION_WIDTH + borders), top);
+            mandelbrotWindow.frame.setLocation(scrWidth - (2 * (RESOLUTION_WIDTH + borders)), top);
         }
     }
 
@@ -103,12 +103,12 @@ public class ApplicationImpl {
 
     public void repaintWindows() {
         log.info("repaint");
-        this.fractalWindow.frame.repaint();
-        this.applicationWindow.frame.repaint();
+        this.finebrotWindow.frame.repaint();
+        this.mandelbrotWindow.frame.repaint();
     }
 
     public void repaintMandelbrotWindow() {
-        applicationWindow.frame.repaint();
+        mandelbrotWindow.frame.repaint();
     }
 
     public void zoomIn() {

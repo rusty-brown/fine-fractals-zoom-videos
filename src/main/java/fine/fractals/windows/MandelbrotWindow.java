@@ -23,16 +23,16 @@ import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 import static java.awt.Color.BLACK;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class ApplicationWindow extends UIWindow {
+public class MandelbrotWindow extends UIWindow {
 
 	public final JFrame frame;
 	private int lineHeight;
 
 	public static boolean showInfo = true;
 
-	public ApplicationWindow(UIMouseListener uiMouseListener,
-							 UIMouseWheelListener uiMouseWheelListener,
-							 UIKeyDispatcher uiKeyDispatcher) {
+	public MandelbrotWindow(UIMouseListener uiMouseListener,
+							UIMouseWheelListener uiMouseWheelListener,
+							UIKeyDispatcher uiKeyDispatcher) {
 		super.resolutionWidth = RESOLUTION_WIDTH;
 		super.resolutionHeight = RESOLUTION_HEIGHT;
 		super.name = "Application - " + NAME + " - " + APP_NAME;
@@ -87,7 +87,7 @@ public class ApplicationWindow extends UIWindow {
 
 			/* Target coordinates PX */
 			g2d.drawString("Target px: ", col(0), row(line));
-			g2d.drawString(Target.getScreenFromCornerT() + ", " + Target.getScreenFromCornerX(), col(1), row(line));
+			g2d.drawString(Target.getScreenFromCornerX() + ", " + Target.getScreenFromCornerY(), col(1), row(line));
 			g2d.drawString(Target.getScreenFromCenterT() + ", " + Target.getScreenFromCenterX(), col(2), row(line));
 			line++;
 

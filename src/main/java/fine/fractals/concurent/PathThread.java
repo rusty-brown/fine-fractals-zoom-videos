@@ -31,8 +31,8 @@ public class PathThread implements Runnable {
         log.trace("run " + myId);
         int iterator = el.getLastIteration();
 
-        mem.re = el.originReT;
-        mem.im = el.originImX;
+        mem.re = el.originRe;
+        mem.im = el.originIm;
 
         final ArrayList<double[]> path = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class PathThread implements Runnable {
             /*
              * Calculation happens only here
              */
-            Main.FRACTAL.math(mem, el.originReT, el.originImX);
+            Main.FRACTAL.math(mem, el.originRe, el.originIm);
 
             if (AreaFinebrot.contains(mem)) {
                 /* Calculation did not diverge */

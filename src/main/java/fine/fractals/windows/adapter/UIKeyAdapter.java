@@ -13,7 +13,7 @@ import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.windows.ApplicationWindow.showInfo;
+import static fine.fractals.windows.MandelbrotWindow.showInfo;
 import static java.awt.event.KeyEvent.VK_I;
 import static java.awt.event.KeyEvent.VK_R;
 

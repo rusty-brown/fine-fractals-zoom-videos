@@ -25,8 +25,8 @@ public class FinebrotImpl {
         Finebrot = new FinebrotImpl();
     }
 
-    public void add(int pxT, int pxX) {
-        this.elementsStaticScreen[pxT][pxX] += 1;
+    public void add(int x, int y) {
+        this.elementsStaticScreen[x][y] += 1;
     }
 
     public void clear() {
@@ -37,8 +37,8 @@ public class FinebrotImpl {
         }
     }
 
-    public int valueAt(int t, int x) {
-        return elementsStaticScreen[t][x];
+    public int valueAt(int x, int y) {
+        return elementsStaticScreen[x][y];
     }
 
 }

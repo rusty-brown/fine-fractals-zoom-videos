@@ -12,24 +12,24 @@ import fine.fractals.windows.listener.UIMouseWheelListener;
 import javax.swing.*;
 import java.awt.*;
 
-import static fine.fractals.context.ApplicationImpl.APP_NAME;
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.context.ApplicationImpl.APP_NAME;
 import static fine.fractals.images.FractalImage.FinebrotImage;
 
-public class FractalWindow extends UIWindow {
+public class FinebrotWindow extends UIWindow {
 
 	public final JFrame frame;
 
-	public FractalWindow(UIMouseListener uiMouseListener,
-						 UIMouseWheelListener uiMouseWheelListener,
-						 UIKeyDispatcher uiKeyDispatcher
+	public FinebrotWindow(UIMouseListener uiMouseListener,
+						  UIMouseWheelListener uiMouseWheelListener,
+						  UIKeyDispatcher uiKeyDispatcher
 	) {
 		super.name = Fractal.NAME + " - " + APP_NAME;
 		super.resolutionWidth = RESOLUTION_WIDTH;
 		super.resolutionHeight = RESOLUTION_HEIGHT;
 
-        /*  Initialize UI */
+		/*  Initialize UI */
 		this.frame = new JFrame(name);
 		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.frame.getContentPane().add(this);

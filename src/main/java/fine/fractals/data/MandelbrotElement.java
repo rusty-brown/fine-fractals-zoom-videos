@@ -1,25 +1,25 @@
 package fine.fractals.data;
 
-import fine.fractals.mandelbrot.MandelbrotState;
+import static fine.fractals.mandelbrot.MandelbrotState.ActiveNew;
 
-public class MandelbrotElement extends ElementAbstract {
+public class MandelbrotElement extends MandelbrotElementAbstract {
 
-	public final double originReT;
-	public final double originImX;
+	public final double originRe;
+	public final double originIm;
 
-	public double lastVisitedReT;
-	public double lastVisitedImX;
+	public double lastVisitedRe;
+	public double lastVisitedIm;
 
-	public MandelbrotElement(double originReT, double originImX) {
-		this.originReT = originReT;
-		this.originImX = originImX;
+	public MandelbrotElement(double originRe, double originIm) {
+		this.originRe = originRe;
+		this.originIm = originIm;
 	}
 
 	public void resetAsNew() {
-		super.state = MandelbrotState.ActiveNew;
+		super.state = ActiveNew;
 
-		this.lastVisitedReT = 0;
-		this.lastVisitedImX = 0;
+		this.lastVisitedRe = 0;
+		this.lastVisitedIm = 0;
 
 		super.lastIteration = 0;
 		super.value = null;

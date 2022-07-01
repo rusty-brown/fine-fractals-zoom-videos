@@ -44,38 +44,32 @@ public class MandelbrotImpl {
     public void calculate() {
         log.info("calculate()");
 
-        ArrayList<MandelbrotElement> domainPart;
-
         int index = 0;
-        while (DomainMandelbrot.domainNotFinished) {
-            domainPart = DomainMandelbrot.fetchDomainPart();
+        final ArrayList<MandelbrotElement> domainFull = DomainMandelbrot.fetchDomainFull();
 
-            log.info("calculate: " + domainPart.size() + ", domain part remains: " + DomainMandelbrot.domainNotFinished);
+        log.info("calculate: " + domainFull.size() + ", which is full domain");
 
-            final ExecutorService executor = Executors.newFixedThreadPool(Main.COREs);
+        final ExecutorService executor = Executors.newFixedThreadPool(Main.COREs);
 
-            log.info("Start " + domainPart.size() + " threads");
-            for (MandelbrotElement el : domainPart) {
-                executor.execute(new PathThread(index++, el));
-            }
-
-            log.info("ExecutorService shut down");
-            try {
-                executor.shutdown();
-                while (!executor.isTerminated()) {
-                    log.info("ExecutorService not terminated");
-                    Thread.sleep(100);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            log.info("ExecutorService shut down OK.");
+        log.info("Start " + domainFull.size() + " threads");
+        for (MandelbrotElement el : domainFull) {
+            executor.execute(new PathThread(index++, el));
         }
+
+        try {
+            executor.shutdown();
+            while (!executor.isTerminated()) {
+                log.info("ExecutorService not terminated");
+                Thread.sleep(100);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("ExecutorService end.");
+
         DomainFinebrot.domainToScreenGrid();
 
         calculationProgress = "";
-
-        DomainMandelbrot.domainNotFinished = true;
 
         Fractal.update();
 
@@ -110,9 +104,9 @@ public class MandelbrotImpl {
     }
 
     /* Used for OneTarget */
-    public MandelbrotElement getElementAt(int t, int x) {
+    public MandelbrotElement getElementAt(int x, int y) {
         try {
-            return DomainMandelbrot.elementsScreen[t][x];
+            return DomainMandelbrot.elementsScreen[x][y];
         } catch (Exception e) {
             log.fatal("getElementAt()", e);
             return null;

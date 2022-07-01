@@ -27,7 +27,7 @@ public class PerfectColorDistributionImpl {
      * Ordered values of screen pixels
      * Ready to be colored
      */
-    static final List<ScreenPixel> pixels = new ArrayList<>();
+    static final List<FinebrotPixel> pixels = new ArrayList<>();
 
     public static PerfectColorDistributionImpl PerfectColorDistribution;
 
@@ -48,18 +48,18 @@ public class PerfectColorDistributionImpl {
         int zeroValueElements = 0;
 
         /* read screen values */
-        for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
-            for (int t = 0; t < RESOLUTION_WIDTH; t++) {
-                int v = Finebrot.valueAt(t, x);
+        for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+            for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+                int v = Finebrot.valueAt(x, y);
                 if (v == 0) {
                     zeroValueElements++;
                 }
-                pixels.add(new ScreenPixel(v, t, x));
+                pixels.add(new FinebrotPixel(v, x, y));
             }
         }
 
         /* order data from smallest to highest screen value */
-        pixels.sort(Comparator.comparingInt(ScreenPixel::pixelValue));
+        pixels.sort(Comparator.comparingInt(FinebrotPixel::pixelValue));
 
         final int allPixelsTotal = RESOLUTION_WIDTH * RESOLUTION_HEIGHT;
         final int allPixelsNonZero = allPixelsTotal - zeroValueElements;
@@ -75,11 +75,11 @@ public class PerfectColorDistributionImpl {
         log.info("Spectrum, available colors: " + paletteColorCount);
         log.info("Pixels per each color:      " + singleColorUse);
         log.info("left:                       " + left);
-        log.info("-----------------------------------");
+        log.info("----------------------------------");
 
         /* pixel index */
         int pi;
-        ScreenPixel sp;
+        FinebrotPixel sp;
 
         /* paint mismatched pixel amount with the least value colour */
         for (pi = 0; pi < left + zeroValueElements; pi++) {

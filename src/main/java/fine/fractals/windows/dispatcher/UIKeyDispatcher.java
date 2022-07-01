@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+import static java.awt.event.KeyEvent.*;
+
 public class UIKeyDispatcher implements KeyEventDispatcher {
 
     private static boolean ctrlPressed = false;
@@ -30,25 +32,19 @@ public class UIKeyDispatcher implements KeyEventDispatcher {
         int code = ke.getKeyCode();
         log.info(KeyEvent.getKeyText(code) + " | " + code + " | " + ke.getKeyChar());
         switch (ke.getID()) {
-            case KeyEvent.KEY_PRESSED:
-                if (code == KeyEvent.VK_CONTROL) {
+            case KEY_PRESSED -> {
+                if (code == VK_CONTROL) {
                     ctrlPressed = true;
                 }
-                if (code == KeyEvent.VK_ALT) {
+                if (code == VK_ALT) {
                     altPressed = true;
                 }
-                break;
-            case KeyEvent.KEY_RELEASED:
-                if (code == KeyEvent.VK_CONTROL) {
-                    ctrlPressed = false;
-                }
-                if (code == KeyEvent.VK_ALT) {
-                    altPressed = false;
-                }
-                break;
+            }
+            case KEY_RELEASED -> {
+                ctrlPressed = false;
+                altPressed = false;
+            }
         }
-
         return false;
     }
-
 }

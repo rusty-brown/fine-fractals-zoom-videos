@@ -38,7 +38,7 @@ public abstract class Fractal {
 	 * Calculate only next position.
 	 * Color can be known only after full path finished.
  	 */
-	public abstract void math(Mem mem, double reT, double imX);
+	public abstract void math(Mem mem, double re, double im);
 
 	private static int iterationMax0;
 
@@ -48,12 +48,12 @@ public abstract class Fractal {
 			iterationMax0 = ITERATION_MAX;
 		}
 		final double size0 = INIT_AREA_IMAGE_SIZE;
-		final double sizeNow = AreaFinebrot.sizeImX;
+		final double sizeNow = AreaFinebrot.sizeIm;
 
-		final double magn = (size0 / sizeNow); // length 8 4 2 1 1/2 1/4 1/8
+		final double magnification = (size0 / sizeNow); // length 8 4 2 1 1/2 1/4 1/8
 
-		final double iterationDiv = (magn * iterationMax0) - iterationMax0;
-		log.info("(" + magn + " | " + iterationDiv + ")");
+		final double iterationDiv = (magnification * iterationMax0) - iterationMax0;
+		log.info("(" + magnification + " | " + iterationDiv + ")");
 
 		ITERATION_MAX = (int) (iterationMax0 + (iterationDiv / 5000.0));
 
@@ -62,7 +62,7 @@ public abstract class Fractal {
 			log.info("ITERATION_MAX " + ITERATION_MAX);
 		}
 
-		log.info("Updated: " + Formatter.roundString(AreaFinebrot.sizeReT) + " : " + ITERATION_MAX);
+		log.info("Updated: " + Formatter.roundString(AreaFinebrot.sizeRe) + " : " + ITERATION_MAX);
 	}
 
 }

@@ -1,7 +1,7 @@
 package fine.fractals.windows.abst;
 
-import fine.fractals.windows.ApplicationWindow;
-import fine.fractals.windows.FractalWindow;
+import fine.fractals.windows.FinebrotWindow;
+import fine.fractals.windows.MandelbrotWindow;
 import fine.fractals.windows.adapter.UIMouseMotionAdapter;
 
 import javax.swing.*;
@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static fine.fractals.context.TargetImpl.Target;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.RED;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 public abstract class UIWindow extends JComponent {
 
@@ -23,8 +26,8 @@ public abstract class UIWindow extends JComponent {
 	}
 
 	protected void hideDefaultCursor(JFrame frame) {
-		// Transparent 16 imX 16 pixel cursor image.
-		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		// Transparent 16 X 16 pixel cursor image.
+		BufferedImage cursorImg = new BufferedImage(16, 16, TYPE_INT_ARGB);
 		// Create a new blank cursor.
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 		// Set the blank cursor to the JFrame.
@@ -33,23 +36,23 @@ public abstract class UIWindow extends JComponent {
 
 	protected void drawMouseCursor(Graphics g) {
 		if (active) {
-			g.setColor(Color.RED);
+			g.setColor(RED);
 		} else {
-			g.setColor(Color.GREEN);
+			g.setColor(GREEN);
 		}
 		final int line = 3;
-		final int t = Target.getScreenFromCornerT();
 		final int x = Target.getScreenFromCornerX();
-		g.drawLine(t + line, x, t - line, x);
-		g.drawLine(t, x + line, t, x - line);
+		final int y = Target.getScreenFromCornerY();
+		g.drawLine(x + line, y, x - line, y);
+		g.drawLine(x, y + line, x, y - line);
 	}
 
-	public void setApplicationWindow(ApplicationWindow otherApplicationWindow) {
-		this.motionAdapter.setApplicationWindow(otherApplicationWindow);
+	public void setApplicationWindow(MandelbrotWindow otherMandelbrotWindow) {
+		this.motionAdapter.setApplicationWindow(otherMandelbrotWindow);
 	}
 
-	public void setDesignWindow(FractalWindow otherFractalWindow) {
-		this.motionAdapter.setDesignWindow(otherFractalWindow);
+	public void setDesignWindow(FinebrotWindow otherFinebrotWindow) {
+		this.motionAdapter.setDesignWindow(otherFinebrotWindow);
 	}
 
 	public void activate() {

@@ -100,31 +100,31 @@ public abstract class FractalMachine {
 		return false;
 	}
 
-	public static boolean checkDomain(int t, int x) {
-		return t >= 0 && t < RESOLUTION_WIDTH
-				&& x >= 0 && x < RESOLUTION_HEIGHT;
+	public static boolean checkDomain(int x, int y) {
+		return x >= 0 && x < RESOLUTION_WIDTH
+				&& y >= 0 && y < RESOLUTION_HEIGHT;
 	}
 
-	private static Integer valueAt(int t, int x, MandelbrotElement[][] mandelbrot) {
-		if (checkDomain(t, x)) {
-			MandelbrotElement element = mandelbrot[t][x];
+	private static Integer valueAt(int x, int y, MandelbrotElement[][] mandelbrot) {
+		if (checkDomain(x, y)) {
+			MandelbrotElement element = mandelbrot[x][y];
 			return element.getValue();
 		}
 		return null;
 	}
 
-	public static void setAsDeepBlack(int t, int x, MandelbrotElement[][] elements) {
-		if (checkDomain(t, x)) {
-			/* Most probably Element of Mandelbrot set, don're calculate */
-			elements[t][x].setHibernatedBlackNeighbour();
+	public static void setAsDeepBlack(int x, int y, MandelbrotElement[][] elements) {
+		if (checkDomain(x, y)) {
+			/* Most probably Element of Mandelbrot set, don't recalculate */
+			elements[x][y].setHibernatedBlackNeighbour();
 		}
 	}
 
-	public static void testOptimizationBreakElement(int t, int x, MandelbrotElement element, ArrayList<Integer> failedNumbersRe, ArrayList<Integer> failedNumbersIm, Bool lastIsWhite, Bool lastIsBlack) {
+	public static void testOptimizationBreakElement(int x, int y, MandelbrotElement element, ArrayList<Integer> failedNumbersRe, ArrayList<Integer> failedNumbersIm, Bool lastIsWhite, Bool lastIsBlack) {
 		if (element.isHibernatedBlack_Neighbour() || element.isHibernatedBlack()) {
 			if (lastIsWhite.is()) {
-				failedNumbersRe.add(t);
-				failedNumbersIm.add(x);
+				failedNumbersRe.add(x);
+				failedNumbersIm.add(y);
 			}
 			lastIsBlack.setTrue();
 			lastIsWhite.setFalse();
@@ -132,8 +132,8 @@ public abstract class FractalMachine {
 		} else if (element.isHibernatedFinished()) {
 
 			if (lastIsBlack.is()) {
-				failedNumbersRe.add(t);
-				failedNumbersIm.add(x);
+				failedNumbersRe.add(x);
+				failedNumbersIm.add(y);
 			}
 			lastIsBlack.setFalse();
 			lastIsWhite.setTrue();
@@ -144,20 +144,20 @@ public abstract class FractalMachine {
 	}
 
 	// not correct;
-	public static void setActiveMovedIfBlack(int t, int x, MandelbrotElement[][] mandelbrot) {
+	public static void setActiveMovedIfBlack(int x, int y, MandelbrotElement[][] mandelbrot) {
 		MandelbrotElement element;
-		if (checkDomain(t, x)) {
-			element = mandelbrot[t][x];
+		if (checkDomain(x, y)) {
+			element = mandelbrot[x][y];
 			if (element.isHibernatedBlack() || element.isHibernatedBlack_Neighbour()) {
 				element.setActiveFixed();
 			}
 		}
 	}
 
-	public static void setActiveToAddToCalculation(int t, int x, MandelbrotElement[][] mandelbrot) {
+	public static void setActiveToAddToCalculation(int x, int y, MandelbrotElement[][] mandelbrot) {
 		MandelbrotElement element;
-		if (checkDomain(t, x)) {
-			element = mandelbrot[t][x];
+		if (checkDomain(x, y)) {
+			element = mandelbrot[x][y];
 			if (element != null && (element.isActiveAny() || element.isHibernatedFinished())) {
 				element.setActiveRecalculate();
 			}
