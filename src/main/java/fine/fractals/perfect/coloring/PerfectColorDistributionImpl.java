@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
@@ -44,32 +45,44 @@ public class PerfectColorDistributionImpl {
      */
     public void perfectlyColorScreenValues() {
 
+        int zeroValueElements = 0;
+
         /* read screen values */
         for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
             for (int t = 0; t < RESOLUTION_WIDTH; t++) {
-                pixels.add(new ScreenPixel(Finebrot.valueAt(t, x), t, x));
+                int v = Finebrot.valueAt(t, x);
+                if (v == 0) {
+                    zeroValueElements++;
+                }
+                pixels.add(new ScreenPixel(v, t, x));
             }
         }
 
         /* order data from smallest to highest screen value */
-        pixels.sort((a, b) -> Integer.compare(a.pixelValue(), b.pixelValue()));
+        pixels.sort(Comparator.comparingInt(ScreenPixel::pixelValue));
 
-        final int allPixels = RESOLUTION_WIDTH * RESOLUTION_HEIGHT;
+        final int allPixelsTotal = RESOLUTION_WIDTH * RESOLUTION_HEIGHT;
+        final int allPixelsNonZero = allPixelsTotal - zeroValueElements;
         final int paletteColorCount = Palette.colorResolution();
-        final int singleColorUse = ((int) ((double) allPixels / (double) paletteColorCount));
-        final int left = allPixels - (paletteColorCount * singleColorUse);
+        final int singleColorUse = ((int) ((double) allPixelsNonZero / (double) paletteColorCount));
+        final int left = allPixelsNonZero - (paletteColorCount * singleColorUse);
 
-        log.info("All pixels to paint:        " + allPixels);
+        log.info("-----------------------------------");
+        log.info("All pixels to paint:        " + allPixelsTotal);
+        log.info(" -------------------------> " + (zeroValueElements + left + (singleColorUse * paletteColorCount)));
+        log.info("Zero value pixels to paint: " + zeroValueElements);
+        log.info("Non zero pixels to paint:   " + allPixelsNonZero);
         log.info("Spectrum, available colors: " + paletteColorCount);
         log.info("Pixels per each color:      " + singleColorUse);
-        log.info("left: " + left);
+        log.info("left:                       " + left);
+        log.info("-----------------------------------");
 
         /* pixel index */
         int pi;
         ScreenPixel sp;
 
         /* paint mismatched pixel amount with the least value colour */
-        for (pi = 0; pi < left; pi++) {
+        for (pi = 0; pi < left + zeroValueElements; pi++) {
             sp = pixels.get(pi);
             FinebrotImage.setRGB(sp.px(), sp.py(), Palette.getSpectrumValue(0).getRGB());
         }
@@ -79,10 +92,15 @@ public class PerfectColorDistributionImpl {
             for (int ci = 0; ci < singleColorUse; ci++) {
                 /* color all these pixels with same color */
                 sp = pixels.get(pi++);
-                /* write screen values to image */
-                FinebrotImage.setRGB(sp.px(), sp.py(), Palette.getSpectrumValue(paletteColourIndex).getRGB());
+                if (sp.pixelValue() == 0) {
+                    FinebrotImage.setRGB(sp.px(), sp.py(), Palette.getSpectrumValue(0).getRGB());
+                } else {
+                    /* write screen values to image */
+                    FinebrotImage.setRGB(sp.px(), sp.py(), Palette.getSpectrumValue(paletteColourIndex).getRGB());
+                }
             }
         }
+        log.info("painted:                    " + pi);
         /* behold the coloring is perfect */
     }
 
