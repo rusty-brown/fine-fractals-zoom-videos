@@ -35,10 +35,8 @@ public class AreaFinebrotImpl {
 	/* It depends on Height which is resolution domain Y */
 	private double plank;
 
-	private int resolutionT;
-	private int resolutionX;
-	private int resolutionHalfT;
-	private int resolutionHalfX;
+	private final int resolutionHalfT;
+	private final int resolutionHalfX;
 
 	public static AreaFinebrotImpl AreaFinebrot;
 
@@ -50,26 +48,20 @@ public class AreaFinebrotImpl {
 	}
 
 	private AreaFinebrotImpl() {
+		this.resolutionHalfT = RESOLUTION_WIDTH / 2;
+		this.resolutionHalfX = RESOLUTION_HEIGHT / 2;
 
-		this.resolutionT = RESOLUTION_WIDTH;
-		this.resolutionX = RESOLUTION_HEIGHT;
-		this.resolutionHalfT = this.resolutionT / 2;
-		this.resolutionHalfX = this.resolutionX / 2;
-
-		double scrRatioX = (double) resolutionX / (double) resolutionT;
-
+		final double scrRatioX = (double) RESOLUTION_HEIGHT / (double) RESOLUTION_WIDTH;
 		this.sizeReT = INIT_AREA_IMAGE_SIZE;
 		this.sizeImX = INIT_AREA_IMAGE_SIZE * scrRatioX;
 
-
 		this.centerRe = INIT_IMAGE_TARGET_re;
 		this.centerIm = INIT_IMAGE_TARGET_im;
-		this.plank = INIT_AREA_IMAGE_SIZE / resolutionT;
-
+		this.plank = INIT_AREA_IMAGE_SIZE / RESOLUTION_WIDTH;
 		log.info("plank: " + plank);
 
-		this.numbersReT = new double[resolutionT];
-		this.numbersImX = new double[resolutionX];
+		this.numbersReT = new double[RESOLUTION_WIDTH];
+		this.numbersImX = new double[RESOLUTION_HEIGHT];
 	}
 
 	public boolean contains(Mem mem) {
@@ -86,19 +78,16 @@ public class AreaFinebrotImpl {
 				&& im < this.borderHighIm;
 	}
 
-	public boolean domainToScreenCarry(Mem mem, double reT, double imX) {
-		mem.pxRe = (int) Math.round((resolutionT * (reT - this.centerRe) / this.sizeReT) + resolutionHalfT);
-		if (mem.pxRe >= resolutionT || mem.pxRe < 0) {
+	public void domainToScreenCarry(Mem mem, double reT, double imX) {
+		mem.pxRe = (int) Math.round((RESOLUTION_WIDTH * (reT - this.centerRe) / this.sizeReT) + resolutionHalfT);
+		if (mem.pxRe >= RESOLUTION_WIDTH || mem.pxRe < 0) {
 			mem.pxRe = Mem.NOT;
-			return false;
+			return;
 		}
-
-		mem.pxIm = (int) Math.round(((resolutionX * (imX - this.centerIm)) / this.sizeImX) + resolutionHalfX);
-		if (mem.pxIm >= resolutionX || mem.pxIm < 0) {
+		mem.pxIm = (int) Math.round(((RESOLUTION_HEIGHT * (imX - this.centerIm)) / this.sizeImX) + resolutionHalfX);
+		if (mem.pxIm >= RESOLUTION_HEIGHT || mem.pxIm < 0) {
 			mem.pxIm = Mem.NOT;
-			return false;
 		}
-		return true;
 	}
 
 
@@ -124,7 +113,7 @@ public class AreaFinebrotImpl {
 	public void zoomIn() {
 		sizeReT = sizeReT * ZOOM;
 		sizeImX = sizeImX * ZOOM;
-		this.plank = sizeReT / resolutionT;
+		this.plank = sizeReT / RESOLUTION_WIDTH;
 		initiate();
 	}
 
@@ -132,7 +121,7 @@ public class AreaFinebrotImpl {
 		return Formatter.roundString(this.sizeReT);
 	}
 
-	public String sizeImXString() {
+	public String sizeImString() {
 		return Formatter.roundString(this.sizeImX);
 	}
 
@@ -144,10 +133,10 @@ public class AreaFinebrotImpl {
 
 	/* Generate domain elements */
 	private void calculatePoints() {
-		for (int tt = 0; tt < resolutionT; tt++) {
+		for (int tt = 0; tt < RESOLUTION_WIDTH; tt++) {
 			numbersReT[tt] = borderLowRe + (this.plank * tt);
 		}
-		for (int xx = 0; xx < resolutionX; xx++) {
+		for (int xx = 0; xx < RESOLUTION_HEIGHT; xx++) {
 			numbersImX[xx] = borderLowIm + (this.plank * xx);
 		}
 	}

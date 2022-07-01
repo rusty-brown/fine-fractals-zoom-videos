@@ -1,6 +1,6 @@
 package fine.fractals.context;
 
-import fine.fractals.engine.CalculationThread;
+import fine.fractals.machine.CalculationThread;
 import fine.fractals.formatter.Formatter;
 import fine.fractals.windows.ApplicationWindow;
 import fine.fractals.windows.FractalWindow;

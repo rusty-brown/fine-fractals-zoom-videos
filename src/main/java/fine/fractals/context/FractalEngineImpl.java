@@ -1,13 +1,11 @@
 package fine.fractals.context;
 
-import fine.fractals.engine.FractalMachine;
+import fine.fractals.machine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.image.BufferedImage;
-
-import static fine.fractals.context.ApplicationImpl.*;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.context.ApplicationImpl.*;
 import static fine.fractals.context.finebrot.FinebrotImpl.Finebrot;
 import static fine.fractals.context.mandelbrot.MandelbrotImpl.Mandelbrot;
 import static fine.fractals.perfect.coloring.PerfectColorDistributionImpl.PerfectColorDistribution;
@@ -32,8 +30,7 @@ public class FractalEngineImpl {
     private FractalEngineImpl() {
     }
 
-    // TODO
-    synchronized public void calculateFromThread() {
+    public void calculate() {
 
         log.info("calculateFromThread");
 
@@ -56,6 +53,7 @@ public class FractalEngineImpl {
         }
 
         log.info("ScreenValuesToImages");
+        PerfectColorDistribution.clear();
         PerfectColorDistribution.perfectlyColorScreenValues();
 
         /* save file based on screen height; don't save it for testing */
@@ -74,7 +72,4 @@ public class FractalEngineImpl {
         this.updateDomain = true;
     }
 
-    public void createMandelbrotMask(BufferedImage mandelbrotMask) {
-        Mandelbrot.createMask();
-    }
 }

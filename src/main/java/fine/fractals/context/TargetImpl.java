@@ -1,6 +1,6 @@
 package fine.fractals.context;
 
-import fine.fractals.data.Element;
+import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +22,7 @@ public class TargetImpl {
     private int scrCornerT;
     private int scrCornerX;
 
-    private Element mandelbrotElement = null;
+    private MandelbrotElement mandelbrotElement = null;
 
     public static TargetImpl Target;
 
@@ -78,11 +78,11 @@ public class TargetImpl {
         return this.scrCornerX;
     }
 
-    public String getTextReT() {
+    public String getTextRe() {
         return this.cTextReT;
     }
 
-    public String getTextImX() {
+    public String getTextIm() {
         return this.cTextImX;
     }
 

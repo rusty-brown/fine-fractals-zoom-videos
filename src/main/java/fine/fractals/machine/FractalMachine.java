@@ -1,7 +1,7 @@
-package fine.fractals.engine;
+package fine.fractals.machine;
 
 import fine.fractals.Main;
-import fine.fractals.data.Element;
+import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,20 +50,18 @@ public abstract class FractalMachine {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
-
-		// FractalMachine.saveFileTexts();
 	}
 
 	private static String iteration() {
 		return "_" + String.format("%06d", iteration);
 	}
 
-	public static boolean isVeryDeepBlack(int tt, int xx, Element[][] elements) {
+	public static boolean isVeryDeepBlack(int tt, int xx, MandelbrotElement[][] elements) {
 		if (elements[tt][xx].getValue() > 0) {
 			return false;
 		}
 		Integer value;
-		/* r is a radius of a circle to verify non zero values around*/
+		/* r is a radius of a circle to verify non-zero values around */
 		final int r = 5;
 		for (int t = -r; t < r; t++) {
 			for (int x = -r; x < r; x++) {
@@ -81,9 +79,9 @@ public abstract class FractalMachine {
 		return true;
 	}
 
-	public static boolean someNeighboursFinishedInside(int tt, int xx, Element[][] elements) {
+	public static boolean someNeighboursFinishedInside(int tt, int xx, MandelbrotElement[][] elements) {
 		/* r is a radius of a circle to verify finished inside (red) elements*/
-		Element el;
+		MandelbrotElement el;
 		final int r = Main.neighbours;
 		for (int t = -r; t < r; t++) {
 			for (int x = -r; x < r; x++) {
@@ -107,22 +105,22 @@ public abstract class FractalMachine {
 				&& x >= 0 && x < RESOLUTION_HEIGHT;
 	}
 
-	private static Integer valueAt(int t, int x, Element[][] mandelbrot) {
+	private static Integer valueAt(int t, int x, MandelbrotElement[][] mandelbrot) {
 		if (checkDomain(t, x)) {
-			Element element = mandelbrot[t][x];
+			MandelbrotElement element = mandelbrot[t][x];
 			return element.getValue();
 		}
 		return null;
 	}
 
-	public static void setAsDeepBlack(int t, int x, Element[][] elements) {
+	public static void setAsDeepBlack(int t, int x, MandelbrotElement[][] elements) {
 		if (checkDomain(t, x)) {
 			/* Most probably Element of Mandelbrot set, don're calculate */
 			elements[t][x].setHibernatedBlackNeighbour();
 		}
 	}
 
-	public static void testOptimizationBreakElement(int t, int x, Element element, ArrayList<Integer> failedNumbersT, ArrayList<Integer> failedNumbersX, Bool lastIsWhite, Bool lastIsBlack) {
+	public static void testOptimizationBreakElement(int t, int x, MandelbrotElement element, ArrayList<Integer> failedNumbersT, ArrayList<Integer> failedNumbersX, Bool lastIsWhite, Bool lastIsBlack) {
 		if (element.isHibernatedBlack_Neighbour() || element.isHibernatedBlack()) {
 			if (lastIsWhite.is()) {
 				failedNumbersT.add(t);
@@ -146,8 +144,8 @@ public abstract class FractalMachine {
 	}
 
 	// not correct;
-	public static void setActiveMovedIfBlack(int t, int x, Element[][] mandelbrot) {
-		Element element;
+	public static void setActiveMovedIfBlack(int t, int x, MandelbrotElement[][] mandelbrot) {
+		MandelbrotElement element;
 		if (checkDomain(t, x)) {
 			element = mandelbrot[t][x];
 			if (element.isHibernatedBlack() || element.isHibernatedBlack_Neighbour()) {
@@ -156,8 +154,8 @@ public abstract class FractalMachine {
 		}
 	}
 
-	public static void setActiveToAddToCalculation(int t, int x, Element[][] mandelbrot) {
-		Element element;
+	public static void setActiveToAddToCalculation(int t, int x, MandelbrotElement[][] mandelbrot) {
+		MandelbrotElement element;
 		if (checkDomain(t, x)) {
 			element = mandelbrot[t][x];
 			if (element != null && (element.isActiveAny() || element.isHibernatedFinished())) {

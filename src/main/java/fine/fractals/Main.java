@@ -1,6 +1,6 @@
 package fine.fractals;
 
-import fine.fractals.color.PalettePlasma2;
+import fine.fractals.color.PalettePlasma;
 import fine.fractals.context.ApplicationImpl;
 import fine.fractals.fractal.FineMandelbrot_Side_Zoom;
 import fine.fractals.fractal.Fractal;
@@ -48,7 +48,7 @@ public class Main {
 
 	static {
 		log.info("init");
-		PalettePlasma2.init();
+		PalettePlasma.init();
 	}
 
 	private Main() {

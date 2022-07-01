@@ -1,15 +1,14 @@
 package fine.fractals.context.mandelbrot;
 
 import fine.fractals.Main;
-import fine.fractals.data.Element;
+import fine.fractals.machine.FractalMachine;
+import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.Mem;
-import fine.fractals.engine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
@@ -21,18 +20,15 @@ class DomainMandelbrotImpl {
 
 	private static final Logger log = LogManager.getLogger(DomainMandelbrotImpl.class);
 
-	public final Element[][] elementsScreen = new Element[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
-	private ArrayList<Element> elementsToRemember = new ArrayList<>();
+	public final MandelbrotElement[][] elementsScreen = new MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
+	private final ArrayList<MandelbrotElement> elementsToRemember = new ArrayList<>();
 
-	private int conflictsResolved;
-	private Element bestMatch;
+	private MandelbrotElement bestMatch;
 	private int bestMatchAtT;
 	private int bestMatchAtX;
 	private double dist;
 
 	private int partStartT = 0;
-	private int partRowT = 0;
-
 
 	public boolean domainNotFinished = true;
 
@@ -47,39 +43,35 @@ class DomainMandelbrotImpl {
 		log.info("init");
 		DomainMandelbrot = new DomainMandelbrotImpl();
 		log.info("initiate");
-		System.out.println(AreaMandelbrot);
 		DomainMandelbrot.domainScreenCreateInitialization();
-		System.out.println(AreaMandelbrot);
 	}
 
 	public final void domainScreenCreateInitialization() {
 		for (int t = 0; t < RESOLUTION_WIDTH; t++) {
 			for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
-				Element element = new Element(AreaMandelbrot.screenToDomainReT(t), AreaMandelbrot.screenToDomainImX(x));
+				MandelbrotElement element = new MandelbrotElement(AreaMandelbrot.screenToDomainReT(t), AreaMandelbrot.screenToDomainImX(x));
 				elementsScreen[t][x] = element;
 			}
 		}
 	}
 
-	// TODO
-	synchronized public ArrayList<Element> fetchDomainPart() {
+	public ArrayList<MandelbrotElement> fetchDomainPart() {
 
 		log.info("DOMAIN created new");
 
-		Element elementZero;
-		ArrayList<Element> domainPart = new ArrayList<>();
+		MandelbrotElement elementZero;
+		ArrayList<MandelbrotElement> domainPart = new ArrayList<>();
 
-		/**
-		 * Only interesting will be put to cd.domainGPUFiltered ... Some element diverged in their neighbourhood
+		/*
 		 * Central element was already calculated without wrapping
 		 */
-		Element[] wrapping = null;
+		MandelbrotElement[] wrapping = null;
 
-		final boolean wrapDomain = Main.RESOLUTION_MULTIPLIER > 2;
+		final boolean wrapDomain = Main.RESOLUTION_MULTIPLIER >= 2;
 		log.info("wrapDomainS " + wrapDomain);
 
 		if (wrapDomain) {
-			wrapping = new Element[Main.RESOLUTION_MULTIPLIER * Main.RESOLUTION_MULTIPLIER];
+			wrapping = new MandelbrotElement[Main.RESOLUTION_MULTIPLIER * Main.RESOLUTION_MULTIPLIER];
 		}
 
 		final int MAX = 4_000_000;
@@ -89,7 +81,6 @@ class DomainMandelbrotImpl {
 		long notWrappedCount = 0;
 
 		log.info("partStartT: " + partStartT);
-		partRowT = 0;
 		int t;
 
 		for (t = partStartT; t < RESOLUTION_WIDTH; t++) {
@@ -107,13 +98,13 @@ class DomainMandelbrotImpl {
 					}
 				} else {
 					/* Wrapping of first calculation */
-					boolean shouldBeWrapped = elementZero != null;// && FractalMachine.someNeighboursFinishedInside(t, x, elementsScreen);
+					boolean shouldBeWrapped = elementZero != null && FractalMachine.someNeighboursFinishedInside(t, x, elementsScreen);
 					if (shouldBeWrapped) {
 						wrappedCount++;
 
 						AreaMandelbrot.wrap(elementZero, wrapping);
 
-						for (Element el : wrapping) {
+						for (MandelbrotElement el : wrapping) {
 							elementCountPart++;
 							domainPart.add(el);
 						}
@@ -122,7 +113,6 @@ class DomainMandelbrotImpl {
 					}
 				}
 			}
-			partRowT++;
 			if (elementCountPart >= MAX) {
 				log.info("TO MANY");
 				/* Domain has to many elements. Do calculation for this part*/
@@ -148,7 +138,7 @@ class DomainMandelbrotImpl {
 						// don't set any state, will be set again properly by calculation
 
 						AreaMandelbrot.wrap(elementZero, wrapping);
-						for (Element el : wrapping) {
+						for (MandelbrotElement el : wrapping) {
 							reWrapped++;
 							domainPart.add(el);
 						}
@@ -179,12 +169,12 @@ class DomainMandelbrotImpl {
 		//}
 	}
 
-	private void dropBestMatchToEmptyNeighbour(Mem mem, int t, int x, LinkedList<Element> conflictsOnPixel) {
+	private void dropBestMatchToEmptyNeighbour(Mem mem, int t, int x, ArrayList<MandelbrotElement> conflictsOnPixel) {
 		bestMatch = null;
 
 		dist = 0;
 		double distMin = 42;
-		for (Element element : conflictsOnPixel) {
+		for (MandelbrotElement element : conflictsOnPixel) {
 			/* up */
 			distMin = tryBestMatch(mem, t - 1, x + 1, element, distMin);
 			distMin = tryBestMatch(mem, t, x + 1, element, distMin);
@@ -202,11 +192,10 @@ class DomainMandelbrotImpl {
 		if (bestMatch != null) {
 			conflictsOnPixel.remove(bestMatch);
 			elementsScreen[bestMatchAtT][bestMatchAtX] = bestMatch;
-			conflictsResolved++;
 		}
 	}
 
-	double tryBestMatch(Mem mem, int t, int x, Element element, double distMin) {
+	double tryBestMatch(Mem mem, int t, int x, MandelbrotElement element, double distMin) {
 		if (emptyAt(t, x)) {
 			AreaMandelbrot.screenToDomainCarry(mem, t, x);
 			dist = dist(mem.re, mem.im, element.originReT, element.originImX);
@@ -228,7 +217,7 @@ class DomainMandelbrotImpl {
 		if (t < 0 || x < 0 || t >= RESOLUTION_WIDTH || x >= RESOLUTION_HEIGHT) {
 			return null;
 		}
-		Element el = elementsScreen[t][x];
+		MandelbrotElement el = elementsScreen[t][x];
 		if (el != null) {
 			return el.getValue();
 		}
@@ -236,10 +225,10 @@ class DomainMandelbrotImpl {
 	}
 
 
-	private Element bestMatch(Mem mem, int t, int x, LinkedList<Element> conflictsOnPixel) {
+	private MandelbrotElement bestMatch(Mem mem, int t, int x, ArrayList<MandelbrotElement> conflictsOnPixel) {
 		double distMin = 42;
-		Element ret = null;
-		for (Element el : conflictsOnPixel) {
+		MandelbrotElement ret = null;
+		for (MandelbrotElement el : conflictsOnPixel) {
 			AreaMandelbrot.screenToDomainCarry(mem, t, x);
 			dist = dist(mem.re, mem.im, el.originReT, el.originImX);
 			if (dist < distMin) {
@@ -262,29 +251,25 @@ class DomainMandelbrotImpl {
 		log.info("createMask");
 		if (maskDone) {
 			maskDone = false;
-			Element element;
+			MandelbrotElement element;
 			Color color;
 
 			for (int t = 0; t < RESOLUTION_WIDTH; t++) {
 				for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
 					element = elementsScreen[t][x];
-					if (element != null && element.getColor() != null) {
-						color = element.getColor();
+					if (element != null) {
+						color = switch (element.getState()) {
+							case ActiveMoved -> MOVED;
+							case ActiveNew -> ACTIVE_NEW;
+							case HibernatedBlack -> HIBERNATED_BLACK;
+							case HibernatedBlackNeighbour -> HIBERNATED_BLACK_NEIGHBOR;
+							case HibernatedFinished -> FINISHED_OUT;
+							case HibernatedFinishedInside -> FINISHED_IN;
+							case ActiveFixed -> ACTIVE_FIXED;
+							default -> ERROR;
+						};
 					} else {
-						if (element != null) {
-							color = switch (element.getState()) {
-								case ActiveMoved -> MOVED;
-								case ActiveNew -> ACTIVE_NEW;
-								case HibernatedBlack -> HIBERNATED_BLACK;
-								case HibernatedBlackNeighbour -> HIBERNATED_BLACK_NEIGHBOR;
-								case HibernatedFinished -> FINISHED_OUT;
-								case HibernatedFinishedInside -> FINISHED_IN;
-								case ActiveFixed -> ACTIVE_FIXED;
-								default -> ERROR;
-							};
-						} else {
-							color = NULL;
-						}
+						color = NULL;
 					}
 					MandelbrotMaskImage.setRGB(t, x, color.getRGB());
 				}
@@ -307,8 +292,7 @@ class DomainMandelbrotImpl {
 		 * Scan area elements (old positions from previous calculation) to be -
 		 * moved to new positions (remembered) or skipped calculation for them.
 		 */
-		int value;
-		Element element;
+		MandelbrotElement element;
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
 				element = elementsScreen[xx][yy];
@@ -327,10 +311,7 @@ class DomainMandelbrotImpl {
 						}
 					}
 					elementsToRemember.add(element);
-					value = element.getValue();
 				}
-				/* clear color set for debug */
-				element.setColor(null);
 			}
 		}
 
@@ -348,17 +329,14 @@ class DomainMandelbrotImpl {
 		/*
 		 * Add remembered elements to their new position for new calculation
 		 */
-		int conflictsFound = 0;
-		Integer newPositionT;
-		Integer newPositionX;
-		Element done;
-
-		int addedToNewPositions = 0;
+		int newPositionT;
+		int newPositionX;
+		MandelbrotElement done;
 
 		Mem mem = new Mem();
 
-		LinkedList<Element>[][] conflicts = new LinkedList[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
-		for (Element el : elementsToRemember) {
+		ArrayList<MandelbrotElement>[][] conflicts = new ArrayList[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
+		for (MandelbrotElement el : elementsToRemember) {
 
 			AreaMandelbrot.domainToScreenCarry(mem, el.originReT, el.originImX);
 
@@ -370,20 +348,17 @@ class DomainMandelbrotImpl {
 				if (done != null) {
 					/* Conflict */
 					if (conflicts[newPositionT][newPositionX] == null) {
-						conflicts[newPositionT][newPositionX] = new LinkedList<>();
+						conflicts[newPositionT][newPositionX] = new ArrayList<>();
 					}
-					conflictsFound++;
 					// el.setColor(Color.BLACK);
 					conflicts[newPositionT][newPositionX].add(el);
 				} else {
 					/* OK; no conflict */
 					elementsScreen[newPositionT][newPositionX] = el;
-					addedToNewPositions++;
 				}
 			}
 		}
-		conflictsResolved = 0;
-		LinkedList conflictsOnPixel;
+		ArrayList<MandelbrotElement> conflictsOnPixel;
 		/* Resolve found conflicts */
 		/* More Elements hit same pixel after zoom */
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
@@ -416,12 +391,12 @@ class DomainMandelbrotImpl {
 		/*
 		 * Create new elements on positions where nothing was moved to
 		 */
-		Element newElement;
+		MandelbrotElement newElement;
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
 				if (elementsScreen[xx][yy] == null) {
 					AreaMandelbrot.screenToDomainCarry(mem, xx, yy);
-					newElement = new Element(mem.re, mem.im);
+					newElement = new MandelbrotElement(mem.re, mem.im);
 					elementsScreen[xx][yy] = newElement;
 				}
 			}

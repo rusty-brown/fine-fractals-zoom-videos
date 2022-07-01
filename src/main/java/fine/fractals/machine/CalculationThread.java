@@ -1,4 +1,4 @@
-package fine.fractals.engine;
+package fine.fractals.machine;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +30,7 @@ public class CalculationThread extends Thread {
             log.info("Iteration: " + iteration++);
 
             /* Calculate Fractal values */
-            FractalEngine.calculateFromThread();
+            FractalEngine.calculate();
 
             if (REPEAT) {
                 Application.zoomIn();

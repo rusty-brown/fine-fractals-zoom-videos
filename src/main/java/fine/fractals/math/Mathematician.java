@@ -1,8 +1,8 @@
 package fine.fractals.math;
 
-import fine.fractals.fractal.Fractal;
-
 import java.util.HashSet;
+
+import static fine.fractals.fractal.Fractal.ITERATION_MAX;
 
 public class Mathematician {
 
@@ -11,80 +11,58 @@ public class Mathematician {
 	private static HashSet<Integer> PERFECT;
 	private static HashSet<Integer> SQUARE;
 
-	private static int INIT_MAX;
-
-	private static boolean initiated = false;
-
-	// TODO
-	public Mathematician() {
+	private Mathematician() {
 	}
 
-	public static void initialize() {
-
-		INIT_MAX = Fractal.ITERATION_MAX;
-
-		if (initiated) {
-			throw new RuntimeException("Mathematician already initialized!");
-		}
-
-		// TODO
-		synchronized (Mathematician.class) {
-			if (!initiated) {
-				initPrimes();
-				initFibonacci();
-				initSquares();
-				// initPerfectNumbers();
-				initiated = true;
-			}
-		}
+	private void initialize() {
+		initPrimes();
+		initFibonacci();
+		initSquares();
+		initPerfectNumbers();
 	}
 
-	private static void initPrimes() {
+	private void initPrimes() {
 		PRIMES = new HashSet<>();
-		for (int i = 0; i < INIT_MAX; i++) {
+
+		for (int i = 0; i < ITERATION_MAX; i++) {
 			if (isPrimeInit(i)) {
 				PRIMES.add(i);
 			}
 		}
 	}
 
-	private static void initFibonacci() {
-
+	private void initFibonacci() {
 		FIBONACCI = new HashSet<>();
-
 		int a = 0;
 		int b = 1;
 		int sum;
-
-		while (b <= INIT_MAX) {
+		while (b <= ITERATION_MAX) {
 			sum = a + b;
-
 			FIBONACCI.add(sum);
-
 			a = b;
 			b = sum;
 		}
 	}
 
-	private static void initPerfectNumbers() {
+	private void initPerfectNumbers() {
 		PERFECT = new HashSet<>();
-		for (int i = 0; i <= INIT_MAX; i++) {
+		for (int i = 0; i <= ITERATION_MAX; i++) {
 			if (isPerfectInit(i)) {
 				PERFECT.add(i);
 			}
 		}
 	}
 
-	private static void initSquares() {
+	private void initSquares() {
 		SQUARE = new HashSet<>();
 		int sq;
-		for (int i = 0; i * i <= INIT_MAX; i++) {
+		for (int i = 0; i * i <= ITERATION_MAX; i++) {
 			sq = i * i;
 			SQUARE.add(sq);
 		}
 	}
 
-	private static boolean isPrimeInit(int n) {
+	private boolean isPrimeInit(int n) {
 		if (n % 2 == 0) {
 			return false;
 		}
@@ -95,7 +73,7 @@ public class Mathematician {
 		return true;
 	}
 
-	private static boolean isPerfectInit(int number) {
+	private boolean isPerfectInit(int number) {
 		int temp = 0;
 		for (int i = 1; i <= number / 2; i++) {
 			if (number % i == 0) {

@@ -103,19 +103,19 @@ public class ApplicationWindow extends UIWindow {
 
 			/* Target coordinates domain */
 			g2d.drawString("Target: ", col(0), row(line));
-			g2d.drawString(Target.getTextReT(), col(1), row(line));
-			g2d.drawString(Target.getTextImX(), col(2), row(line));
+			g2d.drawString(Target.getTextRe(), col(1), row(line));
+			g2d.drawString(Target.getTextIm(), col(2), row(line));
 			line++;
 
 			/* Area size domain */
 			g2d.drawString("Domain h/w: ", col(0), row(line));
-			g2d.drawString(AreaMandelbrot.sizeImXString(), col(1), row(line));
+			g2d.drawString(AreaMandelbrot.sizeImString(), col(1), row(line));
 			g2d.drawString(AreaMandelbrot.sizeReTString(), col(2), row(line));
 			line++;
 
 			/* Area size image */
 			g2d.drawString("Domain h/w: ", col(0), row(line));
-			g2d.drawString(AreaFinebrot.sizeImXString(), col(1), row(line));
+			g2d.drawString(AreaFinebrot.sizeImString(), col(1), row(line));
 			g2d.drawString(AreaFinebrot.sizeReTString(), col(2), row(line));
 			line++;
 

@@ -1,6 +1,6 @@
 package fine.fractals.windows.listener;
 
-import fine.fractals.engine.CalculationThread;
+import fine.fractals.machine.CalculationThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

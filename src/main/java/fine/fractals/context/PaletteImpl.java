@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class PaletteImpl {
 
     private static final Logger log = LogManager.getLogger(PaletteImpl.class);
-    private static String name;
+    private String name;
 
     public ArrayList<Color> spectrum = new ArrayList<>();
 

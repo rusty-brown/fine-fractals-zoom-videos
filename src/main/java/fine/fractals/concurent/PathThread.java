@@ -1,33 +1,34 @@
-package fine.fractals.engine;
+package fine.fractals.concurent;
 
 import fine.fractals.Main;
-import fine.fractals.fractal.Fractal;
-import fine.fractals.data.Element;
+import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.Mem;
+import fine.fractals.fractal.Fractal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
 
 public class PathThread implements Runnable {
 
     private static final Logger log = LogManager.getLogger(PathThread.class);
 
-    private final int myId;
-    private final Element el;
+    private final MandelbrotElement el;
 
     private final Mem mem = new Mem();
+    private final int myId;
 
-    public PathThread(int myId, Element el) {
+    public PathThread(int myId, MandelbrotElement el) {
+        log.trace("init " + myId);
         this.myId = myId;
         this.el = el;
     }
 
     public void run() {
-
+        log.trace("run " + myId);
         int iterator = el.getLastIteration();
 
         mem.re = el.originReT;
@@ -67,5 +68,6 @@ public class PathThread implements Runnable {
                 DomainFinebrot.addEscapePathInside(path);
             }
         }
+        log.trace("finished " + myId);
     }
 }

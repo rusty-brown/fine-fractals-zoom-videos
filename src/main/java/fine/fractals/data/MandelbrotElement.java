@@ -2,7 +2,7 @@ package fine.fractals.data;
 
 import fine.fractals.mandelbrot.MandelbrotState;
 
-public class Element extends ElementAbstract {
+public class MandelbrotElement extends ElementAbstract {
 
 	public final double originReT;
 	public final double originImX;
@@ -10,7 +10,7 @@ public class Element extends ElementAbstract {
 	public double lastVisitedReT;
 	public double lastVisitedImX;
 
-	public Element(double originReT, double originImX) {
+	public MandelbrotElement(double originReT, double originImX) {
 		this.originReT = originReT;
 		this.originImX = originImX;
 	}

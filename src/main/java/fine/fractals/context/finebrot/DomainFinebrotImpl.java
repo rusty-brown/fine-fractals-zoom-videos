@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-import static fine.fractals.context.finebrot.FinebrotImpl.Finebrot;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.context.finebrot.FinebrotImpl.Finebrot;
 
 public class DomainFinebrotImpl {
 
@@ -35,8 +35,7 @@ public class DomainFinebrotImpl {
      * All elements on escape path are already inside displayed area
      * Because they are filtered like that during calculation
      */
-    // TODO
-    public synchronized void addEscapePathInside(ArrayList<double[]> path) {
+    public void addEscapePathInside(ArrayList<double[]> path) {
         paths.add(path);
     }
 
@@ -66,8 +65,9 @@ public class DomainFinebrotImpl {
         counter++;
         if (counter % 10 == 0) {
             for (ArrayList<double[]> path : paths) {
-                System.out.println("should remove");
-                path.removeIf(el -> !AreaFinebrot.contains(el[0], el[1]));
+                if (path.removeIf(el -> !AreaFinebrot.contains(el[0], el[1]))) {
+                    removed++;
+                }
             }
             paths.removeIf(ArrayList::isEmpty);
         }

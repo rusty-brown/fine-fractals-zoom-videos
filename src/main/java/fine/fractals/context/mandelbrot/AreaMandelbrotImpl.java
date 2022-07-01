@@ -1,7 +1,7 @@
 package fine.fractals.context.mandelbrot;
 
 import fine.fractals.Main;
-import fine.fractals.data.Element;
+import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.Mem;
 import fine.fractals.formatter.Formatter;
 import org.apache.logging.log4j.LogManager;
@@ -19,8 +19,8 @@ public class AreaMandelbrotImpl {
     private final double[] numbersReT;
     private final double[] numbersImX;
     /* position of the centre of domain area */
-    public double centerReT;
-    public double centerImX;
+    public double centerRe;
+    public double centerIm;
     /* size of domain area */
     public double sizeReT;
     public double sizeImX;
@@ -31,8 +31,8 @@ public class AreaMandelbrotImpl {
     /* Plank's length */
     /* It depends on Height which is resolution domain Y */
     private double plank;
-    private int resolutionHalfT;
-    private int resolutionHalfX;
+    private final int resolutionHalfT;
+    private final int resolutionHalfX;
 
     public static AreaMandelbrotImpl AreaMandelbrot;
 
@@ -45,21 +45,16 @@ public class AreaMandelbrotImpl {
 
     private AreaMandelbrotImpl() {
         double size = INIT_AREA_DOMAIN_SIZE;
-        double centerImX = INIT_DOMAIN_TARGET_im;
-        // this.resolutionHalf = new N(this.RESOLUTION_WIDTH / 2, this.RESOLUTION_HEIGHT / 2, this.resolution.y / 2, this.resolution.z / 2);
         this.resolutionHalfT = RESOLUTION_WIDTH / 2;
         this.resolutionHalfX = RESOLUTION_HEIGHT / 2;
 
-        double scrRatioX = (double) RESOLUTION_HEIGHT / (double) RESOLUTION_WIDTH;
-
+        final double scrRatioX = (double) RESOLUTION_HEIGHT / (double) RESOLUTION_WIDTH;
         this.sizeReT = size;
         this.sizeImX = size * scrRatioX;
 
-
-        this.centerReT = INIT_DOMAIN_TARGET_re;
-        this.centerImX = centerImX;
+        this.centerRe = INIT_DOMAIN_TARGET_re;
+        this.centerIm = INIT_DOMAIN_TARGET_im;
         this.plank = size / RESOLUTION_WIDTH;
-
         log.info("plank: " + plank);
 
         this.numbersReT = new double[RESOLUTION_WIDTH];
@@ -100,29 +95,26 @@ public class AreaMandelbrotImpl {
     }
 
 
-    public boolean domainToScreenCarry(Mem mem, double reT, double imX) {
-        mem.pxRe = (int) Math.round((RESOLUTION_WIDTH * (reT - this.centerReT) / this.sizeReT) + resolutionHalfT);
+    public void domainToScreenCarry(Mem mem, double reT, double imX) {
+        mem.pxRe = (int) Math.round((RESOLUTION_WIDTH * (reT - this.centerRe) / this.sizeReT) + resolutionHalfT);
         if (mem.pxRe >= RESOLUTION_WIDTH || mem.pxRe < 0) {
             mem.pxRe = Mem.NOT;
-            return false;
+            return;
         }
-
-        mem.pxIm = (int) Math.round(((RESOLUTION_HEIGHT * (imX - this.centerImX)) / this.sizeImX) + resolutionHalfX);
+        mem.pxIm = (int) Math.round(((RESOLUTION_HEIGHT * (imX - this.centerIm)) / this.sizeImX) + resolutionHalfX);
         if (mem.pxIm >= RESOLUTION_HEIGHT || mem.pxIm < 0) {
             mem.pxIm = Mem.NOT;
-            return false;
         }
-        return true;
     }
 
     /**
      * call after Zoom in or out
      */
     private void initiate() {
-        this.borderLowReT = centerReT - (sizeReT / 2);
-        this.borderHighReT = centerReT + (sizeReT / 2);
-        this.borderLowImX = centerImX - (sizeImX / 2);
-        this.borderHighImX = centerImX + (sizeImX / 2);
+        this.borderLowReT = centerRe - (sizeReT / 2);
+        this.borderHighReT = centerRe + (sizeReT / 2);
+        this.borderLowImX = centerIm - (sizeImX / 2);
+        this.borderHighImX = centerIm + (sizeImX / 2);
 
         calculatePoints();
     }
@@ -145,15 +137,15 @@ public class AreaMandelbrotImpl {
         return Formatter.roundString(this.sizeReT);
     }
 
-    public String sizeImXString() {
+    public String sizeImString() {
         return Formatter.roundString(this.sizeImX);
     }
 
 
     public void moveToCoordinates() {
-        this.centerReT = screenToDomainReT(Target.getScreenFromCornerT());
-        this.centerImX = screenToDomainImX(Target.getScreenFromCornerX());
-        log.info("Move to: " + this.centerReT + "," + this.centerImX);
+        this.centerRe = screenToDomainReT(Target.getScreenFromCornerT());
+        this.centerIm = screenToDomainImX(Target.getScreenFromCornerX());
+        log.info("Move to: " + this.centerRe + "," + this.centerIm);
     }
 
     /* Generate domain elements */
@@ -166,20 +158,16 @@ public class AreaMandelbrotImpl {
         }
     }
 
-    public double plank() {
-        return this.plank;
-    }
-
     /**
      * move to zoom target
      */
     public void moveToInitialCoordinates() {
-        this.centerReT = INIT_DOMAIN_TARGET_re;
-        this.centerImX = INIT_DOMAIN_TARGET_im;
+        this.centerRe = INIT_DOMAIN_TARGET_re;
+        this.centerIm = INIT_DOMAIN_TARGET_im;
     }
 
 
-    public void wrap(Element elementZero, Element[] wrapping) {
+    public void wrap(MandelbrotElement elementZero, MandelbrotElement[] wrapping) {
         if (Main.RESOLUTION_MULTIPLIER == 2) {
             int index = 0;
             double pn = this.plank / 3;
@@ -188,11 +176,11 @@ public class AreaMandelbrotImpl {
             /* This only fills the pixel with multiple points */
             double a1 = elementZero.originReT + (half * pn);
             double b1 = elementZero.originImX + (half * pn);
-            wrapping[index++] = new Element(a1, b1);
+            wrapping[index++] = new MandelbrotElement(a1, b1);
 
             double a2 = elementZero.originReT + (-half * pn);
             double b2 = elementZero.originImX + (-half * pn);
-            wrapping[index] = new Element(a2, b2);
+            wrapping[index] = new MandelbrotElement(a2, b2);
         } else {
             throw new RuntimeException("AreaDomain: RESOLUTION_MULTIPLIER can be only 1 or odd");
         }

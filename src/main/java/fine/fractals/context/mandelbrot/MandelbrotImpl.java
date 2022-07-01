@@ -1,10 +1,10 @@
 package fine.fractals.context.mandelbrot;
 
 import fine.fractals.Main;
-import fine.fractals.data.Element;
+import fine.fractals.machine.FractalMachine;
+import fine.fractals.concurent.PathThread;
+import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
-import fine.fractals.engine.FractalMachine;
-import fine.fractals.engine.PathThread;
 import fine.fractals.fractal.Fractal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,37 +42,35 @@ public class MandelbrotImpl {
      * Calculate Domain Values
      */
     public void calculate() {
-        log.info("CALCULATE");
+        log.info("calculate()");
 
-        ArrayList<Element> domainPart;
+        ArrayList<MandelbrotElement> domainPart;
 
         int index = 0;
         while (DomainMandelbrot.domainNotFinished) {
             domainPart = DomainMandelbrot.fetchDomainPart();
 
-            log.info("CALCULATE: " + domainPart.size() + ", domain part remains: " + DomainMandelbrot.domainNotFinished);
+            log.info("calculate: " + domainPart.size() + ", domain part remains: " + DomainMandelbrot.domainNotFinished);
 
             final ExecutorService executor = Executors.newFixedThreadPool(Main.COREs);
 
-            for (Element el : domainPart) {
-                Runnable worker = new PathThread(index++, el);
-                executor.execute(worker);
+            log.info("Start " + domainPart.size() + " threads");
+            for (MandelbrotElement el : domainPart) {
+                executor.execute(new PathThread(index++, el));
             }
 
-            executor.shutdown();
-            while (!executor.isTerminated()) {
-                try {
-                    // TODO FIX ME REALLY
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            log.info("ExecutorService shut down");
+            try {
+                executor.shutdown();
+                while (!executor.isTerminated()) {
+                    log.info("ExecutorService not terminated");
+                    Thread.sleep(100);
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            log.info("Finished all threads");
+            log.info("ExecutorService shut down OK.");
         }
-
-        log.info("CALCULATE while END");
-
         DomainFinebrot.domainToScreenGrid();
 
         calculationProgress = "";
@@ -81,11 +79,11 @@ public class MandelbrotImpl {
 
         Fractal.update();
 
-        log.info("-------------CALCULATE END---------------");
+        log.info("calculate() finished");
     }
 
     public void resetOptimizationSoft() {
-        Element element;
+        MandelbrotElement element;
         for (int t = 0; t < RESOLUTION_WIDTH; t++) {
             for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
                 element = DomainMandelbrot.elementsScreen[t][x];
@@ -98,7 +96,7 @@ public class MandelbrotImpl {
 
     public void resetOptimizationHard() {
         // Application.colorPaletteMandelbrot.reset();
-        Element element;
+        MandelbrotElement element;
         for (int t = 0; t < RESOLUTION_WIDTH; t++) {
             for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
                 element = DomainMandelbrot.elementsScreen[t][x];
@@ -112,7 +110,7 @@ public class MandelbrotImpl {
     }
 
     /* Used for OneTarget */
-    public Element getElementAt(int t, int x) {
+    public MandelbrotElement getElementAt(int t, int x) {
         try {
             return DomainMandelbrot.elementsScreen[t][x];
         } catch (Exception e) {
