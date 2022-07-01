@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import static fine.fractals.context.PaletteImpl.Palette;
+import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -29,7 +30,7 @@ public class ColorTest extends JComponent {
     }
 
     private ColorTest() {
-        log.info("constructor");
+        log.info("init");
         this.resolution = Palette.colorResolution();
         this.testImage = new BufferedImage(resolution, height, TYPE_INT_RGB);
 
@@ -43,7 +44,7 @@ public class ColorTest extends JComponent {
         this.frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent ke) {
-                if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if (ke.getKeyCode() == VK_ESCAPE) {
                     frame.dispose();
                 }
             }

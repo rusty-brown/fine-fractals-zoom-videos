@@ -7,7 +7,7 @@ import static fine.fractals.context.PaletteImpl.Palette;
 
 public abstract class ColorUtils {
 
-    public static void linearSpectrumToPalet(List<Color> colors) {
+    public static void linearSpectrumToPalette(List<Color> colors) {
         double step = 1;
         Color colorA = colors.get(0);
         Color colorB = colors.get(1);
