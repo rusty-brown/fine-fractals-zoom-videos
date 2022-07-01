@@ -51,6 +51,8 @@ class DomainMandelbrotImpl {
 		}
 	}
 
+	private boolean odd = true;
+
 	public ArrayList<MandelbrotElement> fetchDomainFull() {
 
 		log.info("DOMAIN created new");
@@ -76,20 +78,34 @@ class DomainMandelbrotImpl {
 						if (RESOLUTION_MULTIPLIER == 2) {
 							final double d = AreaMandelbrot.plank() / 3;
 
-							domainFull.add(new MandelbrotElement(
-									elementZero.originRe + d,
-									elementZero.originIm + d
-							));
-							domainFull.add(new MandelbrotElement(
-									elementZero.originRe - d,
-									elementZero.originIm - d
-							));
+							if (odd) {
+								domainFull.add(new MandelbrotElement(
+										elementZero.originRe + d,
+										elementZero.originIm + d
+								));
+								domainFull.add(new MandelbrotElement(
+										elementZero.originRe - d,
+										elementZero.originIm - d
+								));
+							} else {
+								domainFull.add(new MandelbrotElement(
+										elementZero.originRe - d,
+										elementZero.originIm + d
+								));
+								domainFull.add(new MandelbrotElement(
+										elementZero.originRe + d,
+										elementZero.originIm - d
+								));
+							}
 						}
 					}
 				}
 			}
 		}
+		/* Don't do any wrapping the first time */
 		firstDomainExecution = false;
+		/* Switch wrapping the next time */
+		odd = !odd;
 
 		log.info("Domain elements to calculate: " + domainFull.size());
 		return domainFull;

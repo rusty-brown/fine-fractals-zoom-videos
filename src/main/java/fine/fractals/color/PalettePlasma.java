@@ -9,7 +9,6 @@ import java.awt.*;
 import java.util.List;
 
 import static fine.fractals.context.PaletteImpl.Palette;
-import static java.awt.Color.white;
 
 public abstract class PalettePlasma {
 
@@ -18,7 +17,7 @@ public abstract class PalettePlasma {
     public static void init() {
         log.info("init");
         Palette.name("Plasma");
-        ColorUtils.linearSpectrumToPalette(List.of(
+        ColorUtils.toPaletteLinearSpectrum(List.of(
                 new Color(7, 1, 116),
                 new Color(37, 1, 133),
                 new Color(62, 0, 145),
@@ -29,9 +28,7 @@ public abstract class PalettePlasma {
                 new Color(213, 72, 81),
                 new Color(231, 101, 65),
                 new Color(251, 160, 38),
-                new Color(247, 211, 30),
-                new Color(239, 250, 26),
-                white
+                new Color(247, 211, 30)
         ));
     }
 

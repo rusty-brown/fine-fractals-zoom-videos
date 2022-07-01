@@ -105,4 +105,8 @@ public class TargetImpl {
         }
         return "-";
     }
+
+    public double re() {
+        return scrRe;
+    }
 }

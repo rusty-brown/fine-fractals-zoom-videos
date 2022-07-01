@@ -17,7 +17,7 @@ public abstract class PaletteViridis {
     public static void init() {
         log.info("init");
         Palette.name("Viridis");
-        ColorUtils.linearSpectrumToPalette(List.of(
+        ColorUtils.toPaletteLinearSpectrum(List.of(
                 new Color(48, 3, 67),
                 new Color(54, 31, 106),
                 new Color(45, 66, 121),

@@ -4,14 +4,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.PaletteImpl.Palette;
+import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.FinebrotImpl.Finebrot;
 import static fine.fractals.images.FractalImage.FinebrotImage;
+import static java.lang.Double.compare;
+import static java.lang.Integer.compare;
+import static java.lang.Math.abs;
 
 /**
  * Method used for perfect coloring is
@@ -47,11 +50,14 @@ public class PerfectColorDistributionImpl {
 
         int zeroValueElements = 0;
 
+        /* identify zero and low-value elements as zero or noise */
+        final int threshold = 4;
+
         /* read screen values */
         for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
             for (int x = 0; x < RESOLUTION_WIDTH; x++) {
                 int v = Finebrot.valueAt(x, y);
-                if (v == 0) {
+                if (v <= threshold) {
                     zeroValueElements++;
                 }
                 pixels.add(new FinebrotPixel(v, x, y));
@@ -59,7 +65,14 @@ public class PerfectColorDistributionImpl {
         }
 
         /* order data from smallest to highest screen value */
-        pixels.sort(Comparator.comparingInt(FinebrotPixel::pixelValue));
+        final double px = Target.re();
+        pixels.sort((a, b) -> {
+            int compare = compare(a.pixelValue(), b.pixelValue());
+            if (compare == 0) {
+                return compare(abs(a.px() - px), abs(b.px() - px));
+            }
+            return compare;
+        });
 
         final int allPixelsTotal = RESOLUTION_WIDTH * RESOLUTION_HEIGHT;
         final int allPixelsNonZero = allPixelsTotal - zeroValueElements;
@@ -92,10 +105,11 @@ public class PerfectColorDistributionImpl {
             for (int ci = 0; ci < singleColorUse; ci++) {
                 /* color all these pixels with same color */
                 sp = pixels.get(pi++);
-                if (sp.pixelValue() == 0) {
+                if (sp.pixelValue() <= threshold) {
+                    /* color zero-value elements and low-value-noise with the darkest color */
                     FinebrotImage.setRGB(sp.px(), sp.py(), Palette.getSpectrumValue(0).getRGB());
                 } else {
-                    /* write screen values to image */
+                    /* perfect-color all significant pixels */
                     FinebrotImage.setRGB(sp.px(), sp.py(), Palette.getSpectrumValue(paletteColourIndex).getRGB());
                 }
             }

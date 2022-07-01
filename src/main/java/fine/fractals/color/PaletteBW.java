@@ -18,7 +18,7 @@ public abstract class PaletteBW {
     public static void init() {
         log.info("init");
         Palette.name("Black to White");
-        ColorUtils.linearSpectrumToPalette(List.of(
+        ColorUtils.toPaletteLinearSpectrum(List.of(
                 black, white
         ));
     }
