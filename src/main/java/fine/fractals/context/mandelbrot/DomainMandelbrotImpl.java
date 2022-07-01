@@ -1,17 +1,15 @@
 package fine.fractals.context.mandelbrot;
 
-import fine.fractals.Main;
-import fine.fractals.machine.FractalMachine;
 import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.Mem;
+import fine.fractals.machine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.Main.*;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 import static fine.fractals.mandelbrot.MandelbrotMaskColors.*;
@@ -67,11 +65,11 @@ class DomainMandelbrotImpl {
 		 */
 		MandelbrotElement[] wrapping = null;
 
-		final boolean wrapDomain = Main.RESOLUTION_MULTIPLIER >= 2;
+		final boolean wrapDomain = RESOLUTION_MULTIPLIER >= 2;
 		log.info("wrapDomainS " + wrapDomain);
 
 		if (wrapDomain) {
-			wrapping = new MandelbrotElement[Main.RESOLUTION_MULTIPLIER * Main.RESOLUTION_MULTIPLIER];
+			wrapping = new MandelbrotElement[RESOLUTION_MULTIPLIER * RESOLUTION_MULTIPLIER];
 		}
 
 		final int MAX = 4_000_000;
@@ -151,7 +149,7 @@ class DomainMandelbrotImpl {
 		log.info("notWrappedCount " + notWrappedCount);
 		log.info("wrappedCount " + wrappedCount);
 
-		if (Main.RESOLUTION_MULTIPLIER == 1) {
+		if (RESOLUTION_MULTIPLIER == 1) {
 			/* finished and there was NO wrapping */
 			log.info("Domain EMPTY: No multiplier");
 			domainNotFinished = false;
@@ -163,10 +161,8 @@ class DomainMandelbrotImpl {
 			log.info("Domain still not empty");
 		}
 
-		// TODO ? wrapDomain = true;
 		log.info("WRAP DOMAIN " + wrapDomain);
 		return domainPart;
-		//}
 	}
 
 	private void dropBestMatchToEmptyNeighbour(Mem mem, int t, int x, ArrayList<MandelbrotElement> conflictsOnPixel) {
@@ -248,7 +244,7 @@ class DomainMandelbrotImpl {
 	}
 
 	public void createMask() {
-		log.info("createMask");
+		log.info("createMask()");
 		if (maskDone) {
 			maskDone = false;
 			MandelbrotElement element;
@@ -259,14 +255,14 @@ class DomainMandelbrotImpl {
 					element = elementsScreen[t][x];
 					if (element != null) {
 						color = switch (element.getState()) {
-							case ActiveMoved -> MOVED;
+							case ActiveMoved -> ACTIVE_MOVED;
 							case ActiveNew -> ACTIVE_NEW;
+							case ActiveRecalculate -> ACTIVE_RECALCULATE;
 							case HibernatedBlack -> HIBERNATED_BLACK;
 							case HibernatedBlackNeighbour -> HIBERNATED_BLACK_NEIGHBOR;
-							case HibernatedFinished -> FINISHED_OUT;
-							case HibernatedFinishedInside -> FINISHED_IN;
+							case HibernatedFinished -> HIBERNATED_FINISHED_OUT;
+							case HibernatedFinishedInside -> HIBERNATED_FINISHED_IN;
 							case ActiveFixed -> ACTIVE_FIXED;
-							default -> ERROR;
 						};
 					} else {
 						color = NULL;

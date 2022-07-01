@@ -9,11 +9,13 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.windows.ApplicationWindow.showInfo;
 import static java.awt.event.KeyEvent.VK_I;
+import static java.awt.event.KeyEvent.VK_R;
 
 public class UIKeyAdapter extends KeyAdapter {
 
@@ -40,6 +42,7 @@ public class UIKeyAdapter extends KeyAdapter {
                 clipboard.setContents(stringSelection, null);
             }
             case VK_I -> showInfo = !showInfo;
+            case VK_R -> Application.repaintWindows();
         }
     }
 }

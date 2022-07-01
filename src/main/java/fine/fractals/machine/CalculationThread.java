@@ -20,7 +20,7 @@ public class CalculationThread extends Thread {
         log.info("calculate");
         CalculationThread thread = new CalculationThread();
         thread.start();
-        Application.repaint();
+        Application.repaintWindows();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CalculationThread extends Thread {
 
             if (REPEAT) {
                 Application.zoomIn();
-                Application.repaint();
+                Application.repaintWindows();
             }
             if (iteration == 1) {
                 /* Move to coordinates after initialization of FractalEngine, Mandelbrot initial domain */

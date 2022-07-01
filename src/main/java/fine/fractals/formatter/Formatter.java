@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 
 public class Formatter {
 
-	// TODO
 	private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu_MM_dd-HH-mm-ss").withZone(ZoneId.of("CET"));
 
 	public static String roundString(double d) {
@@ -26,5 +25,4 @@ public class Formatter {
 	public static String now() {
 		return LocalDateTime.now().format(dtf);
 	}
-
 }

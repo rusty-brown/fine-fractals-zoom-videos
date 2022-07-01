@@ -1,11 +1,11 @@
 package fine.fractals.context.mandelbrot;
 
 import fine.fractals.Main;
-import fine.fractals.machine.FractalMachine;
 import fine.fractals.concurent.PathThread;
 import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
 import fine.fractals.fractal.Fractal;
+import fine.fractals.machine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -149,12 +149,11 @@ public class MandelbrotImpl {
         /* In worst case failed positions contains same position twice */
         int size = failedNumbersRe.size();
         for (int i = 0; i < size; i++) {
-            // Time.now("FIXING: " + position.x + ". " + position.y);
             final int r = TEST_OPTIMIZATION_FIX_SIZE;
             for (int x = -r; x < r; x++) {
                 for (int y = -r; y < r; y++) {
                     if ((x * x) + (y * y) < (r * r)) {
-                        // These thing should be much optimized to not do same for points it was already done
+                        /* These optimizations should be much better optimized. This touches points which were already fixed. */
                         FractalMachine.setActiveMovedIfBlack(failedNumbersRe.get(i) + x, failedNumbersIm.get(i) + y, DomainMandelbrot.elementsScreen);
                     }
                 }

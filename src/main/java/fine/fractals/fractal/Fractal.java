@@ -26,6 +26,7 @@ public abstract class Fractal {
 	/*
 	 * 4 worked well for all fractals so far
 	 * 4 is distance from (0, 0)
+	 * This will be compared with quadrance
 	 */
 	public static int CALCULATION_BOUNDARY = 4;
 

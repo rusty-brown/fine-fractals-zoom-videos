@@ -3,7 +3,6 @@ package fine.fractals.concurent;
 import fine.fractals.Main;
 import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.Mem;
-import fine.fractals.fractal.Fractal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
+import static fine.fractals.fractal.Fractal.*;
 
 public class PathThread implements Runnable {
 
@@ -36,7 +36,7 @@ public class PathThread implements Runnable {
 
         final ArrayList<double[]> path = new ArrayList<>();
 
-        while (mem.quadrance() < Fractal.CALCULATION_BOUNDARY && iterator < Fractal.ITERATION_MAX) {
+        while (mem.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
 
             /*
              * Calculation happens only here
@@ -50,7 +50,7 @@ public class PathThread implements Runnable {
             iterator++;
         }
 
-        boolean pathTest = iterator < Fractal.ITERATION_MAX;
+        boolean pathTest = iterator < ITERATION_MAX;
 
         if (pathTest) {
             /* Element diverged */
@@ -61,7 +61,7 @@ public class PathThread implements Runnable {
             /* Divergent paths for Design */
 
             /* PATH size may DIFFER based on contains */
-            if (el.getLastIteration() == 0 && path.size() > Fractal.ITERATION_MIN) {
+            if (el.getLastIteration() == 0 && path.size() > ITERATION_MIN) {
                 /* This isn't continuation of unfinished iteration from previous calculation */
                 el.setHibernatedFinishedInside();
 

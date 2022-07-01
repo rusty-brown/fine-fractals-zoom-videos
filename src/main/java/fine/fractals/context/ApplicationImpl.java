@@ -1,7 +1,7 @@
 package fine.fractals.context;
 
-import fine.fractals.machine.CalculationThread;
 import fine.fractals.formatter.Formatter;
+import fine.fractals.machine.CalculationThread;
 import fine.fractals.windows.ApplicationWindow;
 import fine.fractals.windows.FractalWindow;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
@@ -10,16 +10,26 @@ import fine.fractals.windows.listener.UIMouseWheelListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
+
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.FractalEngineImpl.FractalEngine;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.context.mandelbrot.MandelbrotImpl.Mandelbrot;
 
 public class ApplicationImpl {
 
     public static final double ZOOM = 0.98;
-    public static final int TEST_OPTIMIZATION_FIX_SIZE = 3; // is from -it to it.
+    /*
+     * Distance in px around convergent element.
+     * Dead pixels around divergent pixel elements will be recalculated.
+     * Optimization mechanism will break for less than 4
+     * Distance around is +- 4
+     * This value may need to be increased for more complicated fractals
+     */
+    public static final int TEST_OPTIMIZATION_FIX_SIZE = 4;
 
     public static final String APP_NAME = "_" + Formatter.now();
     public static final String USER_HOME = System.getProperty("user.home");
@@ -71,17 +81,33 @@ public class ApplicationImpl {
 
     public void execute() {
         initUIWindows();
+
         CalculationThread.calculate();
+
+        startRefreshTimer();
+
+        Mandelbrot.createMask();
+        Application.repaintMandelbrotWindow();
     }
 
-    public void repaint() {
+    private void startRefreshTimer() {
+        final Timer timer = new Timer(2000, evt -> {
+            log.info("repaint mandelbrot mask - timer");
+            Mandelbrot.createMask();
+            Application.repaintMandelbrotWindow();
+        });
+        timer.setRepeats(true);
+        timer.setCoalesce(true);
+        timer.start();
+    }
+
+    public void repaintWindows() {
         log.info("repaint");
         this.fractalWindow.frame.repaint();
         this.applicationWindow.frame.repaint();
     }
 
-    // TODO
-    public void repaintMandelbrot() {
+    public void repaintMandelbrotWindow() {
         applicationWindow.frame.repaint();
     }
 

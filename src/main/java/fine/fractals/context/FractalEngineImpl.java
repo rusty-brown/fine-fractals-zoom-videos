@@ -44,6 +44,11 @@ public class FractalEngineImpl {
             log.info("new domain done");
             updateDomain = false;
         }
+
+        log.trace("repaint mandelbrot mask - after optimization break");
+        Mandelbrot.createMask();
+        Application.repaintMandelbrotWindow();
+
         log.info("CALCULATE");
         Mandelbrot.calculate();
 
@@ -65,7 +70,7 @@ public class FractalEngineImpl {
         log.info("DONE");
         calculationInProgress = false;
         calculationProgressPoint = null;
-        Application.repaint();
+        Application.repaintWindows();
     }
 
     public void updateDomain() {

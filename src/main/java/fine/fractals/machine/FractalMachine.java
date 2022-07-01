@@ -120,11 +120,11 @@ public abstract class FractalMachine {
 		}
 	}
 
-	public static void testOptimizationBreakElement(int t, int x, MandelbrotElement element, ArrayList<Integer> failedNumbersT, ArrayList<Integer> failedNumbersX, Bool lastIsWhite, Bool lastIsBlack) {
+	public static void testOptimizationBreakElement(int t, int x, MandelbrotElement element, ArrayList<Integer> failedNumbersRe, ArrayList<Integer> failedNumbersIm, Bool lastIsWhite, Bool lastIsBlack) {
 		if (element.isHibernatedBlack_Neighbour() || element.isHibernatedBlack()) {
 			if (lastIsWhite.is()) {
-				failedNumbersT.add(t);
-				failedNumbersX.add(x);
+				failedNumbersRe.add(t);
+				failedNumbersIm.add(x);
 			}
 			lastIsBlack.setTrue();
 			lastIsWhite.setFalse();
@@ -132,8 +132,8 @@ public abstract class FractalMachine {
 		} else if (element.isHibernatedFinished()) {
 
 			if (lastIsBlack.is()) {
-				failedNumbersT.add(t);
-				failedNumbersX.add(x);
+				failedNumbersRe.add(t);
+				failedNumbersIm.add(x);
 			}
 			lastIsBlack.setFalse();
 			lastIsWhite.setTrue();

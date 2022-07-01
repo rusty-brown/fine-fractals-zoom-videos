@@ -67,9 +67,9 @@ public class PerfectColorDistributionImpl {
         final int singleColorUse = ((int) ((double) allPixelsNonZero / (double) paletteColorCount));
         final int left = allPixelsNonZero - (paletteColorCount * singleColorUse);
 
-        log.info("-----------------------------------");
+        log.info("----------------------------------");
         log.info("All pixels to paint:        " + allPixelsTotal);
-        log.info(" -------------------------> " + (zeroValueElements + left + (singleColorUse * paletteColorCount)));
+        log.info("--------------------------> " + (zeroValueElements + left + (singleColorUse * paletteColorCount)));
         log.info("Zero value pixels to paint: " + zeroValueElements);
         log.info("Non zero pixels to paint:   " + allPixelsNonZero);
         log.info("Spectrum, available colors: " + paletteColorCount);
@@ -100,7 +100,7 @@ public class PerfectColorDistributionImpl {
                 }
             }
         }
-        log.info("painted:                    " + pi);
+        log.info("painted:                   " + pi);
         /* behold the coloring is perfect */
     }
 

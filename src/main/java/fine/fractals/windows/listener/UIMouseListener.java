@@ -11,8 +11,8 @@ import java.awt.event.MouseListener;
 import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.ApplicationImpl.REPEAT;
 import static fine.fractals.context.FractalEngineImpl.calculationInProgress;
-import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.context.mandelbrot.MandelbrotImpl.Mandelbrot;
 
 public class UIMouseListener implements MouseListener {
@@ -24,6 +24,7 @@ public class UIMouseListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent me) {
+        log.debug("mouseClicked()");
         if (!REPEAT) {
             if (SwingUtilities.isRightMouseButton(me)) {
                 log.info("Right click");
@@ -36,7 +37,7 @@ public class UIMouseListener implements MouseListener {
             } else {
                 log.info("Left click, FIX, then use Enter");
                 Mandelbrot.fixDomainOptimizationOnClick();
-                Application.repaint();
+                Application.repaintWindows();
             }
         } else {
             log.info("click skipped");
@@ -45,18 +46,21 @@ public class UIMouseListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent me) {
+        log.debug("mousePressed()");
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
+        log.debug("mouseReleased()");
     }
 
     @Override
     public void mouseEntered(MouseEvent me) {
+        log.debug("mouseEntered()");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        log.debug("mouseExited()");
     }
-
 }

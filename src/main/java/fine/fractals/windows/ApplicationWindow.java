@@ -14,21 +14,20 @@ import java.awt.*;
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.APP_NAME;
+import static fine.fractals.context.FractalEngineImpl.calculationProgress;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.context.mandelbrot.MandelbrotImpl.Mandelbrot;
 import static fine.fractals.fractal.Fractal.NAME;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
+import static java.awt.Color.BLACK;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class ApplicationWindow extends UIWindow {
 
 	public final JFrame frame;
 	private int lineHeight;
-	private String name;
 
-	public static boolean repaintDone = false;
 	public static boolean showInfo = true;
 
 	public ApplicationWindow(UIMouseListener uiMouseListener,
@@ -62,36 +61,27 @@ public class ApplicationWindow extends UIWindow {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-		// g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+		final Graphics2D g2d = (Graphics2D) g.create();
 
-		String n = FractalEngineImpl.calculationProgress;
-		if (n == null || "".equals(n)) {
-			n = "00";
+		if (calculationProgress == null || "".equals(calculationProgress)) {
+			calculationProgress = "err - 00";
 		}
-		this.frame.setTitle(n + " - " + this.name);
+		this.frame.setTitle(calculationProgress + " - " + this.name);
 
-		Color textColor;
-		/* Paint mandelbrot Mask */
-		Mandelbrot.createMask();
-		/* image full size */
-		// g2d.drawImage(mandelbrotMask, 0, 0, mandelbrotMask.getWidth(), mandelbrotMask.getHeight(), null);
 		/* image size fit to window size */
 		g2d.drawImage(MandelbrotMaskImage, 0, 0, getWidth(), getHeight(), null);
-
-		textColor = Color.BLACK;
 
 		super.drawMouseCursor(g2d);
 
 		if (showInfo) {
 
-			g2d.setColor(textColor);
+			g2d.setColor(BLACK);
 			this.lineHeight = g2d.getFontMetrics().getHeight();
 			int line = 0;
 
 			/* Calculation Text */
 			if (FractalEngineImpl.calculationInProgress) {
-				g2d.drawString(FractalEngineImpl.calculationText + " " + FractalEngineImpl.calculationProgress, col(0), row(line));
+				g2d.drawString(FractalEngineImpl.calculationText + " " + calculationProgress, col(0), row(line));
 			}
 			line++;
 
@@ -124,7 +114,6 @@ public class ApplicationWindow extends UIWindow {
 			g2d.drawString(Target.getMandelbrotValue(), col(1), row(line));
 			g2d.drawString(Target.getMandelbrotState(), col(2), row(line));
 		}
-		ApplicationWindow.repaintDone = true;
 	}
 
 	@Override
@@ -139,5 +128,4 @@ public class ApplicationWindow extends UIWindow {
 	private int row(int line) {
 		return 20 + line * lineHeight;
 	}
-
 }

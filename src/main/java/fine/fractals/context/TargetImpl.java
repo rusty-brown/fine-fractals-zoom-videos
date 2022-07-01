@@ -93,8 +93,7 @@ public class TargetImpl {
                 return String.valueOf(value);
             } catch (NullPointerException ex) {
                 /* expect int corrected = null */
-                // Time.m("Exception: MouseMove -> OneTarget -> getMandelbrotValue - There probably was a calculation exception.");
-                log.info(".");
+                log.fatal("getMandelbrotValue() null");
             }
         }
         return "-";
