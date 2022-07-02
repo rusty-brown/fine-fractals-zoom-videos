@@ -15,18 +15,19 @@ import java.util.concurrent.Executors;
 
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.context.ApplicationImpl.REPEAT;
 import static fine.fractals.context.ApplicationImpl.TEST_OPTIMIZATION_FIX_SIZE;
-import static fine.fractals.context.FractalEngineImpl.calculationProgress;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
 import static fine.fractals.context.mandelbrot.DomainMandelbrotImpl.DomainMandelbrot;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static fine.fractals.perfect.coloring.PerfectColorDistributionImpl.PerfectColorDistribution;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class MandelbrotImpl {
 
     private static final Logger log = LogManager.getLogger(MandelbrotImpl.class);
 
-    public static MandelbrotImpl Mandelbrot;
+    public static final MandelbrotImpl Mandelbrot;
 
     /*
      * MANDELBROT FRACTAL IS THE MandelbrotDomain
@@ -45,7 +46,6 @@ public class MandelbrotImpl {
     public void calculate() {
         log.info("calculate()");
 
-        int index = 0;
         final ArrayList<MandelbrotElement> domainFull = DomainMandelbrot.fetchDomainFull();
 
         log.info("calculate: " + domainFull.size() + ", which is full domain");
@@ -54,55 +54,41 @@ public class MandelbrotImpl {
 
         log.info("Start " + domainFull.size() + " threads");
         for (MandelbrotElement el : domainFull) {
-            executor.execute(new PathThread(index++, el));
+            executor.execute(new PathThread(el));
         }
 
         try {
             executor.shutdown();
-            boolean terminated = executor.awaitTermination(5, SECONDS);
-            while (!executor.isTerminated()) {
-                log.info("ExecutorService not terminated, " + terminated);
-                Thread.sleep(1000);
+            /* wait maximum 1 hour for frame to finish */
+            boolean terminated = executor.awaitTermination(59, MINUTES);
+            if (terminated) {
+                log.info("ExecutorService is terminated");
+            } else {
+
+                /* program end */
+                log.fatal("ExecutorService NOT terminated");
+                REPEAT = false;
+                log.info("Wait for last calculation to finish.");
+                terminated = executor.awaitTermination(59, MINUTES);
+                log.info("Finished " + terminated);
+                DomainFinebrot.domainToScreenGrid();
+                PerfectColorDistribution.perfectlyColorScreenValues();
+                FractalMachine.saveImage();
+                System.exit(0);
+                /* program end */
+
             }
         } catch (InterruptedException e) {
             log.error("Executor waiting interrupted.");
+            System.exit(1);
         }
         log.info("ExecutorService end.");
 
         DomainFinebrot.domainToScreenGrid();
 
-        calculationProgress = "";
-
         Fractal.update();
 
         log.info("calculate() finished");
-    }
-
-    public void resetOptimizationSoft() {
-        MandelbrotElement element;
-        for (int t = 0; t < RESOLUTION_WIDTH; t++) {
-            for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
-                element = DomainMandelbrot.elementsScreen[t][x];
-                if (element.isHibernatedBlack() || element.isHibernatedBlack_Neighbour()) {
-                    element.resetForOptimization();
-                }
-            }
-        }
-    }
-
-    public void resetOptimizationHard() {
-        // Application.colorPaletteMandelbrot.reset();
-        MandelbrotElement element;
-        for (int t = 0; t < RESOLUTION_WIDTH; t++) {
-            for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
-                element = DomainMandelbrot.elementsScreen[t][x];
-                if (!element.isActiveMoved()
-                        && !element.isHibernatedFinished()
-                        && !element.isHibernatedFinishedInside()) {
-                    element.resetAsNew();
-                }
-            }
-        }
     }
 
     /* Used for OneTarget */
@@ -158,8 +144,8 @@ public class MandelbrotImpl {
     }
 
     public void fixDomainOptimizationOnClick() {
-        int xx = Target.getScreenFromCenterT();
-        int yy = Target.getScreenFromCenterX();
+        int xx = Target.getScreenFromCenterX();
+        int yy = Target.getScreenFromCenterY();
         final int r = Main.neighbours;
         for (int x = -r; x < r; x++) {
             for (int y = -r; y < r; y++) {

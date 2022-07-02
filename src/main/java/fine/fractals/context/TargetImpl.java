@@ -24,7 +24,7 @@ public class TargetImpl {
 
     private MandelbrotElement mandelbrotElement = null;
 
-    public static TargetImpl Target;
+    public static final TargetImpl Target;
 
     static {
         log.info("init");
@@ -34,9 +34,9 @@ public class TargetImpl {
     private TargetImpl() {
     }
 
-    public void update(int mousePositionT, int mousePositionX) {
-        this.scrCornerRe = mousePositionT;
-        this.scrCornerIm = mousePositionX;
+    public void update(int mousePositionX, int mousePositionY) {
+        this.scrCornerRe = mousePositionX;
+        this.scrCornerIm = mousePositionY;
         this.scrRe = this.scrCornerRe - (RESOLUTION_WIDTH / 2);
         this.scrIm = this.scrCornerIm - (RESOLUTION_HEIGHT / 2);
 
@@ -46,7 +46,7 @@ public class TargetImpl {
             String[] tmp = AreaMandelbrot.cToString(mem, this.scrCornerRe, this.scrCornerIm);
             this.cTextRe = tmp[0];
             this.cTextIm = tmp[1];
-            mandelbrotElement = Mandelbrot.getElementAt(mousePositionT, mousePositionX);
+            mandelbrotElement = Mandelbrot.getElementAt(mousePositionX, mousePositionY);
         } else {
             mandelbrotElement = null;
             try {
@@ -54,7 +54,7 @@ public class TargetImpl {
                 this.cTextRe = tmp[0];
                 this.cTextIm = tmp[1];
             } catch (Exception e) {
-                log.info("OneTarget.update(" + mousePositionT + ", " + mousePositionX + "): " + e.getMessage());
+                log.info("OneTarget.update(" + mousePositionX + ", " + mousePositionY + "): " + e.getMessage());
                 this.cTextRe = "-";
                 this.cTextIm = "-";
             }
@@ -62,11 +62,11 @@ public class TargetImpl {
         /* I don't want to Move area domain and area image coordinates in case I want just Zoom in with Space */
     }
 
-    public int getScreenFromCenterT() {
+    public int getScreenFromCenterX() {
         return this.scrRe;
     }
 
-    public int getScreenFromCenterX() {
+    public int getScreenFromCenterY() {
         return this.scrIm;
     }
 

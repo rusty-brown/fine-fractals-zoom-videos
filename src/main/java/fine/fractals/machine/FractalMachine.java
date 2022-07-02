@@ -1,6 +1,5 @@
 package fine.fractals.machine;
 
-import fine.fractals.Main;
 import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
 import org.apache.logging.log4j.LogManager;
@@ -56,20 +55,19 @@ public abstract class FractalMachine {
 		return "_" + String.format("%06d", iteration);
 	}
 
-	public static boolean isVeryDeepBlack(int tt, int xx, MandelbrotElement[][] elements) {
-		if (elements[tt][xx].getValue() > 0) {
+	public static boolean isVeryDeepBlack(int xx, int yy, MandelbrotElement[][] elements) {
+		if (elements[xx][yy].getValue() > 0) {
 			return false;
 		}
 		Integer value;
 		/* r is a radius of a circle to verify non-zero values around */
-		final int r = 5;
-		for (int t = -r; t < r; t++) {
-			for (int x = -r; x < r; x++) {
-				if ((t * t) + (x * x) < (r * r)) {
+		for (int x = -neighbours; x < neighbours; x++) {
+			for (int y = -neighbours; y < neighbours; y++) {
+				if ((x * x) + (y * y) < (neighbours * neighbours)) {
 					/* Find value to be carried by HH.calculation */
-					int t2 = tt + t;
 					int x2 = xx + x;
-					value = valueAt(t2, x2, elements);
+					int y2 = yy + y;
+					value = valueAt(x2, y2, elements);
 					if (value == null || value > 0) {
 						return false;
 					}
@@ -79,17 +77,16 @@ public abstract class FractalMachine {
 		return true;
 	}
 
-	public static boolean someNeighboursFinishedInside(int tt, int xx, MandelbrotElement[][] elements) {
+	public static boolean someNeighboursFinishedInside(int xx, int yy, MandelbrotElement[][] elements) {
 		/* r is a radius of a circle to verify finished inside (red) elements*/
 		MandelbrotElement el;
-		final int r = Main.neighbours;
-		for (int t = -r; t < r; t++) {
-			for (int x = -r; x < r; x++) {
-				if ((t * t) + (x * x) <= (r * r)) {
-					int t2 = tt + t;
+		for (int x = -neighbours; x < neighbours; x++) {
+			for (int y = -neighbours; y < neighbours; y++) {
+				if ((x * x) + (y * y) <= (neighbours * neighbours)) {
 					int x2 = xx + x;
-					if (checkDomain(t2, x2)) {
-						el = elements[t2][x2];
+					int y2 = yy + y;
+					if (checkDomain(x2, y2)) {
+						el = elements[x2][y2];
 						if (el != null && el.isHibernatedFinishedInside()) {
 							return true;
 						}

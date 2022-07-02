@@ -14,15 +14,16 @@ public class Main {
 	/**
 	 * The Fine Fractal to be calculated
 	 */
-	public static Fractal FRACTAL = new Finebrot_Side();
+	public static final Fractal FRACTAL = new Finebrot_Side();
 	/**
 	 * Image resolution height & width
+	 * 800 600
 	 * 1080 1920 full HD
 	 * 1920 1080 full HD high
 	 * 2560 1440 quad HD
 	 */
-	public static final int RESOLUTION_WIDTH = 1080;
-	public static final int RESOLUTION_HEIGHT = 1920;
+	public static final int RESOLUTION_WIDTH = 800;
+	public static final int RESOLUTION_HEIGHT = 600;
 
 	/**
 	 * Calculation points per pixel

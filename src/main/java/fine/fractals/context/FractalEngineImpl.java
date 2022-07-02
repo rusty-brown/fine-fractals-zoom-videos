@@ -14,11 +14,8 @@ public class FractalEngineImpl {
 
     private static final Logger log = LogManager.getLogger(FractalEngineImpl.class);
     public static boolean calculationInProgress;
-    public static String calculationProgress;
-    public static String calculationText;
-    public static int[] calculationProgressPoint = null;
 
-    public static FractalEngineImpl FractalEngine;
+    public static final FractalEngineImpl FractalEngine;
 
     private boolean updateDomain = false;
 
@@ -31,50 +28,44 @@ public class FractalEngineImpl {
     }
 
     public void calculate() {
-
-        log.info("calculateFromThread");
-
-        Finebrot.clear();
+        log.info("calculate()");
 
         calculationInProgress = true;
 
-        // Calculate Design
+        Finebrot.clear();
+
         if (updateDomain) {
             Mandelbrot.domainForThisZoom();
-            log.info("new domain done");
             updateDomain = false;
         }
 
-        log.trace("repaint mandelbrot mask - after optimization break");
         Mandelbrot.createMask();
         Application.repaintMandelbrotWindow();
 
-        log.info("CALCULATE");
         Mandelbrot.calculate();
 
         if (REPEAT) {
             /* Test if Optimization didn't break anything */
             Mandelbrot.fixOptimizationBreak();
+
+            Mandelbrot.createMask();
+            Application.repaintMandelbrotWindow();
         }
 
         log.info("ScreenValuesToImages");
-        PerfectColorDistribution.clear();
         PerfectColorDistribution.perfectlyColorScreenValues();
 
         /* save file based on screen height; don't save it for testing */
         if (RESOLUTION_WIDTH >= RESOLUTION_IMAGE_SAVE_FOR) {
-            log.info("Save images");
+            log.info("Save Finebrot image");
             FractalMachine.saveImage();
-            log.info("Save images DONE");
+            log.info("Save Finebrot image OK");
         }
-        log.info("DONE");
         calculationInProgress = false;
-        calculationProgressPoint = null;
         Application.repaintWindows();
     }
 
     public void updateDomain() {
         this.updateDomain = true;
     }
-
 }

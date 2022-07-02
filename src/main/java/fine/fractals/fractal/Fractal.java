@@ -28,7 +28,7 @@ public abstract class Fractal {
 	 * 4 is distance from (0, 0)
 	 * This will be compared with quadrance
 	 */
-	public static int CALCULATION_BOUNDARY = 4;
+	public static final int CALCULATION_BOUNDARY = 4;
 
 	public Fractal(String name) {
 		NAME = name;

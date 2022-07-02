@@ -32,7 +32,7 @@ public class PerfectColorDistributionImpl {
      */
     static final List<FinebrotPixel> pixels = new ArrayList<>();
 
-    public static PerfectColorDistributionImpl PerfectColorDistribution;
+    public static final PerfectColorDistributionImpl PerfectColorDistribution;
 
     private PerfectColorDistributionImpl() {
     }
@@ -115,10 +115,12 @@ public class PerfectColorDistributionImpl {
             }
         }
         log.info("painted:                   " + pi);
-        /* behold the coloring is perfect */
-    }
 
-    public void clear() {
+        /*
+         * Behold, the coloring is perfect!
+         */
+
+        log.info("clear pixels");
         pixels.clear();
     }
 }

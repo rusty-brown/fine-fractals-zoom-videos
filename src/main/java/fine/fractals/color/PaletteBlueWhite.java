@@ -9,7 +9,6 @@ import java.awt.*;
 
 import static fine.fractals.color.utils.ColorUtils.Function.circleUp;
 import static fine.fractals.context.PaletteImpl.Palette;
-import static java.awt.Color.white;
 
 public abstract class PaletteBlueWhite {
 

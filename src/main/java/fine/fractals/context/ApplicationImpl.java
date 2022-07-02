@@ -37,7 +37,7 @@ public class ApplicationImpl {
 
     public static final int RESOLUTION_IMAGE_SAVE_FOR = 720;
 
-    public static final boolean REPEAT = true;
+    public static boolean REPEAT = true;
 
     /* Increase this only in CalculationThread */
     public static int iteration = 0;
@@ -83,22 +83,6 @@ public class ApplicationImpl {
         initUIWindows();
 
         CalculationThread.calculate();
-
-        startRefreshTimer();
-
-        Mandelbrot.createMask();
-        Application.repaintMandelbrotWindow();
-    }
-
-    private void startRefreshTimer() {
-        final Timer timer = new Timer(2000, evt -> {
-            log.info("repaint mandelbrot mask - timer");
-            Mandelbrot.createMask();
-            Application.repaintMandelbrotWindow();
-        });
-        timer.setRepeats(true);
-        timer.setCoalesce(true);
-        timer.start();
     }
 
     public void repaintWindows() {

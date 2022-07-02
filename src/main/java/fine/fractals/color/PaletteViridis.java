@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
-import java.util.List;
 
 import static fine.fractals.context.PaletteImpl.Palette;
 
@@ -17,7 +16,7 @@ public abstract class PaletteViridis {
     public static void init() {
         log.info("init");
         Palette.name("Viridis");
-        ColorUtils.toPaletteLinearSpectrum(List.of(
+        ColorUtils.toPaletteLinearSpectrum(
                 new Color(48, 3, 67),
                 new Color(54, 31, 106),
                 new Color(45, 66, 121),
@@ -28,7 +27,7 @@ public abstract class PaletteViridis {
                 new Color(160, 218, 36),
                 new Color(209, 225, 21),
                 new Color(254, 229, 19)
-        ));
+        );
     }
 
     public static void main(String[] args) {

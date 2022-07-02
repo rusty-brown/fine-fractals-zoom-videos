@@ -38,7 +38,7 @@ public class AreaFinebrotImpl {
 	private final int resolutionHalfRe;
 	private final int resolutionHalfIm;
 
-	public static AreaFinebrotImpl AreaFinebrot;
+	public static final AreaFinebrotImpl AreaFinebrot;
 
 	static {
 		log.info("init");
@@ -71,10 +71,13 @@ public class AreaFinebrotImpl {
 				&& mem.im < this.borderHighIm;
 	}
 
-	public boolean contains(double re, double im) {
+	public boolean containsRe(double re) {
 		return re > this.borderLowRe
-				&& re < this.borderHighRe
-				&& im > this.borderLowIm
+				&& re < this.borderHighRe;
+	}
+
+	public boolean containsIm(double im) {
+		return im > this.borderLowIm
 				&& im < this.borderHighIm;
 	}
 
@@ -133,11 +136,11 @@ public class AreaFinebrotImpl {
 
 	/* Generate domain elements */
 	private void calculatePoints() {
-		for (int tt = 0; tt < RESOLUTION_WIDTH; tt++) {
-			numbersRe[tt] = borderLowRe + (this.plank * tt);
+		for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+			numbersRe[x] = borderLowRe + (this.plank * x);
 		}
-		for (int xx = 0; xx < RESOLUTION_HEIGHT; xx++) {
-			numbersIm[xx] = borderLowIm + (this.plank * xx);
+		for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+			numbersIm[y] = borderLowIm + (this.plank * y);
 		}
 	}
 

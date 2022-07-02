@@ -32,7 +32,7 @@ public class AreaMandelbrotImpl {
     private final int resolutionHalfRe;
     private final int resolutionHalfIm;
 
-    public static AreaMandelbrotImpl AreaMandelbrot;
+    public static final AreaMandelbrotImpl AreaMandelbrot;
 
     static {
         log.info("init");
@@ -66,20 +66,12 @@ public class AreaMandelbrotImpl {
                 && im < this.borderHighIm;
     }
 
-    public boolean contains(Mem mem) {
-        return mem.re > this.borderLowRe
-                && mem.re < this.borderHighRe
-                && mem.im > this.borderLowIm
-                && mem.im < this.borderHighIm;
+    public double screenToDomainRe(int x) {
+        return numbersRe[x];
     }
 
-
-    public double screenToDomainRe(int t) {
-        return numbersRe[t];
-    }
-
-    public double screenToDomainIm(int x) {
-        return numbersIm[x];
+    public double screenToDomainIm(int y) {
+        return numbersIm[y];
     }
 
     /* It will be carried by Calculation */

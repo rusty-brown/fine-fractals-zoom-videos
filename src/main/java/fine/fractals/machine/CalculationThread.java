@@ -37,7 +37,7 @@ public class CalculationThread extends Thread {
                 Application.repaintWindows();
             }
             if (iteration == 1) {
-                /* Move to coordinates after initialization of FractalEngine, Mandelbrot initial domain */
+                /* Move to initial target coordinate after initialization of FractalEngine */
                 AreaMandelbrot.moveToInitialCoordinates();
                 AreaFinebrot.moveToInitialCoordinates();
             }

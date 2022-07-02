@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.fractal.Fractal.ITERATION_MAX;
 import static fine.fractals.windows.MandelbrotWindow.showInfo;
 import static java.awt.event.KeyEvent.*;
 
@@ -38,6 +39,8 @@ public class UIKeyAdapter extends KeyAdapter {
             }
             case VK_I -> showInfo = !showInfo;
             case VK_R -> Application.repaintWindows();
+            case VK_MINUS -> ITERATION_MAX *= 0.95;
+            case VK_PLUS -> ITERATION_MAX *= 1.05;
         }
     }
 }

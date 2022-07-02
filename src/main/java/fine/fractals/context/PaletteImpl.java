@@ -11,9 +11,9 @@ public class PaletteImpl {
     private static final Logger log = LogManager.getLogger(PaletteImpl.class);
     private String name;
 
-    public ArrayList<Color> spectrum = new ArrayList<>();
+    public final ArrayList<Color> spectrum = new ArrayList<>();
 
-    public static PaletteImpl Palette;
+    public static final PaletteImpl Palette;
 
     static {
         log.info("init");

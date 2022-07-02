@@ -18,7 +18,7 @@ class DomainMandelbrotImpl {
 
 	private static final Logger log = LogManager.getLogger(DomainMandelbrotImpl.class);
 
-	public final MandelbrotElement[][] elementsScreen = new MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
+	final MandelbrotElement[][] elementsScreen = new MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
 	private final ArrayList<MandelbrotElement> elementsToRemember = new ArrayList<>();
 
 	private MandelbrotElement bestMatch;
@@ -30,7 +30,7 @@ class DomainMandelbrotImpl {
 
 	private static boolean firstDomainExecution = true;
 
-	public static DomainMandelbrotImpl DomainMandelbrot;
+	static final DomainMandelbrotImpl DomainMandelbrot;
 
 	private DomainMandelbrotImpl() {
 	}
@@ -43,10 +43,11 @@ class DomainMandelbrotImpl {
 	}
 
 	public final void domainScreenCreateInitialization() {
-		for (int t = 0; t < RESOLUTION_WIDTH; t++) {
-			for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
-				MandelbrotElement element = new MandelbrotElement(AreaMandelbrot.screenToDomainRe(t), AreaMandelbrot.screenToDomainIm(x));
-				elementsScreen[t][x] = element;
+		log.info("domainScreenCreateInitialization()");
+		for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+			for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+				MandelbrotElement element = new MandelbrotElement(AreaMandelbrot.screenToDomainRe(x), AreaMandelbrot.screenToDomainIm(y));
+				elementsScreen[x][y] = element;
 			}
 		}
 	}
@@ -60,12 +61,10 @@ class DomainMandelbrotImpl {
 		MandelbrotElement elementZero;
 		final ArrayList<MandelbrotElement> domainFull = new ArrayList<>();
 
-		int t;
+		for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+			for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
 
-		for (t = 0; t < RESOLUTION_WIDTH; t++) {
-			for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
-
-				elementZero = elementsScreen[t][x];
+				elementZero = elementsScreen[x][y];
 
 				boolean isActive = elementZero != null && elementZero.isActiveAny();
 
@@ -190,15 +189,15 @@ class DomainMandelbrotImpl {
 	}
 
 	public void createMask() {
-		log.info("createMask()");
+		log.debug("createMask()");
 		if (maskDone) {
 			maskDone = false;
 			MandelbrotElement element;
 			Color color;
 
-			for (int t = 0; t < RESOLUTION_WIDTH; t++) {
-				for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
-					element = elementsScreen[t][x];
+			for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+				for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+					element = elementsScreen[x][y];
 					if (element != null) {
 						color = switch (element.getState()) {
 							case ActiveMoved -> ACTIVE_MOVED;
@@ -213,7 +212,7 @@ class DomainMandelbrotImpl {
 					} else {
 						color = NULL;
 					}
-					MandelbrotMaskImage.setRGB(t, x, color.getRGB());
+					MandelbrotMaskImage.setRGB(x, y, color.getRGB());
 				}
 			}
 			maskDone = true;
@@ -277,7 +276,8 @@ class DomainMandelbrotImpl {
 
 		Mem mem = new Mem();
 
-		ArrayList<MandelbrotElement>[][] conflicts = new ArrayList[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
+		@SuppressWarnings(value = "unchecked")
+		final ArrayList<MandelbrotElement>[][] conflicts = new ArrayList[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
 		for (MandelbrotElement el : elementsToRemember) {
 
 			AreaMandelbrot.domainToScreenCarry(mem, el.originRe, el.originIm);
@@ -292,8 +292,7 @@ class DomainMandelbrotImpl {
 					if (conflicts[newPositionT][newPositionX] == null) {
 						conflicts[newPositionT][newPositionX] = new ArrayList<>();
 					}
-					// el.setColor(Color.BLACK);
-					conflicts[newPositionT][newPositionX].add(el);
+						conflicts[newPositionT][newPositionX].add(el);
 				} else {
 					/* OK; no conflict */
 					elementsScreen[newPositionT][newPositionX] = el;

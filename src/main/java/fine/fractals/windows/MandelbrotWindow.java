@@ -13,7 +13,6 @@ import java.awt.*;
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.APP_NAME;
-import static fine.fractals.context.FractalEngineImpl.*;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
@@ -60,10 +59,7 @@ public class MandelbrotWindow extends UIWindow {
 		super.paintComponent(g);
 		final Graphics2D g2d = (Graphics2D) g.create();
 
-		if (calculationProgress == null || "".equals(calculationProgress)) {
-			calculationProgress = "err - 00";
-		}
-		this.frame.setTitle(calculationProgress + " - " + this.name);
+		this.frame.setTitle(this.name);
 
 		/* image size fit to window size */
 		g2d.drawImage(MandelbrotMaskImage, 0, 0, getWidth(), getHeight(), null);
@@ -76,16 +72,10 @@ public class MandelbrotWindow extends UIWindow {
 			this.lineHeight = g2d.getFontMetrics().getHeight();
 			int line = 0;
 
-			/* Calculation Text */
-			if (calculationInProgress) {
-				g2d.drawString(calculationText + " " + calculationProgress, col(0), row(line));
-			}
-			line++;
-
 			/* Target coordinates PX */
 			g2d.drawString("Target px: ", col(0), row(line));
-			g2d.drawString(Target.getScreenFromCornerX() + ", " + Target.getScreenFromCornerY(), col(1), row(line));
-			g2d.drawString(Target.getScreenFromCenterT() + ", " + Target.getScreenFromCenterX(), col(2), row(line));
+			g2d.drawString(Target.getScreenFromCornerY() + ", " + Target.getScreenFromCornerX(), col(1), row(line));
+			g2d.drawString(Target.getScreenFromCenterX() + ", " + Target.getScreenFromCenterY(), col(2), row(line));
 			line++;
 
 			/* Target coordinates domain */

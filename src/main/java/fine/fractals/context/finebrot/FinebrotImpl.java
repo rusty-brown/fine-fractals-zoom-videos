@@ -14,7 +14,7 @@ public class FinebrotImpl {
     /**
      * Screen
      */
-    public static FinebrotImpl Finebrot;
+    public static final FinebrotImpl Finebrot;
 
     private FinebrotImpl() {
         this.elementsStaticScreen = new int[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
@@ -30,9 +30,9 @@ public class FinebrotImpl {
     }
 
     public void clear() {
-        for (int x = 0; x < RESOLUTION_HEIGHT; x++) {
-            for (int t = 0; t < RESOLUTION_WIDTH; t++) {
-                elementsStaticScreen[t][x] = 0;
+        for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+            for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+                elementsStaticScreen[x][y] = 0;
             }
         }
     }

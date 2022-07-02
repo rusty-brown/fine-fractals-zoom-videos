@@ -6,12 +6,11 @@ public abstract class MandelbrotElementAbstract {
 
 	protected int lastIteration;
 	protected Integer value;
-	protected Integer valueCorrected;
+
 	protected MandelbrotState state = MandelbrotState.ActiveNew;
 
 	public MandelbrotElementAbstract() {
 		this.lastIteration = 0;
-		this.valueCorrected = 0;
 		this.value = 0;
 	}
 
@@ -22,14 +21,12 @@ public abstract class MandelbrotElementAbstract {
 	public void setHibernatedBlack() {
 		this.state = MandelbrotState.HibernatedBlack;
 		this.value = 0;
-		this.valueCorrected = 0;
 	}
 
 	public void setHibernatedBlackNeighbour() {
 		if (this.state != MandelbrotState.HibernatedBlack) {
 			this.state = MandelbrotState.HibernatedBlackNeighbour;
 			this.value = 0;
-			this.valueCorrected = 0;
 		}
 	}
 
@@ -61,7 +58,6 @@ public abstract class MandelbrotElementAbstract {
 	/* set both real and correct value */
 	public void setValues(int value) {
 		this.value = value;
-		this.valueCorrected = value;
 	}
 
 	public Integer getValue() {

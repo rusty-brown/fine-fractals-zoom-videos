@@ -5,7 +5,7 @@ import fine.fractals.data.Mem;
 public class Finebrot_Side extends Fractal {
 
     public Finebrot_Side() {
-        super("FineMandelbrot_Side_Zoom");
+        super("Finebrot_Side");
         ITERATION_MAX = 14800;
         ITERATION_MIN = 42;
 

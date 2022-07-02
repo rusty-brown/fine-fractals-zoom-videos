@@ -14,27 +14,24 @@ import static fine.fractals.fractal.Fractal.*;
 
 public class PathThread implements Runnable {
 
+    @SuppressWarnings(value = "unused")
     private static final Logger log = LogManager.getLogger(PathThread.class);
 
     private final MandelbrotElement el;
 
     private final Mem mem = new Mem();
-    private final int myId;
-
-    public PathThread(int myId, MandelbrotElement el) {
-        log.trace("init " + myId);
-        this.myId = myId;
+    public PathThread(MandelbrotElement el) {
         this.el = el;
     }
 
     public void run() {
-        log.trace("run " + myId);
         int iterator = el.getLastIteration();
 
+        // TODO should be last visited ?
         mem.re = el.originRe;
         mem.im = el.originIm;
 
-        final ArrayList<double[]> path = new ArrayList<>();
+        final ArrayList<Double> path = new ArrayList<>();
 
         while (mem.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
 
@@ -45,7 +42,8 @@ public class PathThread implements Runnable {
 
             if (AreaFinebrot.contains(mem)) {
                 /* Calculation did not diverge */
-                path.add(new double[]{mem.re, mem.im});
+                path.add(mem.re);
+                path.add(mem.im);
             }
             iterator++;
         }
@@ -68,6 +66,5 @@ public class PathThread implements Runnable {
                 DomainFinebrot.addEscapePathInside(path);
             }
         }
-        log.trace("finished " + myId);
     }
 }

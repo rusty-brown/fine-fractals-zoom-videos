@@ -1,11 +1,13 @@
 package fine.fractals.data;
 
+import static java.lang.Integer.MIN_VALUE;
+
 public class Mem {
 
 	public double xTemp;
 	public double yTemp;
 
-	public static int NOT = Integer.MIN_VALUE;
+	public static final int NOT = MIN_VALUE;
 
 	public double re;
 	public double im;
@@ -33,13 +35,5 @@ public class Mem {
 	 */
 	public double quadrance() {
 		return (this.re * this.re) + (this.im * this.im);
-	}
-
-	@Deprecated
-	public void exp() {
-		xTemp = Math.exp(this.re) * Math.cos(this.im);
-		yTemp = Math.exp(this.re) * Math.sin(this.im);
-		this.re = xTemp;
-		this.im = yTemp;
 	}
 }

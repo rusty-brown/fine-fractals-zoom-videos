@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
-import java.util.List;
 
 import static fine.fractals.context.PaletteImpl.Palette;
 
@@ -14,14 +13,14 @@ public abstract class ColorUtils {
 
     public enum Function {linear1, linear3, linear7, quadratic, q3, q4, q5, exp, exp2, circleDown, circleUp}
 
-    public static void toPaletteLinearSpectrum(List<Color> colors) {
+    public static void toPaletteLinearSpectrum(Color... colors) {
         double step = 1;
-        Color colorA = colors.get(0);
-        Color colorB = colors.get(1);
+        Color colorA = colors[0];
+        Color colorB = colors[1];
         toPaletteLinear(colorA, colorB, step);
-        for (int i = 1; i < colors.size(); i++) {
+        for (int i = 1; i < colors.length; i++) {
             colorA = colorB;
-            colorB = colors.get(i);
+            colorB = colors[i];
             toPaletteLinear(colorA, colorB, step);
         }
     }
