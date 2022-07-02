@@ -1,7 +1,7 @@
 package fine.fractals;
 
-import fine.fractals.color.PalettePlasma;
-import fine.fractals.fractal.FineMandelbrot_Side_Zoom;
+import fine.fractals.color.PaletteBlueWhite;
+import fine.fractals.fractal.Finebrot_Side;
 import fine.fractals.fractal.Fractal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,15 +14,15 @@ public class Main {
 	/**
 	 * The Fine Fractal to be calculated
 	 */
-	public static Fractal FRACTAL = new FineMandelbrot_Side_Zoom();
+	public static Fractal FRACTAL = new Finebrot_Side();
 	/**
 	 * Image resolution height & width
 	 * 1080 1920 full HD
 	 * 1920 1080 full HD high
 	 * 2560 1440 quad HD
 	 */
-	public static final int RESOLUTION_WIDTH = 700;
-	public static final int RESOLUTION_HEIGHT = 900;
+	public static final int RESOLUTION_WIDTH = 1080;
+	public static final int RESOLUTION_HEIGHT = 1920;
 
 	/**
 	 * Calculation points per pixel
@@ -47,7 +47,7 @@ public class Main {
 
 	static {
 		log.info("init");
-		PalettePlasma.init();
+		PaletteBlueWhite.init();
 	}
 
 	private Main() {

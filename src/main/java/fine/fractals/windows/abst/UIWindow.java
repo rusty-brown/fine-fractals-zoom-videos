@@ -19,17 +19,14 @@ public abstract class UIWindow extends JComponent {
 	protected UIMouseMotionAdapter motionAdapter;
 	protected String name;
 
-	protected int resolutionWidth;
-	protected int resolutionHeight;
-
 	protected UIWindow() {
 	}
 
 	protected void hideDefaultCursor(JFrame frame) {
 		// Transparent 16 X 16 pixel cursor image.
-		BufferedImage cursorImg = new BufferedImage(16, 16, TYPE_INT_ARGB);
+		final BufferedImage cursorImg = new BufferedImage(16, 16, TYPE_INT_ARGB);
 		// Create a new blank cursor.
-		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+		final Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 		// Set the blank cursor to the JFrame.
 		frame.getContentPane().setCursor(blankCursor);
 	}

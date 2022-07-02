@@ -20,6 +20,7 @@ import static fine.fractals.context.FractalEngineImpl.calculationProgress;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
 import static fine.fractals.context.mandelbrot.DomainMandelbrotImpl.DomainMandelbrot;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class MandelbrotImpl {
 
@@ -58,9 +59,10 @@ public class MandelbrotImpl {
 
         try {
             executor.shutdown();
+            boolean terminated = executor.awaitTermination(5, SECONDS);
             while (!executor.isTerminated()) {
-                log.info("ExecutorService not terminated");
-                Thread.sleep(100);
+                log.info("ExecutorService not terminated, " + terminated);
+                Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

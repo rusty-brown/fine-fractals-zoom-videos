@@ -1,6 +1,5 @@
 package fine.fractals.windows;
 
-import fine.fractals.context.FractalEngineImpl;
 import fine.fractals.windows.abst.UIWindow;
 import fine.fractals.windows.adapter.UIKeyAdapter;
 import fine.fractals.windows.adapter.UIMouseMotionAdapter;
@@ -14,7 +13,7 @@ import java.awt.*;
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.APP_NAME;
-import static fine.fractals.context.FractalEngineImpl.calculationProgress;
+import static fine.fractals.context.FractalEngineImpl.*;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
@@ -33,8 +32,6 @@ public class MandelbrotWindow extends UIWindow {
 	public MandelbrotWindow(UIMouseListener uiMouseListener,
 							UIMouseWheelListener uiMouseWheelListener,
 							UIKeyDispatcher uiKeyDispatcher) {
-		super.resolutionWidth = RESOLUTION_WIDTH;
-		super.resolutionHeight = RESOLUTION_HEIGHT;
 		super.name = "Application - " + NAME + " - " + APP_NAME;
 
 		/*  Initialize UI */
@@ -80,8 +77,8 @@ public class MandelbrotWindow extends UIWindow {
 			int line = 0;
 
 			/* Calculation Text */
-			if (FractalEngineImpl.calculationInProgress) {
-				g2d.drawString(FractalEngineImpl.calculationText + " " + calculationProgress, col(0), row(line));
+			if (calculationInProgress) {
+				g2d.drawString(calculationText + " " + calculationProgress, col(0), row(line));
 			}
 			line++;
 
@@ -118,7 +115,7 @@ public class MandelbrotWindow extends UIWindow {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(resolutionWidth, resolutionHeight);
+		return new Dimension(RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
 	}
 
 	private int col(int col) {

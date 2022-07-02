@@ -2,16 +2,16 @@ package fine.fractals.fractal;
 
 import fine.fractals.data.Mem;
 
-public class FineMandelbrot_Top_Zoom extends Fractal {
+public class Finebrot_Side extends Fractal {
 
-    public FineMandelbrot_Top_Zoom() {
-        super("FineMandelbrot_Top_Zoom");
+    public Finebrot_Side() {
+        super("FineMandelbrot_Side_Zoom");
         ITERATION_MAX = 14800;
         ITERATION_MIN = 42;
 
         INIT_AREA_DOMAIN_SIZE = 6.0;
-        INIT_DOMAIN_TARGET_re = -1.40115518909199;
-        INIT_DOMAIN_TARGET_im = 0.0;
+        INIT_DOMAIN_TARGET_re = -0.10675625916322415;
+        INIT_DOMAIN_TARGET_im = -0.8914368889277283;
 
         INIT_AREA_IMAGE_SIZE = INIT_AREA_DOMAIN_SIZE;
         INIT_IMAGE_TARGET_re = INIT_DOMAIN_TARGET_re;
