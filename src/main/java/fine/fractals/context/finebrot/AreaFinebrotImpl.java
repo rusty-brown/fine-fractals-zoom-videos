@@ -52,12 +52,12 @@ public class AreaFinebrotImpl {
 		this.resolutionHalfIm = RESOLUTION_HEIGHT / 2;
 
 		final double scrRatioX = (double) RESOLUTION_HEIGHT / (double) RESOLUTION_WIDTH;
-		this.sizeRe = INIT_AREA_IMAGE_SIZE;
-		this.sizeIm = INIT_AREA_IMAGE_SIZE * scrRatioX;
+		this.sizeRe = INIT_FINEBROT_AREA_SIZE;
+		this.sizeIm = INIT_FINEBROT_AREA_SIZE * scrRatioX;
 
-		this.centerRe = INIT_IMAGE_TARGET_re;
-		this.centerIm = INIT_IMAGE_TARGET_im;
-		this.plank = INIT_AREA_IMAGE_SIZE / RESOLUTION_WIDTH;
+		this.centerRe = INIT_FINEBROT_TARGET_re;
+		this.centerIm = INIT_FINEBROT_TARGET_im;
+		this.plank = INIT_FINEBROT_AREA_SIZE / RESOLUTION_WIDTH;
 		log.info("plank: " + plank);
 
 		this.numbersRe = new double[RESOLUTION_WIDTH];
@@ -145,7 +145,7 @@ public class AreaFinebrotImpl {
 	 * move to zoom target
 	 */
 	public void moveToInitialCoordinates() {
-		this.centerRe = INIT_IMAGE_TARGET_re;
-		this.centerIm = INIT_IMAGE_TARGET_im;
+		this.centerRe = INIT_FINEBROT_TARGET_re;
+		this.centerIm = INIT_FINEBROT_TARGET_im;
 	}
 }

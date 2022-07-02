@@ -15,13 +15,13 @@ public abstract class Fractal {
 
 	public static int ITERATION_MAX;
 	public static int ITERATION_MIN;
-	public static double INIT_AREA_IMAGE_SIZE;
-	public static double INIT_IMAGE_TARGET_re;
-	public static double INIT_IMAGE_TARGET_im;
+	public static double INIT_FINEBROT_AREA_SIZE;
+	public static double INIT_FINEBROT_TARGET_re;
+	public static double INIT_FINEBROT_TARGET_im;
 
-	public static double INIT_AREA_DOMAIN_SIZE;
-	public static double INIT_DOMAIN_TARGET_re;
-	public static double INIT_DOMAIN_TARGET_im;
+	public static double INIT_MANDELBROT_AREA_SIZE;
+	public static double INIT_MANDELBROT_TARGET_re;
+	public static double INIT_MANDELBROT_TARGET_im;
 
 	/*
 	 * 4 worked well for all fractals so far
@@ -47,7 +47,7 @@ public abstract class Fractal {
 		if (iterationMax0 == 0) {
 			iterationMax0 = ITERATION_MAX;
 		}
-		final double size0 = INIT_AREA_IMAGE_SIZE;
+		final double size0 = INIT_FINEBROT_AREA_SIZE;
 		final double sizeNow = AreaFinebrot.sizeIm;
 
 		final double magnification = (size0 / sizeNow); // length 8 4 2 1 1/2 1/4 1/8

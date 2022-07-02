@@ -42,7 +42,7 @@ public class AreaMandelbrotImpl {
     }
 
     private AreaMandelbrotImpl() {
-        double size = INIT_AREA_DOMAIN_SIZE;
+        double size = INIT_MANDELBROT_AREA_SIZE;
         this.resolutionHalfRe = RESOLUTION_WIDTH / 2;
         this.resolutionHalfIm = RESOLUTION_HEIGHT / 2;
 
@@ -50,8 +50,8 @@ public class AreaMandelbrotImpl {
         this.sizeRe = size;
         this.sizeIm = size * scrRatioX;
 
-        this.centerRe = INIT_DOMAIN_TARGET_re;
-        this.centerIm = INIT_DOMAIN_TARGET_im;
+        this.centerRe = INIT_MANDELBROT_TARGET_re;
+        this.centerIm = INIT_MANDELBROT_TARGET_im;
         this.plank = size / RESOLUTION_WIDTH;
         log.info("plank: " + plank);
 
@@ -160,8 +160,8 @@ public class AreaMandelbrotImpl {
      * move to zoom target
      */
     public void moveToInitialCoordinates() {
-        this.centerRe = INIT_DOMAIN_TARGET_re;
-        this.centerIm = INIT_DOMAIN_TARGET_im;
+        this.centerRe = INIT_MANDELBROT_TARGET_re;
+        this.centerIm = INIT_MANDELBROT_TARGET_im;
     }
 
     public double plank() {

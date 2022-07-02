@@ -65,7 +65,7 @@ public class MandelbrotImpl {
                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error("Executor waiting interrupted.");
         }
         log.info("ExecutorService end.");
 
