@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.Main.*;
 import static fine.fractals.context.ApplicationImpl.REPEAT;
 import static fine.fractals.context.ApplicationImpl.TEST_OPTIMIZATION_FIX_SIZE;
 import static fine.fractals.context.TargetImpl.Target;
@@ -68,12 +67,14 @@ public class MandelbrotImpl {
                 /* program end */
                 log.fatal("ExecutorService NOT terminated");
                 REPEAT = false;
-                log.info("Wait for last calculation to finish.");
-                terminated = executor.awaitTermination(59, MINUTES);
-                log.info("Finished " + terminated);
-                DomainFinebrot.domainToScreenGrid();
-                PerfectColorDistribution.perfectlyColorScreenValues();
-                FractalMachine.saveImage();
+                if (SAVE_IMAGES) {
+                    log.info("Wait for last calculation to finish.");
+                    terminated = executor.awaitTermination(59, MINUTES);
+                    log.info("Finished " + terminated);
+                    DomainFinebrot.domainToScreenGrid();
+                    PerfectColorDistribution.perfectlyColorScreenValues();
+                    FractalMachine.saveImage();
+                }
                 System.exit(0);
                 /* program end */
 

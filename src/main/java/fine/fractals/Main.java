@@ -18,18 +18,21 @@ public class Main {
 	/**
 	 * Image resolution height & width
 	 * 800 600
-	 * 1080 1920 full HD
-	 * 1920 1080 full HD high
+	 * 1080 1920 full HD high
+	 * 1920 1080 full HD
 	 * 2560 1440 quad HD
 	 */
-	public static final int RESOLUTION_WIDTH = 800;
-	public static final int RESOLUTION_HEIGHT = 600;
+	public static final int RESOLUTION_WIDTH = 1080;
+	public static final int RESOLUTION_HEIGHT = 1920;
+
+	public static final boolean SAVE_IMAGES = true;
 
 	/**
-	 * Calculation points per pixel
-	 * m x m
-	 * Keep it odd, so that the center point is in the center of a pixel
-	 * values: 1 or 2
+	 * Sets now many points will be used for calculation per each pixel
+	 * value: 1
+	 * - calculate only one element per each Mandelbrot pixel, [re,im] in the center of the pixel
+	 * value: 2
+	 * - calculates two more points per each pixel
 	 */
 	public static final int RESOLUTION_MULTIPLIER = 2;
 
@@ -42,6 +45,10 @@ public class Main {
 
 	private static final Logger log = LogManager.getLogger(Main.class);
 
+	/*
+	 * How many pixels round specific element will be investigated for optimization.
+	 * If there is nothing interesting going on around specific pixel, the pixel will be ignored.
+	 */
 	public static final int neighbours = 4;
 
 	public static int COREs = Runtime.getRuntime().availableProcessors() - 1;

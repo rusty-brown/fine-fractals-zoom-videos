@@ -35,7 +35,6 @@ public class ApplicationImpl {
     public static final String USER_HOME = System.getProperty("user.home");
     private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
-    public static final int RESOLUTION_IMAGE_SAVE_FOR = 720;
 
     public static boolean REPEAT = true;
 

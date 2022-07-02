@@ -4,8 +4,9 @@ import fine.fractals.machine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.Main.RESOLUTION_WIDTH;
-import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.Main.SAVE_IMAGES;
+import static fine.fractals.context.ApplicationImpl.Application;
+import static fine.fractals.context.ApplicationImpl.REPEAT;
 import static fine.fractals.context.finebrot.FinebrotImpl.Finebrot;
 import static fine.fractals.context.mandelbrot.MandelbrotImpl.Mandelbrot;
 import static fine.fractals.perfect.coloring.PerfectColorDistributionImpl.PerfectColorDistribution;
@@ -42,6 +43,9 @@ public class FractalEngineImpl {
         Mandelbrot.createMask();
         Application.repaintMandelbrotWindow();
 
+        /*
+         * Mandelbrot calculation creates Finebrot data and image
+         */
         Mandelbrot.calculate();
 
         if (REPEAT) {
@@ -55,8 +59,7 @@ public class FractalEngineImpl {
         log.info("ScreenValuesToImages");
         PerfectColorDistribution.perfectlyColorScreenValues();
 
-        /* save file based on screen height; don't save it for testing */
-        if (RESOLUTION_WIDTH >= RESOLUTION_IMAGE_SAVE_FOR) {
+        if (SAVE_IMAGES) {
             log.info("Save Finebrot image");
             FractalMachine.saveImage();
             log.info("Save Finebrot image OK");

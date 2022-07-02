@@ -61,9 +61,10 @@ public abstract class FractalMachine {
 		}
 		Integer value;
 		/* r is a radius of a circle to verify non-zero values around */
-		for (int x = -neighbours; x < neighbours; x++) {
-			for (int y = -neighbours; y < neighbours; y++) {
-				if ((x * x) + (y * y) < (neighbours * neighbours)) {
+		final int r = neighbours + 1;
+		for (int x = -r; x < r; x++) {
+			for (int y = -r; y < r; y++) {
+				if ((x * x) + (y * y) < (r * r)) {
 					/* Find value to be carried by HH.calculation */
 					int x2 = xx + x;
 					int y2 = yy + y;
