@@ -5,12 +5,14 @@ import org.apache.logging.log4j.Logger;
 import org.bytedeco.javacv.*;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,7 +26,6 @@ public class FinebrotListOfImagesToVideoWithAudio {
     private static final Logger log = LogManager.getLogger(FinebrotListOfImagesToVideoWithAudio.class);
 
     private static final String VIDEO_NAME = "Finebrot_ff_1.avi";
-    private static final String VIDEO_NAME_MUTE = new StringBuilder(VIDEO_NAME).insert(VIDEO_NAME.indexOf("."), "_mute").toString();
     private static final String AUDIO_FILE = "/home/lukas/Downloads/Arcadia.mp3";
     private static final String FINEBROT_IMAGE_LOCATION = "/home/lukas/Fractals/del 01/";
 
@@ -42,8 +43,7 @@ public class FinebrotListOfImagesToVideoWithAudio {
 
     public static void main(String[] args) throws Exception {
         VideoMaker.listOfFinebrotImages();
-        VideoMaker.createVideo();
-        VideoMaker.mergeAudioAndVideo();
+        VideoMaker.createVideoWithAudio();
     }
 
 
@@ -63,28 +63,65 @@ public class FinebrotListOfImagesToVideoWithAudio {
     }
 
 
-    private void createVideo() throws IOException {
+    private void createVideoWithAudio() throws IOException {
         log.info("createVideo()");
 
         FFmpegFrameRecorder recorder = null;
+        FrameGrabber audioGrabber = null;
         try {
-            recorder = new FFmpegFrameRecorder(VIDEO_NAME_MUTE, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
+            audioGrabber = new FFmpegFrameGrabber(AUDIO_FILE);
+            audioGrabber.start();
 
+            recorder = new FFmpegFrameRecorder(VIDEO_NAME, RESOLUTION_WIDTH, RESOLUTION_HEIGHT, audioGrabber.getAudioChannels());
             recorder.setVideoCodec(AV_CODEC_ID_MPEG4);
-            recorder.setFrameRate(25);
             recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
+            recorder.setFrameRate(25);
+            recorder.setSampleRate(audioGrabber.getSampleRate());
             recorder.setFormat("mp4");
-
             recorder.start();
 
             final Java2DFrameConverter converter = new Java2DFrameConverter();
+            Frame audioFrame;
+            // final JavaFXFrameConverter converter = new JavaFXFrameConverter();
 
+            /*
+             * zoom in
+             */
             for (URL url : urls) {
-                /*
-                 * Make the video, 25 images /s
-                 */
                 recorder.record(converter.getFrame(ImageIO.read(url)));
             }
+
+            /*
+             * 2s wait
+             */
+            final BufferedImage last = ImageIO.read(urls.get(urls.size() - 1));
+            for (int i = 0; i < 50; i++) {
+                recorder.record(converter.getFrame(last));
+            }
+
+            /*
+             * zoom out
+             */
+            Collections.reverse(urls);
+            for (URL url : urls) {
+                recorder.record(converter.getFrame(ImageIO.read(url)));
+            }
+
+            /*
+             * 2s wait
+             */
+            final BufferedImage first = ImageIO.read(urls.get(urls.size() - 1));
+            for (int i = 0; i < 50; i++) {
+                recorder.record(converter.getFrame(first));
+            }
+
+            /*
+             * Add soundtrack
+             */
+            while ((audioFrame = audioGrabber.grabFrame()) != null) {
+                recorder.record(audioFrame);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -92,62 +129,9 @@ public class FinebrotListOfImagesToVideoWithAudio {
                 recorder.stop();
                 recorder.release();
             }
-        }
-    }
-
-    public void mergeAudioAndVideo() throws Exception {
-        log.info("mergeAudioAndVideo()");
-
-        FrameGrabber videoGrabber = null;
-        FrameGrabber audioGrabber = null;
-        FrameRecorder recorder = null;
-        try {
-            videoGrabber = new FFmpegFrameGrabber(VIDEO_NAME_MUTE);
-            audioGrabber = new FFmpegFrameGrabber(AUDIO_FILE);
-
-            videoGrabber.start();
-            audioGrabber.start();
-
-            recorder = new FFmpegFrameRecorder(VIDEO_NAME,
-                    videoGrabber.getImageWidth(),
-                    videoGrabber.getImageHeight(),
-                    audioGrabber.getAudioChannels());
-
-            recorder.setFrameRate(videoGrabber.getFrameRate());
-            recorder.setSampleRate(audioGrabber.getSampleRate());
-            recorder.setVideoCodec(AV_CODEC_ID_MPEG4);
-            recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
-            recorder.setFormat("mp4");
-
-            recorder.start();
-
-            Frame videoFrame;
-            Frame audioFrame;
-            while ((videoFrame = videoGrabber.grabFrame()) != null) {
-                recorder.record(videoFrame);
-            }
-            while ((audioFrame = audioGrabber.grabFrame()) != null) {
-                recorder.record(audioFrame);
-            }
-
-            videoGrabber.stop();
-            audioGrabber.stop();
-            recorder.stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (recorder != null) {
-                    recorder.release();
-                }
-                if (videoGrabber != null) {
-                    videoGrabber.release();
-                }
-                if (audioGrabber != null) {
-                    audioGrabber.release();
-                }
-            } catch (FrameRecorder.Exception e) {
-                e.printStackTrace();
+            if (audioGrabber != null) {
+                audioGrabber.stop();
+                audioGrabber.release();
             }
         }
     }
