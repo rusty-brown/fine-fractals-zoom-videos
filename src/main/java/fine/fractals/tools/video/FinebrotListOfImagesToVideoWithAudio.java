@@ -31,7 +31,12 @@ public class FinebrotListOfImagesToVideoWithAudio {
 
     private final List<URL> urls = new ArrayList<>();
 
+    private FFmpegFrameRecorder recorder;
+    private Java2DFrameConverter converter;
+
+    private FrameGrabber audioGrabber;
     private static final FinebrotListOfImagesToVideoWithAudio VideoMaker;
+
 
     static {
         log.info("init");
@@ -42,12 +47,12 @@ public class FinebrotListOfImagesToVideoWithAudio {
     }
 
     public static void main(String[] args) throws Exception {
-        VideoMaker.listOfFinebrotImages();
-        VideoMaker.createVideoWithAudio();
+        VideoMaker.makeListOfFinebrotImages();
+        VideoMaker.makeVideoWithAudio();
     }
 
 
-    private void listOfFinebrotImages() throws IOException {
+    private void makeListOfFinebrotImages() throws IOException {
         log.info("listOfFinebrotImages()");
 
         try (Stream<Path> paths = Files.walk(Paths.get(FINEBROT_IMAGE_LOCATION))) {
@@ -63,15 +68,15 @@ public class FinebrotListOfImagesToVideoWithAudio {
     }
 
 
-    private void createVideoWithAudio() throws IOException {
+    private void makeVideoWithAudio() throws IOException {
         log.info("createVideo()");
 
-        FFmpegFrameRecorder recorder = null;
-        FrameGrabber audioGrabber = null;
         try {
+            log.info("audioGrabber");
             audioGrabber = new FFmpegFrameGrabber(AUDIO_FILE);
             audioGrabber.start();
 
+            log.info("recorder");
             recorder = new FFmpegFrameRecorder(VIDEO_NAME, RESOLUTION_WIDTH, RESOLUTION_HEIGHT, audioGrabber.getAudioChannels());
             recorder.setVideoCodec(AV_CODEC_ID_MPEG4);
             recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
@@ -80,48 +85,32 @@ public class FinebrotListOfImagesToVideoWithAudio {
             recorder.setFormat("mp4");
             recorder.start();
 
-            final Java2DFrameConverter converter = new Java2DFrameConverter();
-            Frame audioFrame;
-            // final JavaFXFrameConverter converter = new JavaFXFrameConverter();
+            log.info("converter");
+            converter = new Java2DFrameConverter();
+            // converter = new JavaFXFrameConverter();
 
-            /*
-             * zoom in
-             */
-            for (URL url : urls) {
-                recorder.record(converter.getFrame(ImageIO.read(url)));
-            }
+            log.info("zoom in");
+            renderListOfImages();
 
-            /*
-             * 2s wait
-             */
+            log.info("2s wait");
             final BufferedImage last = ImageIO.read(urls.get(urls.size() - 1));
-            for (int i = 0; i < 50; i++) {
-                recorder.record(converter.getFrame(last));
-            }
+            renderImage(last, 3);
 
-            /*
-             * zoom out
-             */
+            log.info("zoom out");
             Collections.reverse(urls);
-            for (URL url : urls) {
-                recorder.record(converter.getFrame(ImageIO.read(url)));
-            }
+            renderListOfImages();
 
-            /*
-             * 2s wait
-             */
+            log.info("2s wait");
             final BufferedImage first = ImageIO.read(urls.get(urls.size() - 1));
-            for (int i = 0; i < 50; i++) {
-                recorder.record(converter.getFrame(first));
-            }
+            renderImage(first, 2);
 
-            /*
-             * Add soundtrack
-             */
+            log.info("Add soundtrack");
+            Frame audioFrame;
             while ((audioFrame = audioGrabber.grabFrame()) != null) {
                 recorder.record(audioFrame);
             }
 
+            log.info("Finished.");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -133,6 +122,18 @@ public class FinebrotListOfImagesToVideoWithAudio {
                 audioGrabber.stop();
                 audioGrabber.release();
             }
+        }
+    }
+
+    private void renderListOfImages() throws IOException {
+        for (URL url : urls) {
+            recorder.record(converter.getFrame(ImageIO.read(url)));
+        }
+    }
+
+    private void renderImage(BufferedImage image, int seconds) throws IOException {
+        for (int i = 0; i < seconds * 25; i++) {
+            recorder.record(converter.getFrame(image));
         }
     }
 }
