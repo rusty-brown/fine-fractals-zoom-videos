@@ -94,7 +94,7 @@ public class FinebrotListOfImagesToVideoWithAudio {
 
             log.info("2s wait");
             final BufferedImage last = ImageIO.read(urls.get(urls.size() - 1));
-            renderImage(last, 3);
+            renderImage(last);
 
             log.info("zoom out");
             Collections.reverse(urls);
@@ -102,7 +102,7 @@ public class FinebrotListOfImagesToVideoWithAudio {
 
             log.info("2s wait");
             final BufferedImage first = ImageIO.read(urls.get(urls.size() - 1));
-            renderImage(first, 2);
+            renderImage(first);
 
             log.info("Add soundtrack");
             Frame audioFrame;
@@ -131,8 +131,8 @@ public class FinebrotListOfImagesToVideoWithAudio {
         }
     }
 
-    private void renderImage(BufferedImage image, int seconds) throws IOException {
-        for (int i = 0; i < seconds * 25; i++) {
+    private void renderImage(BufferedImage image) throws IOException {
+        for (int i = 0; i < 63; i++) {
             recorder.record(converter.getFrame(image));
         }
     }
