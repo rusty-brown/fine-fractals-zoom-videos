@@ -66,15 +66,18 @@ public class FinebrotListOfImagesToVideoWithAudio {
     private void createVideo() throws IOException {
         log.info("createVideo()");
 
-        try (
-                final FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(VIDEO_NAME_MUTE, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
-                final Java2DFrameConverter converter = new Java2DFrameConverter()
-        ) {
+        FFmpegFrameRecorder recorder = null;
+        try {
+            recorder = new FFmpegFrameRecorder(VIDEO_NAME_MUTE, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
+
             recorder.setVideoCodec(AV_CODEC_ID_MPEG4);
             recorder.setFrameRate(25);
             recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
             recorder.setFormat("mp4");
+
             recorder.start();
+
+            final Java2DFrameConverter converter = new Java2DFrameConverter();
 
             for (URL url : urls) {
                 /*
@@ -82,30 +85,40 @@ public class FinebrotListOfImagesToVideoWithAudio {
                  */
                 recorder.record(converter.getFrame(ImageIO.read(url)));
             }
-
-            recorder.stop();
-            recorder.release();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (recorder != null) {
+                recorder.stop();
+                recorder.release();
+            }
         }
     }
 
     public void mergeAudioAndVideo() throws Exception {
         log.info("mergeAudioAndVideo()");
 
-        try (
-                final FrameGrabber videoGrabber = new FFmpegFrameGrabber(VIDEO_NAME_MUTE);
-                final FrameGrabber audioGrabber = new FFmpegFrameGrabber(AUDIO_FILE);
-                final FrameRecorder recorder = new FFmpegFrameRecorder(
-                        VIDEO_NAME,
-                        videoGrabber.getImageWidth(),
-                        videoGrabber.getImageHeight(),
-                        audioGrabber.getAudioChannels()
-                )
-        ) {
+        FrameGrabber videoGrabber = null;
+        FrameGrabber audioGrabber = null;
+        FrameRecorder recorder = null;
+        try {
+            videoGrabber = new FFmpegFrameGrabber(VIDEO_NAME_MUTE);
+            audioGrabber = new FFmpegFrameGrabber(AUDIO_FILE);
+
             videoGrabber.start();
             audioGrabber.start();
-            recorder.setFormat("mp4");
+
+            recorder = new FFmpegFrameRecorder(VIDEO_NAME,
+                    videoGrabber.getImageWidth(),
+                    videoGrabber.getImageHeight(),
+                    audioGrabber.getAudioChannels());
+
             recorder.setFrameRate(videoGrabber.getFrameRate());
             recorder.setSampleRate(audioGrabber.getSampleRate());
+            recorder.setVideoCodec(AV_CODEC_ID_MPEG4);
+            recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
+            recorder.setFormat("mp4");
+
             recorder.start();
 
             Frame videoFrame;
@@ -120,10 +133,22 @@ public class FinebrotListOfImagesToVideoWithAudio {
             videoGrabber.stop();
             audioGrabber.stop();
             recorder.stop();
-
-            recorder.release();
-            videoGrabber.release();
-            audioGrabber.release();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (recorder != null) {
+                    recorder.release();
+                }
+                if (videoGrabber != null) {
+                    videoGrabber.release();
+                }
+                if (audioGrabber != null) {
+                    audioGrabber.release();
+                }
+            } catch (FrameRecorder.Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
