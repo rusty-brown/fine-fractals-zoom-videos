@@ -78,8 +78,8 @@ public abstract class FractalMachine {
 		return true;
 	}
 
-	public static boolean someNeighboursFinishedInside(int xx, int yy, MandelbrotElement[][] elements) {
-		/* r is a radius of a circle to verify finished inside (red) elements*/
+	public static boolean someNeighboursFinishedLong(int xx, int yy, MandelbrotElement[][] elements) {
+		/* r is a radius of a square to verify if any neighbor px finished long (red pixel) */
 		MandelbrotElement el;
 		for (int x = -neighbours; x < neighbours; x++) {
 			for (int y = -neighbours; y < neighbours; y++) {
@@ -88,7 +88,7 @@ public abstract class FractalMachine {
 					int y2 = yy + y;
 					if (checkDomain(x2, y2)) {
 						el = elements[x2][y2];
-						if (el != null && el.isHibernatedFinishedInside()) {
+						if (el != null && el.isHibernatedFinishedLong()) {
 							return true;
 						}
 					}

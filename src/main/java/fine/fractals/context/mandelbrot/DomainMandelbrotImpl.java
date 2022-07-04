@@ -74,7 +74,7 @@ class DomainMandelbrotImpl {
 					domainFull.add(elementZero);
 
 					if (!firstDomainExecution) {
-						// TODO try also with: OR FractalMachine.someNeighboursFinishedInside(t, x, elementsScreen);
+						// TODO try also with: OR FractalMachine.someNeighboursFinishedLong(t, x, elementsScreen);
 						if (RESOLUTION_MULTIPLIER == one_square) {
 							final double d = AreaMandelbrot.plank() / 3;
 
@@ -206,8 +206,8 @@ class DomainMandelbrotImpl {
 							case ActiveRecalculate -> ACTIVE_RECALCULATE;
 							case HibernatedBlack -> HIBERNATED_BLACK;
 							case HibernatedBlackNeighbour -> HIBERNATED_BLACK_NEIGHBOR;
-							case HibernatedFinished -> HIBERNATED_FINISHED_OUT;
-							case HibernatedFinishedInside -> HIBERNATED_FINISHED_IN;
+							case HibernatedFinishedTooShort -> HIBERNATED_FINISHED_TOO_SHORT;
+							case HibernatedFinishedLong -> HIBERNATED_FINISHED_LONG;
 							case ActiveFixed -> ACTIVE_FIXED;
 						};
 					} else {

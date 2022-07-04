@@ -13,7 +13,7 @@ public class MandelbrotMaskColors {
     public static final Color ACTIVE_RECALCULATE = ORANGE;
     public static final Color HIBERNATED_BLACK = BLACK;
     public static final Color HIBERNATED_BLACK_NEIGHBOR = GRAY;
-    public static final Color HIBERNATED_FINISHED_OUT = WHITE;
-    public static final Color HIBERNATED_FINISHED_IN = RED;
+    public static final Color HIBERNATED_FINISHED_TOO_SHORT = WHITE;
+    public static final Color HIBERNATED_FINISHED_LONG = RED;
 
 }

@@ -51,7 +51,7 @@ public class PathThread implements Runnable {
                         // log.info("Fast fail " + success);
 
                         // TODO set proper el state
-                        el.setHibernatedFinished();
+                        el.setHibernatedBlack();
                         return;
                     }
                 }
@@ -64,19 +64,17 @@ public class PathThread implements Runnable {
         if (pathTest) {
             /* Element diverged */
             el.setValues(iterator);
-            /* Don't set last iteration; I will need test if it was 0 bellow. It is set in last else */
-            /* This state may latter change to hibernatedFinishedInside */
             el.setHibernatedFinished();
-            /* Divergent paths for Design */
-
-            /* PATH size may DIFFER based on contains */
-
+            /*
+             * Removed lastIteration, lastVisitedRe, lastVisitedIm
+             * TODO add them back but with clear way of managing these new data, path lengths, etc
+             */
             if (path.size() > ITERATION_MIN) {
 
                 /* This isn't continuation of unfinished iteration from previous calculation */
-                el.setHibernatedFinishedInside();
+                el.setHibernatedFinishedLong();
 
-                DomainFinebrot.addEscapePathInside(path);
+                DomainFinebrot.addEscapePathLong(path);
             }
         }
     }

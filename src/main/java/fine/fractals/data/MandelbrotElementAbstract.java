@@ -6,13 +6,11 @@ import static fine.fractals.mandelbrot.MandelbrotState.*;
 
 public abstract class MandelbrotElementAbstract {
 
-	protected int lastIteration;
 	protected int value;
 
 	protected MandelbrotState state = ActiveNew;
 
 	public MandelbrotElementAbstract() {
-		this.lastIteration = 0;
 		this.value = 0;
 	}
 
@@ -41,12 +39,12 @@ public abstract class MandelbrotElementAbstract {
 	}
 
 	public boolean isHibernatedFinished() {
-		return this.state == HibernatedFinished;
+		return this.state == HibernatedFinishedTooShort;
 	}
 
 	/* Inside means that path of this divergent element had enough hits inside displayed area image */
-	public boolean isHibernatedFinishedInside() {
-		return this.state == HibernatedFinishedInside;
+	public boolean isHibernatedFinishedLong() {
+		return this.state == HibernatedFinishedLong;
 	}
 
 	/* set both real and correct value */
@@ -59,11 +57,11 @@ public abstract class MandelbrotElementAbstract {
 	}
 
 	public void setHibernatedFinished() {
-		this.state = HibernatedFinished;
+		this.state = HibernatedFinishedTooShort;
 	}
 
-	public void setHibernatedFinishedInside() {
-		this.state = HibernatedFinishedInside;
+	public void setHibernatedFinishedLong() {
+		this.state = HibernatedFinishedLong;
 	}
 
 	public void setActiveMoved() {
@@ -73,7 +71,7 @@ public abstract class MandelbrotElementAbstract {
 	}
 
 	public void setActiveRecalculate() {
-		if (this.state != HibernatedFinishedInside) {
+		if (this.state != HibernatedFinishedLong) {
 			this.state = ActiveRecalculate;
 		}
 	}

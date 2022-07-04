@@ -30,12 +30,11 @@ public class DomainFinebrotImpl {
     private DomainFinebrotImpl() {
     }
 
-
     /*
      * All elements on escape path are already inside displayed area
      * Because they are filtered like that during calculation
      */
-    public void addEscapePathInside(ArrayList<double[]> path) {
+    public void addEscapePathLong(ArrayList<double[]> path) {
         paths.add(path);
     }
 
@@ -63,7 +62,8 @@ public class DomainFinebrotImpl {
 
         /* remove elements which moved our fo zoomed area */
         counter++;
-        if (counter % 10 == 0) {
+        if (counter % 5 == 0) {
+            log.info("Remove elements which zoomed out");
             for (ArrayList<double[]> path : paths) {
                 if (path.removeIf(el -> !AreaFinebrot.contains(el[0], el[1]))) {
                     removed++;
