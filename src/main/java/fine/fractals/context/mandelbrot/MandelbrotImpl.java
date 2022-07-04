@@ -98,8 +98,7 @@ public class MandelbrotImpl {
     }
 
     public void fixOptimizationBreak() {
-
-        log.info(" === fixOptimizationBreak ===");
+        log.info("fixOptimizationBreak()");
 
         /* Last tested pixel is Hibernated as Converged (Calculation finished) */
         Bool lastIsWhite = new Bool();

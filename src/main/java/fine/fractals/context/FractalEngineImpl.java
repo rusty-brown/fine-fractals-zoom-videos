@@ -56,13 +56,10 @@ public class FractalEngineImpl {
             Application.repaintMandelbrotWindow();
         }
 
-        log.info("ScreenValuesToImages");
         PerfectColorDistribution.perfectlyColorScreenValues();
 
         if (SAVE_IMAGES) {
-            log.info("Save Finebrot image");
-            FractalMachine.saveImage();
-            log.info("Save Finebrot image OK");
+            FractalMachine.saveImages();
         }
         calculationInProgress = false;
         Application.repaintWindows();

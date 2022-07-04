@@ -47,6 +47,7 @@ public class PerfectColorDistributionImpl {
      * Expand colour palette so that all pixels may be colored perfectly
      */
     public void perfectlyColorScreenValues() {
+        log.info("perfectlyColorScreenValues()");
 
         int zeroValueElements = 0;
 
@@ -80,15 +81,15 @@ public class PerfectColorDistributionImpl {
         final int singleColorUse = ((int) ((double) allPixelsNonZero / (double) paletteColorCount));
         final int left = allPixelsNonZero - (paletteColorCount * singleColorUse);
 
-        log.info("----------------------------------");
-        log.info("All pixels to paint:        " + allPixelsTotal);
-        log.info("--------------------------> " + (zeroValueElements + left + (singleColorUse * paletteColorCount)));
-        log.info("Zero value pixels to paint: " + zeroValueElements);
-        log.info("Non zero pixels to paint:   " + allPixelsNonZero);
-        log.info("Spectrum, available colors: " + paletteColorCount);
-        log.info("Pixels per each color:      " + singleColorUse);
-        log.info("left:                       " + left);
-        log.info("----------------------------------");
+        log.debug("-----------------------------------");
+        log.debug("All pixels to paint:        " + allPixelsTotal);
+        log.debug("--------------------------> " + (zeroValueElements + left + (singleColorUse * paletteColorCount)));
+        log.debug("Zero value pixels to paint: " + zeroValueElements);
+        log.debug("Non zero pixels to paint:   " + allPixelsNonZero);
+        log.debug("Spectrum, available colors: " + paletteColorCount);
+        log.debug("Pixels per each color:      " + singleColorUse);
+        log.debug("left:                       " + left);
+        log.debug("-----------------------------------");
 
         /* pixel index */
         int pi;

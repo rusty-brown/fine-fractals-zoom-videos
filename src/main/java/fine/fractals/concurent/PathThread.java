@@ -33,7 +33,6 @@ public class PathThread implements Runnable {
         /* double[2] consumes less memory than 2x Double */
         final ArrayList<double[]> path = new ArrayList<>();
 
-        int success = 0;
         while (mem.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
 
             /*
@@ -44,17 +43,6 @@ public class PathThread implements Runnable {
             if (AreaFinebrot.contains(mem)) {
                 /* Calculation did not diverge */
                 path.add(new double[]{mem.re, mem.im});
-                success++;
-            } else {
-                if (iterator == 500) {
-                    if (success < 6) {
-                        // log.info("Fast fail " + success);
-
-                        // TODO set proper el state
-                        el.setHibernatedBlack();
-                        return;
-                    }
-                }
             }
             iterator++;
         }

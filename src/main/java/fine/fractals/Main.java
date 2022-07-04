@@ -24,9 +24,8 @@ public class Main {
 	 * 1920 1080 full HD
 	 * 2560 1440 quad HD
 	 */
-	public static final int RESOLUTION_WIDTH = 1080;
-	public static final int RESOLUTION_HEIGHT = 1920;
-
+	public static final int RESOLUTION_WIDTH = 1920;
+	public static final int RESOLUTION_HEIGHT = 1080;
 	public static final boolean SAVE_IMAGES = true;
 
 	/**
