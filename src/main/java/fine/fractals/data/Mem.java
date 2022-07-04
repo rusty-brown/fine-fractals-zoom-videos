@@ -1,13 +1,10 @@
 package fine.fractals.data;
 
-import static java.lang.Integer.MIN_VALUE;
-
 public class Mem {
 
 	public double xTemp;
-	public double yTemp;
 
-	public static final int NOT = MIN_VALUE;
+	public static final int NOT = 0;
 
 	public double re;
 	public double im;
@@ -24,10 +21,8 @@ public class Mem {
 
 	public void square() {
 		xTemp = (this.re * this.re) - (this.im * this.im);
-		yTemp = 2 * this.re * this.im;
-
+		this.im = 2 * this.re * this.im;
 		this.re = xTemp;
-		this.im = yTemp;
 	}
 
 	/**

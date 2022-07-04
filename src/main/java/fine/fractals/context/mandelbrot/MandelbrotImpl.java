@@ -63,21 +63,16 @@ public class MandelbrotImpl {
             if (terminated) {
                 log.info("ExecutorService is terminated");
             } else {
-
-                /* program end */
                 log.fatal("ExecutorService NOT terminated");
-                REPEAT = false;
-                if (SAVE_IMAGES) {
-                    log.info("Wait for last calculation to finish.");
-                    terminated = executor.awaitTermination(59, MINUTES);
-                    log.info("Finished " + terminated);
-                    DomainFinebrot.domainToScreenGrid();
-                    PerfectColorDistribution.perfectlyColorScreenValues();
-                    FractalMachine.saveImage();
-                }
-                System.exit(0);
-                /* program end */
 
+                /*  1 hour */
+                int countOneHour = 60 * 60;
+                while (!executor.isTerminated()) {
+                    log.info("ExecutorService not terminated, " + terminated + " <- " + countOneHour);
+                    // wait 1s
+                    Thread.sleep(1000);
+                    countOneHour--;
+                }
             }
         } catch (InterruptedException e) {
             log.error("Executor waiting interrupted.");

@@ -1,6 +1,5 @@
 package fine.fractals.concurent;
 
-import fine.fractals.Main;
 import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.Mem;
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
+import static fine.fractals.Main.FRACTAL;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
 import static fine.fractals.fractal.Fractal.*;
@@ -19,31 +19,42 @@ public class PathThread implements Runnable {
 
     private final MandelbrotElement el;
 
-    private final Mem mem = new Mem();
     public PathThread(MandelbrotElement el) {
         this.el = el;
     }
 
     public void run() {
-        int iterator = el.getLastIteration();
+        int iterator = 0;
+        final Mem mem = new Mem();
 
-        // TODO should be last visited ?
         mem.re = el.originRe;
         mem.im = el.originIm;
 
-        final ArrayList<Double> path = new ArrayList<>();
+        /* double[2] consumes less memory than 2x Double */
+        final ArrayList<double[]> path = new ArrayList<>();
 
+        int success = 0;
         while (mem.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
 
             /*
              * Calculation happens only here
              */
-            Main.FRACTAL.math(mem, el.originRe, el.originIm);
+            FRACTAL.math(mem, el.originRe, el.originIm);
 
             if (AreaFinebrot.contains(mem)) {
                 /* Calculation did not diverge */
-                path.add(mem.re);
-                path.add(mem.im);
+                path.add(new double[]{mem.re, mem.im});
+                success++;
+            } else {
+                if (iterator == 500) {
+                    if (success < 6) {
+                        // log.info("Fast fail " + success);
+
+                        // TODO set proper el state
+                        el.setHibernatedFinished();
+                        return;
+                    }
+                }
             }
             iterator++;
         }
@@ -59,7 +70,9 @@ public class PathThread implements Runnable {
             /* Divergent paths for Design */
 
             /* PATH size may DIFFER based on contains */
-            if (el.getLastIteration() == 0 && path.size() > ITERATION_MIN * 2) {
+
+            if (path.size() > ITERATION_MIN) {
+
                 /* This isn't continuation of unfinished iteration from previous calculation */
                 el.setHibernatedFinishedInside();
 

@@ -9,7 +9,7 @@ public class Finebrot_Side extends Fractal {
         ITERATION_MAX = 14800;
         ITERATION_MIN = 42;
 
-        INIT_MANDELBROT_AREA_SIZE = 6.0;
+        INIT_MANDELBROT_AREA_SIZE = 7.0;
         INIT_MANDELBROT_TARGET_re = -0.10675625916322415;
         INIT_MANDELBROT_TARGET_im = -0.8914368889277283;
 

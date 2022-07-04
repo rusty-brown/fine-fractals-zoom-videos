@@ -39,8 +39,14 @@ public class UIKeyAdapter extends KeyAdapter {
             }
             case VK_I -> showInfo = !showInfo;
             case VK_R -> Application.repaintWindows();
-            case VK_MINUS -> ITERATION_MAX *= 0.95;
-            case VK_PLUS -> ITERATION_MAX *= 1.05;
+            case VK_MINUS -> {
+                ITERATION_MAX *= 0.95;
+                log.info("ITERATION_MAX  = " + ITERATION_MAX);
+            }
+            case VK_PLUS -> {
+                ITERATION_MAX *= 1.05;
+                log.info("ITERATION_MAX  = " + ITERATION_MAX);
+            }
         }
     }
 }

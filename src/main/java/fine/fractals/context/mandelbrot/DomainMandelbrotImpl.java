@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import static fine.fractals.Main.*;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.data.ResolutionMultiplier.one_square;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 import static fine.fractals.mandelbrot.MandelbrotMaskColors.*;
 
@@ -74,7 +75,7 @@ class DomainMandelbrotImpl {
 
 					if (!firstDomainExecution) {
 						// TODO try also with: OR FractalMachine.someNeighboursFinishedInside(t, x, elementsScreen);
-						if (RESOLUTION_MULTIPLIER == 2) {
+						if (RESOLUTION_MULTIPLIER == one_square) {
 							final double d = AreaMandelbrot.plank() / 3;
 
 							if (odd) {

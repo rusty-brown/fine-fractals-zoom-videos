@@ -1,6 +1,7 @@
 package fine.fractals;
 
 import fine.fractals.color.PaletteBlueWhite;
+import fine.fractals.data.ResolutionMultiplier;
 import fine.fractals.fractal.Finebrot_Side;
 import fine.fractals.fractal.Fractal;
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.ApplicationImpl.USER_HOME;
+import static fine.fractals.data.ResolutionMultiplier.one_square;
 
 public class Main {
 
@@ -34,7 +36,7 @@ public class Main {
 	 * value: 2
 	 * - calculates two more points per each pixel
 	 */
-	public static final int RESOLUTION_MULTIPLIER = 2;
+	public static final ResolutionMultiplier RESOLUTION_MULTIPLIER = one_square;
 
 	/**
 	 * Image in resolution Application.RESOLUTION_IMAGE_SAVE_FOR = 2000 will be saved to the location below

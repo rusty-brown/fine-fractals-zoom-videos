@@ -1,7 +1,6 @@
 package fine.fractals.fractal;
 
 import fine.fractals.data.Mem;
-import fine.fractals.formatter.Formatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +42,7 @@ public abstract class Fractal {
 	private static int iterationMax0;
 
 	public static void update() {
-		log.info("update");
+		log.info("update()");
 		if (iterationMax0 == 0) {
 			iterationMax0 = ITERATION_MAX;
 		}
@@ -62,7 +61,6 @@ public abstract class Fractal {
 			log.info("ITERATION_MAX " + ITERATION_MAX);
 		}
 
-		log.info("Updated: " + Formatter.roundString(AreaFinebrot.sizeRe) + " : " + ITERATION_MAX);
+		log.info("ITERATION_MAX = " + ITERATION_MAX);
 	}
-
 }

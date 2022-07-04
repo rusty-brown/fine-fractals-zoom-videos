@@ -2,12 +2,14 @@ package fine.fractals.data;
 
 import fine.fractals.mandelbrot.MandelbrotState;
 
+import static fine.fractals.mandelbrot.MandelbrotState.*;
+
 public abstract class MandelbrotElementAbstract {
 
 	protected int lastIteration;
-	protected Integer value;
+	protected int value;
 
-	protected MandelbrotState state = MandelbrotState.ActiveNew;
+	protected MandelbrotState state = ActiveNew;
 
 	public MandelbrotElementAbstract() {
 		this.lastIteration = 0;
@@ -15,44 +17,36 @@ public abstract class MandelbrotElementAbstract {
 	}
 
 	public boolean isHibernatedBlack() {
-		return this.state == MandelbrotState.HibernatedBlack;
+		return this.state == HibernatedBlack;
 	}
 
 	public void setHibernatedBlack() {
-		this.state = MandelbrotState.HibernatedBlack;
+		this.state = HibernatedBlack;
 		this.value = 0;
 	}
 
 	public void setHibernatedBlackNeighbour() {
-		if (this.state != MandelbrotState.HibernatedBlack) {
-			this.state = MandelbrotState.HibernatedBlackNeighbour;
+		if (this.state != HibernatedBlack) {
+			this.state = HibernatedBlackNeighbour;
 			this.value = 0;
 		}
 	}
 
 	public void resetForOptimization() {
-		this.state = MandelbrotState.ActiveNew;
+		this.state = ActiveNew;
 	}
 
 	public boolean isHibernatedBlack_Neighbour() {
-		return this.state == MandelbrotState.HibernatedBlackNeighbour;
+		return this.state == HibernatedBlackNeighbour;
 	}
 
 	public boolean isHibernatedFinished() {
-		return this.state == MandelbrotState.HibernatedFinished;
+		return this.state == HibernatedFinished;
 	}
 
 	/* Inside means that path of this divergent element had enough hits inside displayed area image */
 	public boolean isHibernatedFinishedInside() {
-		return this.state == MandelbrotState.HibernatedFinishedInside;
-	}
-
-	public int getLastIteration() {
-		return this.lastIteration;
-	}
-
-	public void setLastIteration(int lastIteration) {
-		this.lastIteration = lastIteration;
+		return this.state == HibernatedFinishedInside;
 	}
 
 	/* set both real and correct value */
@@ -65,50 +59,48 @@ public abstract class MandelbrotElementAbstract {
 	}
 
 	public void setHibernatedFinished() {
-		this.state = MandelbrotState.HibernatedFinished;
+		this.state = HibernatedFinished;
 	}
 
 	public void setHibernatedFinishedInside() {
-		this.state = MandelbrotState.HibernatedFinishedInside;
+		this.state = HibernatedFinishedInside;
 	}
 
 	public void setActiveMoved() {
-		if (this.state == MandelbrotState.ActiveNew) {
-			this.state = MandelbrotState.ActiveMoved;
+		if (this.state == ActiveNew) {
+			this.state = ActiveMoved;
 		}
 	}
 
 	public void setActiveRecalculate() {
-		if (this.state != MandelbrotState.HibernatedFinishedInside) {
-			this.state = MandelbrotState.ActiveRecalculate;
+		if (this.state != HibernatedFinishedInside) {
+			this.state = ActiveRecalculate;
 		}
 	}
 
 	/* This should be called only for deep black on Optimization fix */
 	public void setActiveFixed() {
-		this.state = MandelbrotState.ActiveFixed;
+		this.state = ActiveFixed;
 	}
 
 	public boolean isFixed() {
-		return this.state == MandelbrotState.ActiveFixed;
+		return this.state == ActiveFixed;
 	}
 
 	public boolean isActiveNew() {
-		return this.state == MandelbrotState.ActiveNew;
+		return this.state == ActiveNew;
 	}
 
 	public boolean isActiveRecalculate() {
-		return this.state == MandelbrotState.ActiveRecalculate;
+		return this.state == ActiveRecalculate;
 	}
 
 	public boolean isActiveMoved() {
-		return this.state == MandelbrotState.ActiveMoved;
+		return this.state == ActiveMoved;
 	}
 
 	public boolean isActiveAny() {
-
-		return this.state == MandelbrotState.ActiveNew || this.state == MandelbrotState.ActiveMoved || this.state == MandelbrotState.ActiveFixed;
-
+		return this.state == ActiveNew || this.state == ActiveMoved || this.state == ActiveFixed;
 	}
 
 	public MandelbrotState getState() {

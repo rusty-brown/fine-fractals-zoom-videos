@@ -71,13 +71,10 @@ public class AreaFinebrotImpl {
 				&& mem.im < this.borderHighIm;
 	}
 
-	public boolean containsRe(double re) {
+	public boolean contains(double re, double im) {
 		return re > this.borderLowRe
-				&& re < this.borderHighRe;
-	}
-
-	public boolean containsIm(double im) {
-		return im > this.borderLowIm
+				&& re < this.borderHighRe
+				&& im > this.borderLowIm
 				&& im < this.borderHighIm;
 	}
 
