@@ -59,7 +59,7 @@ public class PathThread implements Runnable {
             /* Divergent paths for Design */
 
             /* PATH size may DIFFER based on contains */
-            if (el.getLastIteration() == 0 && path.size() > ITERATION_MIN) {
+            if (el.getLastIteration() == 0 && path.size() > ITERATION_MIN * 2) {
                 /* This isn't continuation of unfinished iteration from previous calculation */
                 el.setHibernatedFinishedInside();
 
