@@ -21,9 +21,9 @@ import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_MPEG4;
 import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_YUV420P;
 
-public class FinebrotListOfImagesToVideoWithAudio {
+public class ListOfImagesToVideoWithAudio {
 
-    private static final Logger log = LogManager.getLogger(FinebrotListOfImagesToVideoWithAudio.class);
+    private static final Logger log = LogManager.getLogger(ListOfImagesToVideoWithAudio.class);
 
     private static final String VIDEO_NAME = "Finebrot_ff_1.avi";
     private static final String AUDIO_FILE = "/home/lukas/Downloads/Arcadia.mp3";
@@ -35,22 +35,21 @@ public class FinebrotListOfImagesToVideoWithAudio {
     private Java2DFrameConverter converter;
 
     private FrameGrabber audioGrabber;
-    private static final FinebrotListOfImagesToVideoWithAudio VideoMaker;
+    private static final ListOfImagesToVideoWithAudio VideoMaker;
 
 
     static {
         log.info("init");
-        VideoMaker = new FinebrotListOfImagesToVideoWithAudio();
+        VideoMaker = new ListOfImagesToVideoWithAudio();
     }
 
-    private FinebrotListOfImagesToVideoWithAudio() {
+    private ListOfImagesToVideoWithAudio() {
     }
 
     public static void main(String[] args) throws Exception {
         VideoMaker.makeListOfFinebrotImages();
         VideoMaker.makeVideoWithAudio();
     }
-
 
     private void makeListOfFinebrotImages() throws IOException {
         log.info("listOfFinebrotImages()");
@@ -66,7 +65,6 @@ public class FinebrotListOfImagesToVideoWithAudio {
                     });
         }
     }
-
 
     private void makeVideoWithAudio() throws IOException {
         log.info("createVideo()");
@@ -87,7 +85,6 @@ public class FinebrotListOfImagesToVideoWithAudio {
 
             log.info("converter");
             converter = new Java2DFrameConverter();
-            // converter = new JavaFXFrameConverter();
 
             log.info("zoom in");
             renderListOfImages();

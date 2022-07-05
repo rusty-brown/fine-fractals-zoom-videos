@@ -1,4 +1,4 @@
-package fine.fractals.mandelbrot;
+package fine.fractals.data.mandelbrot;
 
 import java.awt.*;
 
