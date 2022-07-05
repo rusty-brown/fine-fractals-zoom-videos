@@ -13,13 +13,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static fine.fractals.Main.*;
-import static fine.fractals.context.ApplicationImpl.REPEAT;
+import static fine.fractals.Main.RESOLUTION_HEIGHT;
+import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.TEST_OPTIMIZATION_FIX_SIZE;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
 import static fine.fractals.context.mandelbrot.DomainMandelbrotImpl.DomainMandelbrot;
-import static fine.fractals.perfect.coloring.PerfectColorDistributionImpl.PerfectColorDistribution;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class MandelbrotImpl {
@@ -43,12 +42,11 @@ public class MandelbrotImpl {
      * Calculate Domain Values
      */
     public void calculate() {
-        log.info("calculate()");
 
+        log.info("calculate()");
         final ArrayList<MandelbrotElement> domainFull = DomainMandelbrot.fetchDomainFull();
 
         log.info("calculate: " + domainFull.size() + ", which is full domain");
-
         final ExecutorService executor = Executors.newFixedThreadPool(Main.COREs);
 
         log.info("Start " + domainFull.size() + " threads");
@@ -68,7 +66,7 @@ public class MandelbrotImpl {
                 /*  1 hour */
                 int countOneHour = 60 * 60;
                 while (!executor.isTerminated()) {
-                    log.info("ExecutorService not terminated, " + terminated + " <- " + countOneHour);
+                    log.info("ExecutorService not terminated <- " + countOneHour);
                     // wait 1s
                     Thread.sleep(1000);
                     countOneHour--;

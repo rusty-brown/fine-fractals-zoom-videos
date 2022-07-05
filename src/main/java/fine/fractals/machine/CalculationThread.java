@@ -20,7 +20,6 @@ public class CalculationThread extends Thread {
         log.info("calculate");
         CalculationThread thread = new CalculationThread();
         thread.start();
-        Application.repaintWindows();
     }
 
     @Override

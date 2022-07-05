@@ -1,8 +1,8 @@
 package fine.fractals.data;
 
-import fine.fractals.mandelbrot.MandelbrotState;
+import fine.fractals.data.mandelbrot.MandelbrotState;
 
-import static fine.fractals.mandelbrot.MandelbrotState.*;
+import static fine.fractals.data.mandelbrot.MandelbrotState.*;
 
 public abstract class MandelbrotElementAbstract {
 
@@ -30,6 +30,7 @@ public abstract class MandelbrotElementAbstract {
 		}
 	}
 
+	@SuppressWarnings(value = "unused")
 	public void resetForOptimization() {
 		this.state = ActiveNew;
 	}
@@ -89,10 +90,12 @@ public abstract class MandelbrotElementAbstract {
 		return this.state == ActiveNew;
 	}
 
+	@SuppressWarnings(value = "unused")
 	public boolean isActiveRecalculate() {
 		return this.state == ActiveRecalculate;
 	}
 
+	@SuppressWarnings(value = "unused")
 	public boolean isActiveMoved() {
 		return this.state == ActiveMoved;
 	}

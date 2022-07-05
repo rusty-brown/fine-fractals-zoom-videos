@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import static fine.fractals.fractal.Fractal.ITERATION_MAX;
 
+@SuppressWarnings(value = "unused")
 public class Mathematician {
 
 	private static HashSet<Integer> PRIMES;

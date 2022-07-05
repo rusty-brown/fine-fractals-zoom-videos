@@ -13,7 +13,7 @@ import static fine.fractals.Main.*;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.data.ResolutionMultiplier.one_square;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
-import static fine.fractals.mandelbrot.MandelbrotMaskColors.*;
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.*;
 
 class DomainMandelbrotImpl {
 
@@ -56,8 +56,7 @@ class DomainMandelbrotImpl {
 	private boolean odd = true;
 
 	public ArrayList<MandelbrotElement> fetchDomainFull() {
-
-		log.info("DOMAIN created new");
+		log.debug("fetchDomainFull()");
 
 		MandelbrotElement elementZero;
 		final ArrayList<MandelbrotElement> domainFull = new ArrayList<>();

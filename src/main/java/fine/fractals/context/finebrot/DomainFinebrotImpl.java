@@ -39,7 +39,7 @@ public class DomainFinebrotImpl {
     }
 
     public void domainToScreenGrid() {
-        log.info("domainToScreenGrid");
+        log.info("domainToScreenGrid()");
 
         int removed = 0;
         int added = 0;
@@ -63,7 +63,7 @@ public class DomainFinebrotImpl {
         /* remove elements which moved our fo zoomed area */
         counter++;
         if (counter % 5 == 0) {
-            log.info("Remove elements which zoomed out");
+            log.debug("Remove elements which zoomed out");
             for (ArrayList<double[]> path : paths) {
                 if (path.removeIf(el -> !AreaFinebrot.contains(el[0], el[1]))) {
                     removed++;
@@ -72,7 +72,7 @@ public class DomainFinebrotImpl {
             paths.removeIf(ArrayList::isEmpty);
         }
 
-        log.info("* Removed: " + removed);
-        log.info("* Added:   " + added);
+        log.debug("* Removed: " + removed);
+        log.debug("* Added:   " + added);
     }
 }

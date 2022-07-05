@@ -18,7 +18,7 @@ public abstract class PaletteBlueWhite {
         log.info("init");
         Palette.name("Blue White");
         ColorUtils.toPalette(
-                new Color(5, 24, 54),
+                new Color(4, 23, 53),
                 new Color(255, 255, 255),
                 circleUp
         );

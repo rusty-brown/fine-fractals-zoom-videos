@@ -1,5 +1,6 @@
 package fine.fractals.data;
 
+@SuppressWarnings(value = "unused")
 public enum ResolutionMultiplier {
     /**
      * single point in the center of Mandelbrot pixel

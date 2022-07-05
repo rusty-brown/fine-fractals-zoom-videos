@@ -1,5 +1,6 @@
 package fine.fractals.perfect.coloring;
 
+import fine.fractals.data.finebrot.FinebrotPixel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -115,13 +116,13 @@ public class PerfectColorDistributionImpl {
                 }
             }
         }
-        log.info("painted:                   " + pi);
+        log.debug("painted:                   " + pi);
 
         /*
          * Behold, the coloring is perfect!
          */
 
-        log.info("clear pixels");
+        log.debug("clear pixels");
         pixels.clear();
     }
 }

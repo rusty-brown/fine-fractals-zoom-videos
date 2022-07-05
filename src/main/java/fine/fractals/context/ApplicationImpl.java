@@ -2,22 +2,19 @@ package fine.fractals.context;
 
 import fine.fractals.formatter.Formatter;
 import fine.fractals.machine.CalculationThread;
-import fine.fractals.windows.MandelbrotWindow;
 import fine.fractals.windows.FinebrotWindow;
+import fine.fractals.windows.MandelbrotWindow;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
 import fine.fractals.windows.listener.UIMouseListener;
 import fine.fractals.windows.listener.UIMouseWheelListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
-
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.FractalEngineImpl.FractalEngine;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.context.mandelbrot.MandelbrotImpl.Mandelbrot;
 
 public class ApplicationImpl {
 
@@ -36,7 +33,7 @@ public class ApplicationImpl {
     private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
 
-    public static boolean REPEAT = true;
+    public static final boolean REPEAT = true;
 
     /* Increase this only in CalculationThread */
     public static int iteration = 0;
@@ -80,12 +77,13 @@ public class ApplicationImpl {
 
     public void execute() {
         initUIWindows();
+        repaintWindows();
 
         CalculationThread.calculate();
     }
 
     public void repaintWindows() {
-        log.info("repaint");
+        log.info("repaintWindows()");
         this.finebrotWindow.frame.repaint();
         this.mandelbrotWindow.frame.repaint();
     }
@@ -95,7 +93,7 @@ public class ApplicationImpl {
     }
 
     public void zoomIn() {
-        log.info("ZOOM IN");
+        log.info("zoomIn()");
         AreaMandelbrot.zoomIn();
         AreaFinebrot.zoomIn();
         FractalEngine.updateDomain();

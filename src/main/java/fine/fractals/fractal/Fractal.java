@@ -42,7 +42,7 @@ public abstract class Fractal {
 	private static int iterationMax0;
 
 	public static void update() {
-		log.info("update()");
+		log.debug("update()");
 		if (iterationMax0 == 0) {
 			iterationMax0 = ITERATION_MAX;
 		}
@@ -52,13 +52,12 @@ public abstract class Fractal {
 		final double magnification = (size0 / sizeNow); // length 8 4 2 1 1/2 1/4 1/8
 
 		final double iterationDiv = (magnification * iterationMax0) - iterationMax0;
-		log.info("(" + magnification + " | " + iterationDiv + ")");
+		log.debug("(" + magnification + " | " + iterationDiv + ")");
 
 		ITERATION_MAX = (int) (iterationMax0 + (iterationDiv / 5000.0));
 
 		if (ITERATION_MAX > 300_000_000) {
 			ITERATION_MAX = 300_000_000;
-			log.info("ITERATION_MAX " + ITERATION_MAX);
 		}
 
 		log.info("ITERATION_MAX = " + ITERATION_MAX);

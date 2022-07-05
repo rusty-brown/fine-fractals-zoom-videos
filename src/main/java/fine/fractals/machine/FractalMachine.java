@@ -86,6 +86,7 @@ public abstract class FractalMachine {
 		return true;
 	}
 
+	@SuppressWarnings(value = "unused")
 	public static boolean someNeighboursFinishedLong(int xx, int yy, MandelbrotElement[][] elements) {
 		/* r is a radius of a square to verify if any neighbor px finished long (red pixel) */
 		MandelbrotElement el;
