@@ -28,19 +28,22 @@ public class CalculationThread extends Thread {
         do {
             log.info("Iteration: " + iteration++);
 
-            /* Calculate Fractal values */
             FractalEngine.calculate();
 
             if (REPEAT) {
                 Application.zoomIn();
-                Application.repaintWindows();
+            } else {
+                log.info("No repeat, exit now.");
+                System.exit(0);
             }
+
             if (iteration == 1) {
+                Application.initUIWindows();
                 /* Move to initial target coordinate after initialization of FractalEngine */
                 AreaMandelbrot.moveToInitialCoordinates();
                 AreaFinebrot.moveToInitialCoordinates();
             }
-
+            Application.repaintWindows();
         } while (REPEAT);
     }
 }

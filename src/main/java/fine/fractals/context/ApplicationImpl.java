@@ -33,13 +33,13 @@ public class ApplicationImpl {
     private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
 
-    public static final boolean REPEAT = true;
+    public static boolean REPEAT = true;
 
     /* Increase this only in CalculationThread */
     public static int iteration = 0;
 
-    private final MandelbrotWindow mandelbrotWindow;
-    private final FinebrotWindow finebrotWindow;
+    private MandelbrotWindow mandelbrotWindow;
+    private FinebrotWindow finebrotWindow;
 
     public static final ApplicationImpl Application;
 
@@ -49,17 +49,22 @@ public class ApplicationImpl {
     }
 
     private ApplicationImpl() {
+    }
+
+    public void initUIWindows() {
+        log.debug("listeners");
         final UIMouseListener uiMouseListener = new UIMouseListener();
         final UIKeyDispatcher uiKeyDispatcher = new UIKeyDispatcher();
         final UIMouseWheelListener uiMouseWheelListener = new UIMouseWheelListener();
 
+        log.debug("windows");
         mandelbrotWindow = new MandelbrotWindow(uiMouseListener, uiMouseWheelListener, uiKeyDispatcher);
         finebrotWindow = new FinebrotWindow(uiMouseListener, uiMouseWheelListener, uiKeyDispatcher);
-    }
 
-    private void initUIWindows() {
-        finebrotWindow.setApplicationWindow(mandelbrotWindow);
-        mandelbrotWindow.setDesignWindow(finebrotWindow);
+        log.debug("initUIWindows()");
+        finebrotWindow.setMandelbrotWindow(mandelbrotWindow);
+        mandelbrotWindow.setFinebrotWindow(finebrotWindow);
+
         /* set window positions*/
         int scrWidth = 1920;
         int scrHeight = 1080;
@@ -76,9 +81,7 @@ public class ApplicationImpl {
     }
 
     public void execute() {
-        initUIWindows();
-        repaintWindows();
-
+        log.debug("execute()");
         CalculationThread.calculate();
     }
 
@@ -89,6 +92,7 @@ public class ApplicationImpl {
     }
 
     public void repaintMandelbrotWindow() {
+        log.debug("repaintMandelbrotWindow()");
         mandelbrotWindow.frame.repaint();
     }
 

@@ -6,6 +6,8 @@ import fine.fractals.windows.adapter.UIMouseMotionAdapter;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
 import fine.fractals.windows.listener.UIMouseListener;
 import fine.fractals.windows.listener.UIMouseWheelListener;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +15,7 @@ import java.awt.*;
 import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.APP_NAME;
-import static fine.fractals.fractal.Fractal.NAME;
+import static fine.fractals.fractal.abst.Fractal.NAME;
 import static fine.fractals.images.FractalImage.FinebrotImage;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -21,13 +23,15 @@ public class FinebrotWindow extends UIWindow {
 
 	public final JFrame frame;
 
+	private static final Logger log = LogManager.getLogger(FinebrotWindow.class);
+
 	public FinebrotWindow(UIMouseListener uiMouseListener,
 						  UIMouseWheelListener uiMouseWheelListener,
 						  UIKeyDispatcher uiKeyDispatcher
 	) {
+		log.debug("initialize");
 		super.name = NAME + " - " + APP_NAME;
 
-		/*  Initialize UI */
 		this.frame = new JFrame(name);
 		this.frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.frame.getContentPane().add(this);
@@ -35,13 +39,15 @@ public class FinebrotWindow extends UIWindow {
 		this.frame.setLocationByPlatform(true);
 		this.frame.setVisible(true);
 
-        /* Initialize UI Actions */
+		log.debug("actions");
 		final JLayeredPane layeredPane = this.frame.getRootPane().getLayeredPane();
 		super.hideDefaultCursor(frame);
 
+		log.debug("adapter");
 		this.motionAdapter = new UIMouseMotionAdapter(this);
 		layeredPane.addMouseMotionListener(this.motionAdapter);
 
+		log.debug("listener");
 		this.frame.addKeyListener(new UIKeyAdapter());
 
 		layeredPane.addMouseListener(uiMouseListener);
@@ -63,5 +69,9 @@ public class FinebrotWindow extends UIWindow {
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
+	}
+
+	public void setMandelbrotWindow(MandelbrotWindow mandelbrotWindow) {
+		this.motionAdapter.setMandelbrotWindow(mandelbrotWindow);
 	}
 }

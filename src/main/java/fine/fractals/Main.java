@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.ApplicationImpl.USER_HOME;
-import static fine.fractals.data.ResolutionMultiplier.one_square;
+import static fine.fractals.data.ResolutionMultiplier.square_alter;
 
 public class Main {
 
@@ -30,7 +30,7 @@ public class Main {
 	public static int RESOLUTION_WIDTH = 1920;
 	public static int RESOLUTION_HEIGHT = 1080;
 	@EditMe
-	public static boolean SAVE_IMAGES = true;
+	public static boolean SAVE_IMAGES = false;
 
 	/**
 	 * Sets now many points will be used for calculation per each pixel
@@ -39,7 +39,7 @@ public class Main {
 	 * value: 2
 	 * - calculates two more points per each pixel
 	 */
-	public static ResolutionMultiplier RESOLUTION_MULTIPLIER = one_square;
+	public static ResolutionMultiplier RESOLUTION_MULTIPLIER = square_alter;
 
 	/**
 	 * Image in resolution Application.RESOLUTION_IMAGE_SAVE_FOR = 2000 will be saved to the location below

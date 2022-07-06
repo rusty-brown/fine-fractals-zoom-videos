@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.fractal.Fractal.ITERATION_MAX;
+import static fine.fractals.fractal.abst.Fractal.ITERATION_MAX;
 import static fine.fractals.windows.MandelbrotWindow.showInfo;
 import static java.awt.event.KeyEvent.*;
 

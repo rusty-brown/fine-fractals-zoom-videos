@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import static fine.fractals.Main.*;
 import static fine.fractals.context.ApplicationImpl.APP_NAME;
 import static fine.fractals.context.ApplicationImpl.iteration;
-import static fine.fractals.fractal.Fractal.NAME;
+import static fine.fractals.fractal.abst.Fractal.NAME;
 import static fine.fractals.images.FractalImage.FinebrotImage;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 import static javax.imageio.ImageWriteParam.MODE_EXPLICIT;
@@ -34,7 +34,7 @@ public abstract class FractalMachine {
 			log.info("Finebrot image: " + finebrotName);
 			saveImages(finebrotName, FinebrotImage);
 
-			final String mandelbrotName = FILE_PATH + "debug/" + NAME + APP_NAME + iteration() + "_mandelbrot.jpg";
+			final String mandelbrotName = DEBUG_PATH + NAME + APP_NAME + iteration() + "_mandelbrot.jpg";
 			log.info("Mandelbrot image: " + mandelbrotName);
 			saveImages(mandelbrotName, MandelbrotMaskImage);
 

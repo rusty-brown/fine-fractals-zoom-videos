@@ -4,7 +4,7 @@ import fine.fractals.Main;
 import fine.fractals.concurent.PathThread;
 import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
-import fine.fractals.fractal.Fractal;
+import fine.fractals.fractal.abst.Fractal;
 import fine.fractals.machine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

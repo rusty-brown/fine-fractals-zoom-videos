@@ -1,7 +1,5 @@
 package fine.fractals.windows.abst;
 
-import fine.fractals.windows.FinebrotWindow;
-import fine.fractals.windows.MandelbrotWindow;
 import fine.fractals.windows.adapter.UIMouseMotionAdapter;
 
 import javax.swing.*;
@@ -42,14 +40,6 @@ public abstract class UIWindow extends JComponent {
 		final int y = Target.getScreenFromCornerY();
 		g.drawLine(x + line, y, x - line, y);
 		g.drawLine(x, y + line, x, y - line);
-	}
-
-	public void setApplicationWindow(MandelbrotWindow otherMandelbrotWindow) {
-		this.motionAdapter.setApplicationWindow(otherMandelbrotWindow);
-	}
-
-	public void setDesignWindow(FinebrotWindow otherFinebrotWindow) {
-		this.motionAdapter.setDesignWindow(otherFinebrotWindow);
 	}
 
 	public void activate() {

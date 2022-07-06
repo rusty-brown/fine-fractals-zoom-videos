@@ -11,30 +11,30 @@ import static fine.fractals.context.TargetImpl.Target;
 
 public class UIMouseMotionAdapter extends MouseMotionAdapter {
 	private final UIWindow meWindow;
-	private MandelbrotWindow otherMandelbrotWindow = null;
-	private FinebrotWindow otherFinebrotWindow = null;
+	private MandelbrotWindow mandelbrotWindow = null;
+	private FinebrotWindow finebrotWindow = null;
 
 	public UIMouseMotionAdapter(UIWindow meWindow) {
 		this.meWindow = meWindow;
 	}
 
-	public void setApplicationWindow(MandelbrotWindow otherMandelbrotWindow) {
-		this.otherMandelbrotWindow = otherMandelbrotWindow;
+	public void setMandelbrotWindow(MandelbrotWindow mandelbrotWindow) {
+		this.mandelbrotWindow = mandelbrotWindow;
 	}
 
-	public void setDesignWindow(FinebrotWindow otherFinebrotWindow) {
-		this.otherFinebrotWindow = otherFinebrotWindow;
+	public void setFinebrotWindow(FinebrotWindow finebrotWindow) {
+		this.finebrotWindow = finebrotWindow;
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent me) {
 		Target.update(me.getX(), me.getY());
 		this.meWindow.activate();
-		if (this.otherMandelbrotWindow != null) {
-			this.otherMandelbrotWindow.deactivate();
+		if (this.mandelbrotWindow != null) {
+			this.mandelbrotWindow.deactivate();
 		}
-		if (this.otherFinebrotWindow != null) {
-			this.otherFinebrotWindow.deactivate();
+		if (this.finebrotWindow != null) {
+			this.finebrotWindow.deactivate();
 		}
 	}
 }

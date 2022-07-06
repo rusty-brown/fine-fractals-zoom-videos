@@ -9,7 +9,7 @@ import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.ZOOM;
 import static fine.fractals.context.TargetImpl.Target;
-import static fine.fractals.fractal.Fractal.*;
+import static fine.fractals.fractal.abst.Fractal.*;
 
 public class AreaFinebrotImpl {
 
@@ -48,6 +48,7 @@ public class AreaFinebrotImpl {
 	}
 
 	private AreaFinebrotImpl() {
+		log.debug("AreaFinebrotImpl");
 		this.resolutionHalfRe = RESOLUTION_WIDTH / 2;
 		this.resolutionHalfIm = RESOLUTION_HEIGHT / 2;
 
@@ -64,11 +65,11 @@ public class AreaFinebrotImpl {
 		this.numbersIm = new double[RESOLUTION_HEIGHT];
 	}
 
-	public boolean contains(Mem mem) {
-		return mem.re > this.borderLowRe
-				&& mem.re < this.borderHighRe
-				&& mem.im > this.borderLowIm
-				&& mem.im < this.borderHighIm;
+	public boolean contains(Mem m) {
+		return m.re > this.borderLowRe
+				&& m.re < this.borderHighRe
+				&& m.im > this.borderLowIm
+				&& m.im < this.borderHighIm;
 	}
 
 	public boolean contains(double re, double im) {
@@ -78,15 +79,15 @@ public class AreaFinebrotImpl {
 				&& im < this.borderHighIm;
 	}
 
-	public void domainToScreenCarry(Mem mem, double re, double im) {
-		mem.pxRe = (int) Math.round((RESOLUTION_WIDTH * (re - this.centerRe) / this.sizeRe) + resolutionHalfRe);
-		if (mem.pxRe >= RESOLUTION_WIDTH || mem.pxRe < 0) {
-			mem.pxRe = Mem.NOT;
+	public void domainToScreenCarry(Mem m, double re, double im) {
+		m.px = (int) Math.round((RESOLUTION_WIDTH * (re - this.centerRe) / this.sizeRe) + resolutionHalfRe);
+		if (m.px >= RESOLUTION_WIDTH || m.px < 0) {
+			m.px = Mem.NOT;
 			return;
 		}
-		mem.pxIm = (int) Math.round(((RESOLUTION_HEIGHT * (im - this.centerIm)) / this.sizeIm) + resolutionHalfIm);
-		if (mem.pxIm >= RESOLUTION_HEIGHT || mem.pxIm < 0) {
-			mem.pxIm = Mem.NOT;
+		m.py = (int) Math.round(((RESOLUTION_HEIGHT * (im - this.centerIm)) / this.sizeIm) + resolutionHalfIm);
+		if (m.py >= RESOLUTION_HEIGHT || m.py < 0) {
+			m.py = Mem.NOT;
 		}
 	}
 

@@ -6,6 +6,8 @@ import fine.fractals.windows.adapter.UIMouseMotionAdapter;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
 import fine.fractals.windows.listener.UIMouseListener;
 import fine.fractals.windows.listener.UIMouseWheelListener;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,12 +18,14 @@ import static fine.fractals.context.ApplicationImpl.APP_NAME;
 import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.fractal.Fractal.NAME;
+import static fine.fractals.fractal.abst.Fractal.NAME;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 import static java.awt.Color.BLACK;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class MandelbrotWindow extends UIWindow {
+
+	private static final Logger log = LogManager.getLogger(MandelbrotWindow.class);
 
 	public final JFrame frame;
 	private int lineHeight;
@@ -31,9 +35,9 @@ public class MandelbrotWindow extends UIWindow {
 	public MandelbrotWindow(UIMouseListener uiMouseListener,
 							UIMouseWheelListener uiMouseWheelListener,
 							UIKeyDispatcher uiKeyDispatcher) {
-		super.name = "Application - " + NAME + " - " + APP_NAME;
+		log.debug("initialize");
+		super.name = NAME + " - " + APP_NAME;
 
-		/*  Initialize UI */
 		this.frame = new JFrame(name);
 		this.frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.frame.getContentPane().add(this);
@@ -41,33 +45,36 @@ public class MandelbrotWindow extends UIWindow {
 		this.frame.setLocationByPlatform(true);
 		this.frame.setVisible(true);
 
-		/* Initialize UI Actions */
+		log.debug("actions");
 		final JLayeredPane layeredPane = this.frame.getRootPane().getLayeredPane();
 		layeredPane.addMouseListener(uiMouseListener);
 		super.hideDefaultCursor(frame);
 
+		log.debug("adapter");
 		this.motionAdapter = new UIMouseMotionAdapter(this);
 		layeredPane.addMouseMotionListener(this.motionAdapter);
 		layeredPane.addMouseWheelListener(uiMouseWheelListener);
 
+		log.debug("listener");
 		this.frame.addKeyListener(new UIKeyAdapter());
+
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(uiKeyDispatcher);
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
+		log.debug("paintComponent()");
 		super.paintComponent(g);
 		final Graphics2D g2d = (Graphics2D) g.create();
-
 		this.frame.setTitle(this.name);
-
+		log.debug("drawImage");
 		/* image size fit to window size */
 		g2d.drawImage(MandelbrotMaskImage, 0, 0, getWidth(), getHeight(), null);
 
+		log.debug("drawMouseCursor");
 		super.drawMouseCursor(g2d);
 
 		if (showInfo) {
-
 			g2d.setColor(BLACK);
 			this.lineHeight = g2d.getFontMetrics().getHeight();
 			int line = 0;
@@ -114,5 +121,9 @@ public class MandelbrotWindow extends UIWindow {
 
 	private int row(int line) {
 		return 20 + line * lineHeight;
+	}
+
+	public void setFinebrotWindow(FinebrotWindow otherFinebrotWindow) {
+		this.motionAdapter.setFinebrotWindow(otherFinebrotWindow);
 	}
 }

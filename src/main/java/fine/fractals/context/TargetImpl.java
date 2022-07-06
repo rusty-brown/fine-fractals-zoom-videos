@@ -40,17 +40,17 @@ public class TargetImpl {
         this.scrRe = this.scrCornerRe - (RESOLUTION_WIDTH / 2);
         this.scrIm = this.scrCornerIm - (RESOLUTION_HEIGHT / 2);
 
-        Mem mem = new Mem();
+        Mem m = new Mem();
 
         if (!FractalEngineImpl.calculationInProgress) {
-            String[] tmp = AreaMandelbrot.cToString(mem, this.scrCornerRe, this.scrCornerIm);
+            String[] tmp = AreaMandelbrot.cToString(m, this.scrCornerRe, this.scrCornerIm);
             this.cTextRe = tmp[0];
             this.cTextIm = tmp[1];
             mandelbrotElement = Mandelbrot.getElementAt(mousePositionX, mousePositionY);
         } else {
             mandelbrotElement = null;
             try {
-                String[] tmp = AreaMandelbrot.cToString(mem, this.scrCornerRe, this.scrCornerIm);
+                String[] tmp = AreaMandelbrot.cToString(m, this.scrCornerRe, this.scrCornerIm);
                 this.cTextRe = tmp[0];
                 this.cTextIm = tmp[1];
             } catch (Exception e) {

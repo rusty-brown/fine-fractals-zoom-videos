@@ -11,9 +11,10 @@ import java.util.ArrayList;
 
 import static fine.fractals.Main.*;
 import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.data.ResolutionMultiplier.one_square;
-import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
+import static fine.fractals.data.ResolutionMultiplier.none;
+import static fine.fractals.data.ResolutionMultiplier.square_alter;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.*;
+import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 
 class DomainMandelbrotImpl {
 
@@ -74,28 +75,8 @@ class DomainMandelbrotImpl {
 
 					if (!firstDomainExecution) {
 						// TODO try also with: OR FractalMachine.someNeighboursFinishedLong(t, x, elementsScreen);
-						if (RESOLUTION_MULTIPLIER == one_square) {
-							final double d = AreaMandelbrot.plank() / 3;
-
-							if (odd) {
-								domainFull.add(new MandelbrotElement(
-										elementZero.originRe + d,
-										elementZero.originIm + d
-								));
-								domainFull.add(new MandelbrotElement(
-										elementZero.originRe - d,
-										elementZero.originIm - d
-								));
-							} else {
-								domainFull.add(new MandelbrotElement(
-										elementZero.originRe - d,
-										elementZero.originIm + d
-								));
-								domainFull.add(new MandelbrotElement(
-										elementZero.originRe + d,
-										elementZero.originIm - d
-								));
-							}
+						if (RESOLUTION_MULTIPLIER != none) {
+							wrap(domainFull, elementZero);
 						}
 					}
 				}
@@ -110,25 +91,60 @@ class DomainMandelbrotImpl {
 		return domainFull;
 	}
 
-	private void dropBestMatchToEmptyNeighbour(Mem mem, int x, int y, ArrayList<MandelbrotElement> conflictsOnPixel) {
+	private void wrap(ArrayList<MandelbrotElement> domainFull, MandelbrotElement elementZero) {
+		if (RESOLUTION_MULTIPLIER == square_alter) {
+			final double d = AreaMandelbrot.plank() / 3;
+			if (odd) {
+				domainFull.add(new MandelbrotElement(elementZero.originRe + d, elementZero.originIm + d));
+				domainFull.add(new MandelbrotElement(elementZero.originRe - d, elementZero.originIm - d));
+			} else {
+				domainFull.add(new MandelbrotElement(elementZero.originRe - d, elementZero.originIm + d));
+				domainFull.add(new MandelbrotElement(elementZero.originRe + d, elementZero.originIm - d));
+			}
+		} else {
+			final int multiplier;
+			switch (RESOLUTION_MULTIPLIER) {
+				case square_3 -> multiplier = 3;
+				case square_5 -> multiplier = 5;
+				case square_11 -> multiplier = 11;
+				case square_51 -> multiplier = 51;
+				case square_101 -> multiplier = 101;
+				default -> throw new RuntimeException("unknown RESOLUTION_MULTIPLIER");
+			}
+
+			final double pn = AreaMandelbrot.plank() / multiplier;
+			final int half = (multiplier - 1) / 2;
+			for (int x = -half; x <= half; x++) {
+				for (int y = -half; y <= half; y++) {
+					if (x != 0 || y != 0) {
+						/* This fills the pixel with multiple points */
+						domainFull.add(new MandelbrotElement(elementZero.originRe + (x * pn), elementZero.originIm + (y * pn)));
+					}
+					/* else do nothing, there already is element 0 in the center of this pixel */
+				}
+			}
+		}
+	}
+
+	private void dropBestMatchToEmptyNeighbour(Mem m, int x, int y, ArrayList<MandelbrotElement> conflictsOnPixel) {
 		bestMatch = null;
 
 		dist = 0;
 		double distMin = 42;
 		for (MandelbrotElement element : conflictsOnPixel) {
 			/* up */
-			distMin = tryBestMatch(mem, x - 1, y + 1, element, distMin);
-			distMin = tryBestMatch(mem, x, y + 1, element, distMin);
-			distMin = tryBestMatch(mem, x + 1, y + 1, element, distMin);
+			distMin = tryBestMatch(m, x - 1, y + 1, element, distMin);
+			distMin = tryBestMatch(m, x, y + 1, element, distMin);
+			distMin = tryBestMatch(m, x + 1, y + 1, element, distMin);
 			/* left */
-			distMin = tryBestMatch(mem, x - 1, y, element, distMin);
+			distMin = tryBestMatch(m, x - 1, y, element, distMin);
 			/* center is already filled by bestMatch */
 			/* right */
-			distMin = tryBestMatch(mem, x + 1, y, element, distMin);
+			distMin = tryBestMatch(m, x + 1, y, element, distMin);
 			/* bottom */
-			distMin = tryBestMatch(mem, x - 1, y - 1, element, distMin);
-			distMin = tryBestMatch(mem, x, y - 1, element, distMin);
-			distMin = tryBestMatch(mem, x + 1, y - 1, element, distMin);
+			distMin = tryBestMatch(m, x - 1, y - 1, element, distMin);
+			distMin = tryBestMatch(m, x, y - 1, element, distMin);
+			distMin = tryBestMatch(m, x + 1, y - 1, element, distMin);
 		}
 		if (bestMatch != null) {
 			conflictsOnPixel.remove(bestMatch);
@@ -136,10 +152,10 @@ class DomainMandelbrotImpl {
 		}
 	}
 
-	double tryBestMatch(Mem mem, int x, int y, MandelbrotElement element, double distMin) {
+	double tryBestMatch(Mem m, int x, int y, MandelbrotElement element, double distMin) {
 		if (emptyAt(x, y)) {
-			AreaMandelbrot.screenToDomainCarry(mem, x, y);
-			dist = dist(mem.re, mem.im, element.originRe, element.originIm);
+			AreaMandelbrot.screenToDomainCarry(m, x, y);
+			dist = dist(m.re, m.im, element.originRe, element.originIm);
 			if (dist < distMin) {
 				distMin = dist;
 				bestMatch = element;
@@ -166,12 +182,12 @@ class DomainMandelbrotImpl {
 	}
 
 
-	private MandelbrotElement bestMatch(Mem mem, int x, int y, ArrayList<MandelbrotElement> conflictsOnPixel) {
+	private MandelbrotElement bestMatch(Mem m, int x, int y, ArrayList<MandelbrotElement> conflictsOnPixel) {
 		double distMin = 42;
 		MandelbrotElement ret = null;
 		for (MandelbrotElement el : conflictsOnPixel) {
-			AreaMandelbrot.screenToDomainCarry(mem, x, y);
-			dist = dist(mem.re, mem.im, el.originRe, el.originIm);
+			AreaMandelbrot.screenToDomainCarry(m, x, y);
+			dist = dist(m.re, m.im, el.originRe, el.originIm);
 			if (dist < distMin) {
 				distMin = dist;
 				ret = el;
@@ -274,16 +290,16 @@ class DomainMandelbrotImpl {
 		int newPositionX;
 		MandelbrotElement done;
 
-		Mem mem = new Mem();
+		Mem m = new Mem();
 
 		@SuppressWarnings(value = "unchecked")
 		final ArrayList<MandelbrotElement>[][] conflicts = new ArrayList[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
 		for (MandelbrotElement el : elementsToRemember) {
 
-			AreaMandelbrot.domainToScreenCarry(mem, el.originRe, el.originIm);
+			AreaMandelbrot.domainToScreenCarry(m, el.originRe, el.originIm);
 
-			newPositionT = mem.pxRe;
-			newPositionX = mem.pxIm;
+			newPositionT = m.px;
+			newPositionX = m.py;
 
 			if (newPositionX != Mem.NOT && newPositionT != Mem.NOT) {
 				done = elementsScreen[newPositionT][newPositionX];
@@ -292,7 +308,7 @@ class DomainMandelbrotImpl {
 					if (conflicts[newPositionT][newPositionX] == null) {
 						conflicts[newPositionT][newPositionX] = new ArrayList<>();
 					}
-						conflicts[newPositionT][newPositionX].add(el);
+					conflicts[newPositionT][newPositionX].add(el);
 				} else {
 					/* OK; no conflict */
 					elementsScreen[newPositionT][newPositionX] = el;
@@ -312,17 +328,17 @@ class DomainMandelbrotImpl {
 					conflictsOnPixel.add(element);
 
 					/* Find best match for the pixel with conflicts */
-					elementsScreen[xx][yy] = bestMatch(mem, xx, yy, conflictsOnPixel);
+					elementsScreen[xx][yy] = bestMatch(m, xx, yy, conflictsOnPixel);
 
 					/* Find best match for pixels around */
 					if (!conflictsOnPixel.isEmpty()) {
-						dropBestMatchToEmptyNeighbour(mem, xx, yy, conflictsOnPixel);
+						dropBestMatchToEmptyNeighbour(m, xx, yy, conflictsOnPixel);
 					}
 					if (!conflictsOnPixel.isEmpty()) {
-						dropBestMatchToEmptyNeighbour(mem, xx, yy, conflictsOnPixel);
+						dropBestMatchToEmptyNeighbour(m, xx, yy, conflictsOnPixel);
 					}
 					if (!conflictsOnPixel.isEmpty()) {
-						dropBestMatchToEmptyNeighbour(mem, xx, yy, conflictsOnPixel);
+						dropBestMatchToEmptyNeighbour(m, xx, yy, conflictsOnPixel);
 					}
 					conflicts[xx][yy] = null;
 				}
@@ -336,8 +352,8 @@ class DomainMandelbrotImpl {
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
 				if (elementsScreen[xx][yy] == null) {
-					AreaMandelbrot.screenToDomainCarry(mem, xx, yy);
-					newElement = new MandelbrotElement(mem.re, mem.im);
+					AreaMandelbrot.screenToDomainCarry(m, xx, yy);
+					newElement = new MandelbrotElement(m.re, m.im);
 					elementsScreen[xx][yy] = newElement;
 				}
 			}

@@ -9,7 +9,7 @@ import static fine.fractals.Main.RESOLUTION_HEIGHT;
 import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.ZOOM;
 import static fine.fractals.context.TargetImpl.Target;
-import static fine.fractals.fractal.Fractal.*;
+import static fine.fractals.fractal.abst.Fractal.*;
 
 public class AreaMandelbrotImpl {
 
@@ -75,25 +75,25 @@ public class AreaMandelbrotImpl {
     }
 
     /* It will be carried by Calculation */
-    public void screenToDomainCarry(Mem mem, int x, int y) {
+    public void screenToDomainCarry(Mem m, int x, int y) {
         try {
-            mem.re = numbersRe[x];
-            mem.im = numbersIm[y];
+            m.re = numbersRe[x];
+            m.im = numbersIm[y];
         } catch (Exception e) {
             log.fatal("screenToDomainCarry()", e);
         }
     }
 
 
-    public void domainToScreenCarry(Mem mem, double re, double im) {
-        mem.pxRe = (int) Math.round((RESOLUTION_WIDTH * (re - this.centerRe) / this.sizeRe) + resolutionHalfRe);
-        if (mem.pxRe >= RESOLUTION_WIDTH || mem.pxRe < 0) {
-            mem.pxRe = Mem.NOT;
+    public void domainToScreenCarry(Mem m, double re, double im) {
+        m.px = (int) Math.round((RESOLUTION_WIDTH * (re - this.centerRe) / this.sizeRe) + resolutionHalfRe);
+        if (m.px >= RESOLUTION_WIDTH || m.px < 0) {
+            m.px = Mem.NOT;
             return;
         }
-        mem.pxIm = (int) Math.round(((RESOLUTION_HEIGHT * (im - this.centerIm)) / this.sizeIm) + resolutionHalfIm);
-        if (mem.pxIm >= RESOLUTION_HEIGHT || mem.pxIm < 0) {
-            mem.pxIm = Mem.NOT;
+        m.py = (int) Math.round(((RESOLUTION_HEIGHT * (im - this.centerIm)) / this.sizeIm) + resolutionHalfIm);
+        if (m.py >= RESOLUTION_HEIGHT || m.py < 0) {
+            m.py = Mem.NOT;
         }
     }
 
@@ -116,11 +116,11 @@ public class AreaMandelbrotImpl {
         initiate();
     }
 
-    public String[] cToString(Mem mem, int x, int y) {
-        screenToDomainCarry(mem, x, y);
+    public String[] cToString(Mem m, int x, int y) {
+        screenToDomainCarry(m, x, y);
         return new String[]{
-                Formatter.roundString(mem.re),
-                Formatter.roundString(mem.im)};
+                Formatter.roundString(m.re),
+                Formatter.roundString(m.im)};
     }
 
     public String sizeReTString() {

@@ -30,7 +30,7 @@ public class ColorTest extends JComponent {
     }
 
     private ColorTest() {
-        log.info("init");
+        log.debug("init");
         this.resolution = Palette.colorResolution();
         this.testImage = new BufferedImage(resolution, height, TYPE_INT_RGB);
 
@@ -53,6 +53,7 @@ public class ColorTest extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
+        log.debug("paintComponent()");
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
         if (!painted) {
@@ -69,6 +70,7 @@ public class ColorTest extends JComponent {
 
     @Override
     public Dimension getPreferredSize() {
+        log.debug("getPreferredSize()");
         return new Dimension(resolution, height);
     }
 

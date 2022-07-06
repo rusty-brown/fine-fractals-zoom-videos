@@ -41,7 +41,6 @@ public class FractalEngineImpl {
         }
 
         Mandelbrot.createMask();
-        Application.repaintMandelbrotWindow();
 
         /*
          * Mandelbrot calculation creates Finebrot data and image
@@ -53,7 +52,6 @@ public class FractalEngineImpl {
             Mandelbrot.fixOptimizationBreak();
 
             Mandelbrot.createMask();
-            Application.repaintMandelbrotWindow();
         }
 
         PerfectColorDistribution.perfectlyColorScreenValues();
@@ -62,7 +60,6 @@ public class FractalEngineImpl {
             FractalMachine.saveImages();
         }
         calculationInProgress = false;
-        Application.repaintWindows();
     }
 
     public void updateDomain() {

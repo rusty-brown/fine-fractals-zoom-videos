@@ -17,6 +17,7 @@ public class DomainFinebrotImpl {
 
     /**
      * re; im
+     * double[2] is better than 2x Double
      */
     private final ArrayList<ArrayList<double[]>> paths = new ArrayList<>();
 
@@ -44,18 +45,18 @@ public class DomainFinebrotImpl {
         int removed = 0;
         int added = 0;
 
-        final Mem mem = new Mem();
+        final Mem m = new Mem();
 
         double[] tmp;
 
         for (ArrayList<double[]> path : paths) {
             for (int i = 0; i < path.size() - 1; i++) {
                 tmp = path.get(i);
-                AreaFinebrot.domainToScreenCarry(mem, tmp[0], tmp[1]);
+                AreaFinebrot.domainToScreenCarry(m, tmp[0], tmp[1]);
 
-                if (mem.pxRe != Mem.NOT && mem.pxIm != Mem.NOT) {
+                if (m.px != Mem.NOT && m.py != Mem.NOT) {
                     added++;
-                    Finebrot.add(mem.pxRe, mem.pxIm);
+                    Finebrot.add(m.px, m.py);
                 }
             }
         }

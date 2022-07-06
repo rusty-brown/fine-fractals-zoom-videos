@@ -27,16 +27,15 @@ public class ListOfImagesToVideoWithAudio {
 
     private static final String VIDEO_NAME = "Finebrot_ff_1.avi";
     private static final String AUDIO_FILE = "/home/lukas/Downloads/Arcadia.mp3";
-    private static final String FINEBROT_IMAGE_LOCATION = "/home/lukas/Fractals/del 01/";
+    private static final String FINEBROT_IMAGE_LOCATION = "/home/lukas/Fractals/";
 
     private final List<URL> urls = new ArrayList<>();
 
     private FFmpegFrameRecorder recorder;
     private Java2DFrameConverter converter;
-
     private FrameGrabber audioGrabber;
-    private static final ListOfImagesToVideoWithAudio VideoMaker;
 
+    private static final ListOfImagesToVideoWithAudio VideoMaker;
 
     static {
         log.info("init");
@@ -89,17 +88,20 @@ public class ListOfImagesToVideoWithAudio {
             log.info("zoom in");
             renderListOfImages();
 
-            log.info("2s wait");
+            log.info("wait");
             final BufferedImage last = ImageIO.read(urls.get(urls.size() - 1));
-            renderImage(last);
+            renderImage(last, 75);
 
             log.info("zoom out");
             Collections.reverse(urls);
             renderListOfImages();
 
-            log.info("2s wait");
+            log.info("wait");
             final BufferedImage first = ImageIO.read(urls.get(urls.size() - 1));
-            renderImage(first);
+            renderImage(first, 100);
+
+            log.info("video end");
+            renderImage(first, 11 * 25);
 
             log.info("Add soundtrack");
             Frame audioFrame;
@@ -128,8 +130,8 @@ public class ListOfImagesToVideoWithAudio {
         }
     }
 
-    private void renderImage(BufferedImage image) throws IOException {
-        for (int i = 0; i < 63; i++) {
+    private void renderImage(BufferedImage image, int frames) throws IOException {
+        for (int i = 0; i < frames; i++) {
             recorder.record(converter.getFrame(image));
         }
     }

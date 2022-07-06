@@ -11,9 +11,12 @@ public abstract class ColorUtils {
 
     private static final Logger log = LogManager.getLogger(ColorUtils.class);
 
-    public enum Function {linear1, linear3, linear7, quadratic, q3, q4, q5, exp, exp2, circleDown, circleUp}
+    public enum Function {
+        linear1, linear3, linear7, quadratic, q3, q4, q5, exp, exp2, circleDown, circleUp
+    }
 
     public static void toPaletteLinearSpectrum(Color... colors) {
+        log.debug("toPaletteLinearSpectrum()");
         double step = 1;
         Color colorA = colors[0];
         Color colorB = colors[1];
@@ -26,6 +29,7 @@ public abstract class ColorUtils {
     }
 
     public static void toPaletteLinear(Color from, Color to, double step) {
+        log.debug("toPaletteLinear()");
         final int rf = from.getRed();
         final int gf = from.getGreen();
         final int bf = from.getBlue();
@@ -56,6 +60,7 @@ public abstract class ColorUtils {
     }
 
     public static void toPalette(Color from, Color to, Function function) {
+        log.debug("toPalette()");
         final int rFrom = from.getRed();
         final int gFrom = from.getGreen();
         final int bFrom = from.getBlue();

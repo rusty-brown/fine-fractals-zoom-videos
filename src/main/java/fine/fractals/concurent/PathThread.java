@@ -1,16 +1,14 @@
 package fine.fractals.concurent;
 
 import fine.fractals.data.MandelbrotElement;
-import fine.fractals.data.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
 import static fine.fractals.Main.FRACTAL;
-import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
-import static fine.fractals.fractal.Fractal.*;
+import static fine.fractals.fractal.abst.Fractal.ITERATION_MIN;
 
 public class PathThread implements Runnable {
 
@@ -24,44 +22,20 @@ public class PathThread implements Runnable {
     }
 
     public void run() {
-        int iterator = 0;
-        final Mem mem = new Mem();
 
-        mem.re = el.originRe;
-        mem.im = el.originIm;
-
-        /* double[2] consumes less memory than 2x Double */
         final ArrayList<double[]> path = new ArrayList<>();
 
-        while (mem.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
-
-            /*
-             * Calculation happens only here
-             */
-            FRACTAL.math(mem, el.originRe, el.originIm);
-
-            if (AreaFinebrot.contains(mem)) {
-                /* Calculation did not diverge */
-                path.add(new double[]{mem.re, mem.im});
-            }
-            iterator++;
-        }
-
-        boolean pathTest = iterator < ITERATION_MAX;
+        final boolean pathTest = FRACTAL.calculatePath(el, path);
 
         if (pathTest) {
-            /* Element diverged */
-            el.setValues(iterator);
             el.setHibernatedFinished();
             /*
              * Removed lastIteration, lastVisitedRe, lastVisitedIm
-             * TODO add them back but with clear way of managing these new data, path lengths, etc
+             * There isn't continuation of unfinished iteration from previous calculation (ITERATION_MAX increased)
+             * The element is going to migrate out of screen soon with its path anyway.
              */
             if (path.size() > ITERATION_MIN) {
-
-                /* This isn't continuation of unfinished iteration from previous calculation */
                 el.setHibernatedFinishedLong();
-
                 DomainFinebrot.addEscapePathLong(path);
             }
         }
