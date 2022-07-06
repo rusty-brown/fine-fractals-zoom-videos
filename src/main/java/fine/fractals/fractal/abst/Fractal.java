@@ -1,8 +1,10 @@
-package fine.fractals.fractal;
+package fine.fractals.fractal.abst;
 
-import fine.fractals.data.Mem;
+import fine.fractals.data.MandelbrotElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
 
 import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
 
@@ -33,13 +35,9 @@ public abstract class Fractal {
 		NAME = name;
 	}
 
-	/*
-	 * Calculate only next position.
-	 * Color can be known only after full path finished.
- 	 */
-	public abstract void math(Mem mem, double re, double im);
-
 	private static int iterationMax0;
+
+	public abstract boolean calculatePath(MandelbrotElement el, final ArrayList<double[]> path);
 
 	public static void update() {
 		log.debug("update()");

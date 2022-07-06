@@ -1,8 +1,9 @@
 package fine.fractals.fractal;
 
 import fine.fractals.data.Mem;
+import fine.fractals.fractal.abst.FractalFinite;
 
-public class Finebrot_Side extends Fractal {
+public class Finebrot_Side extends FractalFinite {
 
     public Finebrot_Side() {
         super("Finebrot_Side");
@@ -18,9 +19,8 @@ public class Finebrot_Side extends Fractal {
         INIT_FINEBROT_TARGET_im = INIT_MANDELBROT_TARGET_im;
     }
 
-    @Override
-    public void math(Mem mem, double originRe, double originIm) {
-        mem.square();
-        mem.plus(originRe, originIm);
+    public void math(Mem m, double originRe, double originIm) {
+        m.square();
+        m.plus(originRe, originIm);
     }
 }
