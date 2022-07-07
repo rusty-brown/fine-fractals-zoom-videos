@@ -1,12 +1,13 @@
-package fine.fractals.fractal;
+package fine.fractals;
 
 import fine.fractals.data.Mem;
-import fine.fractals.fractal.abst.FractalFinite;
+import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
 public class Finebrot_Side extends FractalFinite {
 
     public Finebrot_Side() {
-        super("Finebrot_Side");
+        NAME = "Finebrot_Side";
+
         ITERATION_MAX = 14800;
         ITERATION_MIN = 42;
 

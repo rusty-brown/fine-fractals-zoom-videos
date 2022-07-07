@@ -1,12 +1,16 @@
-package fine.fractals.glorious.gallery;
+package fine.fractals;
 
 import fine.fractals.data.Mem;
-import fine.fractals.fractal.abst.FractalFinite;
+import fine.fractals.fractal.finebrot.finite.FractalFinite;
+
+import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.data.ResolutionMultiplier.square_11;
 
 public class Lotus extends FractalFinite {
 
     public Lotus() {
-        super("Lotus");
+        NAME = "Lotus";
+
         ITERATION_MAX = 8000;
         ITERATION_MIN = 42;
 
@@ -24,5 +28,16 @@ public class Lotus extends FractalFinite {
         m.conjugation();
         m.square();
         m.plus(originRe, originIm);
+    }
+
+    public static void main(String[] args) {
+
+        FinebortFractal = new Lotus();
+
+        REPEAT = false;
+        SAVE_IMAGES = false;
+        RESOLUTION_MULTIPLIER = square_11;
+
+        Application.execute();
     }
 }

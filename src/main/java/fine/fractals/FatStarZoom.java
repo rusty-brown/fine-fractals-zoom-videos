@@ -1,12 +1,17 @@
-package fine.fractals.glorious.gallery;
+package fine.fractals;
 
 import fine.fractals.data.Mem;
-import fine.fractals.fractal.abst.FractalInfinite;
+import fine.fractals.fractal.finebrot.infinite.FractalInfinite;
+
+import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.context.ApplicationImpl.Application;
+import static fine.fractals.data.ResolutionMultiplier.square_11;
 
 public class FatStarZoom extends FractalInfinite {
 
 	public FatStarZoom() {
-		super("FatStar");
+		NAME = "FatStar";
+
 		ITERATION_MAX = 81_000;
 		ITERATION_MIN = 8;
 
@@ -25,5 +30,16 @@ public class FatStarZoom extends FractalInfinite {
 		m.conjugation();
 		m.square();
 		m.plus(originRe, originIm);
+	}
+
+	public static void main(String[] args) {
+
+		FinebortFractal = new FatStar();
+
+		REPEAT = false;
+		SAVE_IMAGES = false;
+		RESOLUTION_MULTIPLIER = square_11;
+
+		Application.execute();
 	}
 }

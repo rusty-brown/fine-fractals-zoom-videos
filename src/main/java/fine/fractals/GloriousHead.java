@@ -1,12 +1,15 @@
-package fine.fractals.glorious.gallery;
+package fine.fractals;
 
 import fine.fractals.data.MemPhoenix;
-import fine.fractals.fractal.abst.FractalPhoenix;
+import fine.fractals.fractal.finebrot.phoenix.FractalPhoenix;
+
+import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.data.ResolutionMultiplier.square_11;
 
 public class GloriousHead extends FractalPhoenix {
 
 	public GloriousHead() {
-		super("GloriousHead");
+		NAME = "GloriousHead";
 
 		c = 0.35;
 		p = -0.25;
@@ -38,5 +41,16 @@ public class GloriousHead extends FractalPhoenix {
 		m.prev_im = m.im;
 
 		m.plus(originRe, originIm);
+	}
+
+	public static void main(String[] args) {
+
+		FinebortFractal = new GloriousHead();
+
+		REPEAT = false;
+		SAVE_IMAGES = false;
+		RESOLUTION_MULTIPLIER = square_11;
+
+		Application.execute();
 	}
 }
