@@ -1,53 +1,32 @@
 package fine.fractals.perfect.coloring;
 
 import fine.fractals.data.finebrot.FinebrotPixel;
+import fine.fractals.perfect.coloring.common.PerfectColorDistributionAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
-import static fine.fractals.context.PaletteImpl.Palette;
-import static fine.fractals.context.TargetImpl.Target;
-import static fine.fractals.context.finebrot.FinebrotImpl.Finebrot;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
+import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
 import static fine.fractals.images.FractalImage.FinebrotImage;
-import static java.lang.Double.compare;
-import static java.lang.Integer.compare;
-import static java.lang.Math.abs;
+import static fine.fractals.palette.PaletteImpl.Palette;
 
-/**
- * Method used for perfect coloring is
- * - Gather all screen pixels and order them by (density map) value
- * - Expand full coloring spectrum to amount of pixels to be painted
- * -> Color all pixels ordered by value
- */
-public class PerfectColorDistributionImpl {
+public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
 
     private final static Logger log = LogManager.getLogger(PerfectColorDistributionImpl.class);
 
     /**
-     * Ordered values of screen pixels
-     * Ready to be colored
+     * Finebrot pixels, order by value
      */
     static final List<FinebrotPixel> pixels = new ArrayList<>();
 
-    public static final PerfectColorDistributionImpl PerfectColorDistribution;
-
-    private PerfectColorDistributionImpl() {
+    public PerfectColorDistributionImpl() {
     }
 
-    static {
-        log.info("init");
-        PerfectColorDistribution = new PerfectColorDistributionImpl();
-    }
-
-    /**
-     * Color palette contains fewer colors than all pixels on the screen
-     * Expand colour palette so that all pixels may be colored perfectly
-     */
-    public void perfectlyColorScreenValues() {
+    public void perfectlyColorFinebrotValues() {
         log.info("perfectlyColorScreenValues()");
 
         int zeroValueElements = 0;
@@ -58,7 +37,7 @@ public class PerfectColorDistributionImpl {
         /* read screen values */
         for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
             for (int x = 0; x < RESOLUTION_WIDTH; x++) {
-                int v = Finebrot.valueAt(x, y);
+                int v = PixelsFinebrot.valueAt(x, y);
                 if (v <= threshold) {
                     zeroValueElements++;
                 }
@@ -66,15 +45,10 @@ public class PerfectColorDistributionImpl {
             }
         }
 
-        /* order data from smallest to highest screen value */
-        final double px = Target.re();
-        pixels.sort((a, b) -> {
-            int compare = compare(a.pixelValue(), b.pixelValue());
-            if (compare == 0) {
-                return compare(abs(a.px() - px), abs(b.px() - px));
-            }
-            return compare;
-        });
+        /*
+         *  order pixels from the smallest to the highest value
+         */
+        pixels.sort(comparator);
 
         final int allPixelsTotal = RESOLUTION_WIDTH * RESOLUTION_HEIGHT;
         final int allPixelsNonZero = allPixelsTotal - zeroValueElements;
@@ -82,15 +56,15 @@ public class PerfectColorDistributionImpl {
         final int singleColorUse = ((int) ((double) allPixelsNonZero / (double) paletteColorCount));
         final int left = allPixelsNonZero - (paletteColorCount * singleColorUse);
 
-        log.debug("-----------------------------------");
+        log.debug("------------------------------------");
         log.debug("All pixels to paint:        " + allPixelsTotal);
-        log.debug("--------------------------> " + (zeroValueElements + left + (singleColorUse * paletteColorCount)));
+        log.debug("--------------------------->" + (zeroValueElements + left + (singleColorUse * paletteColorCount)));
         log.debug("Zero value pixels to paint: " + zeroValueElements);
         log.debug("Non zero pixels to paint:   " + allPixelsNonZero);
         log.debug("Spectrum, available colors: " + paletteColorCount);
         log.debug("Pixels per each color:      " + singleColorUse);
         log.debug("left:                       " + left);
-        log.debug("-----------------------------------");
+        log.debug("------------------------------------");
 
         /* pixel index */
         int pi;
