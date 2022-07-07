@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 
-import static fine.fractals.context.PaletteImpl.Palette;
+import static fine.fractals.palette.PaletteImpl.Palette;
 
 public abstract class PalettePlasma {
 
@@ -15,8 +15,8 @@ public abstract class PalettePlasma {
 
     public static void init() {
         log.info("init");
-        Palette.name("Plasma");
         ColorUtils.toPaletteLinearSpectrum(
+                Palette.spectrum,
                 new Color(7, 1, 116),
                 new Color(37, 1, 133),
                 new Color(62, 0, 145),

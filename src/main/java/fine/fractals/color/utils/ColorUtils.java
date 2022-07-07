@@ -4,8 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
-
-import static fine.fractals.context.PaletteImpl.Palette;
+import java.util.ArrayList;
 
 public abstract class ColorUtils {
 
@@ -15,20 +14,20 @@ public abstract class ColorUtils {
         linear1, linear3, linear7, quadratic, q3, q4, q5, exp, exp2, circleDown, circleUp
     }
 
-    public static void toPaletteLinearSpectrum(Color... colors) {
+    public static void toPaletteLinearSpectrum(ArrayList<Color> SPECTRUM, Color... colors) {
         log.debug("toPaletteLinearSpectrum()");
         double step = 1;
         Color colorA = colors[0];
         Color colorB = colors[1];
-        toPaletteLinear(colorA, colorB, step);
+        toPaletteLinear(SPECTRUM, colorA, colorB, step);
         for (int i = 1; i < colors.length; i++) {
             colorA = colorB;
             colorB = colors[i];
-            toPaletteLinear(colorA, colorB, step);
+            toPaletteLinear(SPECTRUM, colorA, colorB, step);
         }
     }
 
-    public static void toPaletteLinear(Color from, Color to, double step) {
+    public static void toPaletteLinear(ArrayList<Color> SPECTRUM, Color from, Color to, double step) {
         log.debug("toPaletteLinear()");
         final int rf = from.getRed();
         final int gf = from.getGreen();
@@ -51,7 +50,7 @@ public abstract class ColorUtils {
             /*
              * Add colors to Palette
              */
-            Palette.spectrum.add(new Color(
+            SPECTRUM.add(new Color(
                     (int) (rf + (i * rr)),
                     (int) (gf + (i * gg)),
                     (int) (bf + (i * bb))
@@ -59,7 +58,7 @@ public abstract class ColorUtils {
         }
     }
 
-    public static void toPalette(Color from, Color to, Function function) {
+    public static void toPalette(ArrayList<Color> SPECTRUM, Function function, Color from, Color to) {
         log.debug("toPalette()");
         final int rFrom = from.getRed();
         final int gFrom = from.getGreen();
@@ -149,7 +148,7 @@ public abstract class ColorUtils {
                 /*
                  * Add colors to Palette
                  */
-                Palette.spectrum.add(new Color(rr, gg, bb));
+                SPECTRUM.add(new Color(rr, gg, bb));
 
                 if (stop) {
                     break;
@@ -163,6 +162,7 @@ public abstract class ColorUtils {
             log.error("rr: " + rr);
             log.error("gg: " + gg);
             log.error("bb: " + bb);
+            System.exit(1);
         }
     }
 

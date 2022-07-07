@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 
 import static fine.fractals.color.utils.ColorUtils.Function.circleUp;
-import static fine.fractals.context.PaletteImpl.Palette;
+import static fine.fractals.palette.PaletteImpl.Palette;
 
 public abstract class PalettePurpleWhite {
 
@@ -16,11 +16,11 @@ public abstract class PalettePurpleWhite {
 
     public static void init() {
         log.info("init");
-        Palette.name("Blue White");
         ColorUtils.toPalette(
+                Palette.spectrum,
+                circleUp,
                 new Color(38, 17, 54),
-                new Color(255, 255, 255),
-                circleUp
+                new Color(255, 255, 255)
         );
     }
 

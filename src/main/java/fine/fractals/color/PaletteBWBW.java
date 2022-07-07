@@ -5,7 +5,7 @@ import fine.fractals.color.utils.ColorUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.context.PaletteImpl.Palette;
+import static fine.fractals.palette.PaletteImpl.Palette;
 import static java.awt.Color.black;
 import static java.awt.Color.white;
 
@@ -15,8 +15,8 @@ public abstract class PaletteBWBW {
 
     public static void init() {
         log.info("init");
-        Palette.name("Black White Black White");
         ColorUtils.toPaletteLinearSpectrum(
+                Palette.spectrum,
                 black, white,
                 white, black,
                 black, white
