@@ -9,20 +9,22 @@ import static fine.fractals.palette.PaletteImpl.Palette;
 import static java.awt.Color.black;
 import static java.awt.Color.white;
 
-public abstract class PaletteBW {
+public abstract class PaletteBlackToWhiteToBlack {
 
-    private static final Logger log = LogManager.getLogger(PaletteBW.class);
+    private static final Logger log = LogManager.getLogger(PaletteBlackToWhiteToBlack.class);
 
     public static void init() {
         log.info("init");
         ColorUtils.toPaletteLinearSpectrum(
                 Palette.spectrum,
+                black, white,
+                white, black,
                 black, white
         );
     }
 
     public static void main(String[] args) {
-        PaletteBW.init();
+        PaletteBlackToWhiteToBlack.init();
         ColorTest.execute();
     }
 }

@@ -1,5 +1,6 @@
 package fine.fractals;
 
+import fine.fractals.color.PaletteBlackToWhite;
 import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
@@ -32,7 +33,9 @@ public class Lotus extends FractalFinite {
 
     public static void main(String[] args) {
 
-        FinebortFractal = new Lotus();
+        FinebrotFractal = new Lotus();
+
+        PaletteBlackToWhite.init();
 
         REPEAT = false;
         SAVE_IMAGES = false;

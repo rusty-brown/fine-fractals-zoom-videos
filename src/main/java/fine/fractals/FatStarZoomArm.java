@@ -1,10 +1,10 @@
 package fine.fractals;
 
+import fine.fractals.color.PaletteBlackToWhite;
 import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.infinite.FractalInfinite;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.data.ResolutionMultiplier.square_11;
 
 public class FatStarZoomArm extends FractalInfinite {
@@ -34,7 +34,9 @@ public class FatStarZoomArm extends FractalInfinite {
 
 	public static void main(String[] args) {
 
-		FinebortFractal = new FatStar();
+		FinebrotFractal = new FatStar();
+
+		PaletteBlackToWhite.init();
 
 		REPEAT = false;
 		SAVE_IMAGES = false;

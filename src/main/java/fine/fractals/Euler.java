@@ -1,5 +1,6 @@
 package fine.fractals;
 
+import fine.fractals.color.euler.Palette3RGB;
 import fine.fractals.data.MemEuler;
 import fine.fractals.fractal.finebrot.euler.FractalEuler;
 
@@ -37,7 +38,9 @@ public class Euler extends FractalEuler {
 
 	public static void main(String[] args) {
 
-		FinebortFractal = new Euler();
+		FinebrotFractal = new Euler();
+
+		Palette3RGB.init();
 
 		REPEAT = false;
 		SAVE_IMAGES = false;

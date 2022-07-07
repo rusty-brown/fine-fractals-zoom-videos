@@ -1,5 +1,6 @@
 package fine.fractals;
 
+import fine.fractals.color.PaletteBlackToWhite;
 import fine.fractals.data.MemPhoenix;
 import fine.fractals.fractal.finebrot.phoenix.FractalPhoenix;
 
@@ -45,7 +46,9 @@ public class GloriousHead extends FractalPhoenix {
 
 	public static void main(String[] args) {
 
-		FinebortFractal = new GloriousHead();
+		FinebrotFractal = new GloriousHead();
+
+		PaletteBlackToWhite.init();
 
 		REPEAT = false;
 		SAVE_IMAGES = false;

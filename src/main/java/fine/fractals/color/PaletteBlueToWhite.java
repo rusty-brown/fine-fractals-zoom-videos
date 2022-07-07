@@ -10,9 +10,9 @@ import java.awt.*;
 import static fine.fractals.color.utils.ColorUtils.Function.circleUp;
 import static fine.fractals.palette.PaletteImpl.Palette;
 
-public abstract class PaletteBlueWhite {
+public abstract class PaletteBlueToWhite {
 
-    private static final Logger log = LogManager.getLogger(PaletteBlueWhite.class);
+    private static final Logger log = LogManager.getLogger(PaletteBlueToWhite.class);
 
     public static void init() {
         log.info("init");
@@ -25,7 +25,7 @@ public abstract class PaletteBlueWhite {
     }
 
     public static void main(String[] args) {
-        PaletteBlueWhite.init();
+        PaletteBlueToWhite.init();
         ColorTest.execute();
     }
 }

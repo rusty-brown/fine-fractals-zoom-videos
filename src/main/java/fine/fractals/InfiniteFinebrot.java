@@ -1,10 +1,10 @@
 package fine.fractals;
 
+import fine.fractals.color.euler.Palette3RGB;
 import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.infinite.FractalInfinite;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.data.ResolutionMultiplier.square_11;
 
 public class InfiniteFinebrot extends FractalInfinite {
@@ -32,7 +32,9 @@ public class InfiniteFinebrot extends FractalInfinite {
 
 	public static void main(String[] args) {
 
-		FinebortFractal = new InfiniteFinebrot();
+		FinebrotFractal = new InfiniteFinebrot();
+
+		Palette3RGB.init();
 
 		REPEAT = false;
 		SAVE_IMAGES = false;

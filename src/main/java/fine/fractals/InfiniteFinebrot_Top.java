@@ -1,5 +1,6 @@
 package fine.fractals;
 
+import fine.fractals.color.PaletteBlackToWhite;
 import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
@@ -31,7 +32,9 @@ public class InfiniteFinebrot_Top extends FractalFinite {
 
     public static void main(String[] args) {
 
-        FinebortFractal = new InfiniteFinebrot_Top();
+        FinebrotFractal = new InfiniteFinebrot_Top();
+
+        PaletteBlackToWhite.init();
 
         REPEAT = false;
         SAVE_IMAGES = false;

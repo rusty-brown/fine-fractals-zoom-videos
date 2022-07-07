@@ -5,27 +5,24 @@ import fine.fractals.color.utils.ColorUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
-
-import static fine.fractals.color.utils.ColorUtils.Function.circleUp;
 import static fine.fractals.palette.PaletteImpl.Palette;
+import static java.awt.Color.black;
+import static java.awt.Color.white;
 
-public abstract class PalettePurpleWhite {
+public abstract class PaletteBlackToWhite {
 
-    private static final Logger log = LogManager.getLogger(PalettePurpleWhite.class);
+    private static final Logger log = LogManager.getLogger(PaletteBlackToWhite.class);
 
     public static void init() {
         log.info("init");
-        ColorUtils.toPalette(
+        ColorUtils.toPaletteLinearSpectrum(
                 Palette.spectrum,
-                circleUp,
-                new Color(38, 17, 54),
-                new Color(255, 255, 255)
+                black, white
         );
     }
 
     public static void main(String[] args) {
-        PalettePurpleWhite.init();
+        PaletteBlackToWhite.init();
         ColorTest.execute();
     }
 }
