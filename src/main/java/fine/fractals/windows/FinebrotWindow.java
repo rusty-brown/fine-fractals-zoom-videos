@@ -12,10 +12,10 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.APP_NAME;
-import static fine.fractals.fractal.abst.Fractal.NAME;
+import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.NAME;
 import static fine.fractals.images.FractalImage.FinebrotImage;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 

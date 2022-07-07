@@ -1,5 +1,7 @@
 package fine.fractals.context;
 
+import fine.fractals.data.ResolutionMultiplier;
+import fine.fractals.data.annotation.EditMe;
 import fine.fractals.formatter.Formatter;
 import fine.fractals.machine.CalculationThread;
 import fine.fractals.windows.FinebrotWindow;
@@ -10,15 +12,47 @@ import fine.fractals.windows.listener.UIMouseWheelListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
 import static fine.fractals.context.FractalEngineImpl.FractalEngine;
-import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
-import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.data.ResolutionMultiplier.square_alter;
 
 public class ApplicationImpl {
 
+    /**
+     * Image resolution height & width
+     * 800 600
+     * 1080 1920 full HD high
+     * 1920 1080 full HD
+     * 2560 1440 quad HD
+     */
+    @EditMe
+    public static int RESOLUTION_WIDTH = 1920;
+    public static int RESOLUTION_HEIGHT = 1080;
+
+    @EditMe
+    public static boolean SAVE_IMAGES = false;
+
+    /**
+     * Sets now many points will be used for calculation per each pixel
+     * value: 1
+     * - calculate only one element per each Mandelbrot pixel, [re,im] in the center of the pixel
+     * value: 2
+     * - calculates two more points per each pixel
+     */
+    @EditMe
+    public static ResolutionMultiplier RESOLUTION_MULTIPLIER = square_alter;
+
+    /*
+     * How many pixels round specific element will be investigated for optimization.
+     * If there is nothing interesting going on around specific pixel, the pixel will be ignored.
+     */
+    public static final int neighbours = 4;
+
     public static final double ZOOM = 0.98;
+
+    public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
+
     /*
      * Distance in px around convergent element.
      * Dead pixels around divergent pixel elements will be recalculated.
@@ -30,8 +64,18 @@ public class ApplicationImpl {
 
     public static final String APP_NAME = "_" + Formatter.now();
     public static final String USER_HOME = System.getProperty("user.home");
-    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
+    /**
+     * Image in resolution Application.RESOLUTION_IMAGE_SAVE_FOR = 2000 will be saved to the location below
+     * <p>
+     * Create the folder in your home directory or change the path
+     */
+    @EditMe
+    public static final String FILE_PATH = USER_HOME + "/Fractals/";
+    @EditMe
+    public static final String DEBUG_PATH = USER_HOME + "/Fractals-debug/";
+
+    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
     public static boolean REPEAT = true;
 
@@ -46,6 +90,11 @@ public class ApplicationImpl {
     static {
         log.info("init");
         Application = new ApplicationImpl();
+
+        if (COREs < 1) {
+            COREs = 1;
+        }
+        log.info("cores: " + COREs);
     }
 
     private ApplicationImpl() {

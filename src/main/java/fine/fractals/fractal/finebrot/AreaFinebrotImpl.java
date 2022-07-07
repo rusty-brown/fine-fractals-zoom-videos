@@ -1,15 +1,15 @@
-package fine.fractals.context.finebrot;
+package fine.fractals.fractal.finebrot;
 
 import fine.fractals.data.Mem;
 import fine.fractals.formatter.Formatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.ZOOM;
 import static fine.fractals.context.TargetImpl.Target;
-import static fine.fractals.fractal.abst.Fractal.*;
+import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.*;
 
 public class AreaFinebrotImpl {
 

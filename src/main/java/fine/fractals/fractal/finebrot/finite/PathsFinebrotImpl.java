@@ -1,17 +1,19 @@
-package fine.fractals.context.finebrot;
+package fine.fractals.fractal.finebrot.finite;
 
 import fine.fractals.data.Mem;
+import fine.fractals.fractal.finebrot.common.PathsFinebrotAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
-import static fine.fractals.context.finebrot.FinebrotImpl.Finebrot;
+import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
+import static java.util.Objects.requireNonNull;
 
-public class DomainFinebrotImpl {
+public class PathsFinebrotImpl extends PathsFinebrotAbstract {
 
-    private static final Logger log = LogManager.getLogger(DomainFinebrotImpl.class);
+    private static final Logger log = LogManager.getLogger(PathsFinebrotImpl.class);
 
     private int counter = 0;
 
@@ -21,14 +23,7 @@ public class DomainFinebrotImpl {
      */
     private final ArrayList<ArrayList<double[]>> paths = new ArrayList<>();
 
-    public static final DomainFinebrotImpl DomainFinebrot;
-
-    static {
-        log.info("init");
-        DomainFinebrot = new DomainFinebrotImpl();
-    }
-
-    private DomainFinebrotImpl() {
+    public PathsFinebrotImpl() {
     }
 
     /*
@@ -56,7 +51,7 @@ public class DomainFinebrotImpl {
 
                 if (m.px != Mem.NOT && m.py != Mem.NOT) {
                     added++;
-                    Finebrot.add(m.px, m.py);
+                    PixelsFinebrot.add(m.px, m.py);
                 }
             }
         }

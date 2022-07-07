@@ -1,4 +1,4 @@
-package fine.fractals.context.mandelbrot;
+package fine.fractals.fractal.mandelbrot;
 
 import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.Mem;
@@ -9,18 +9,18 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static fine.fractals.Main.*;
-import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.context.ApplicationImpl.*;
 import static fine.fractals.data.ResolutionMultiplier.none;
 import static fine.fractals.data.ResolutionMultiplier.square_alter;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.*;
+import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 
-class DomainMandelbrotImpl {
+class PixelsMandelbrotImpl {
 
-	private static final Logger log = LogManager.getLogger(DomainMandelbrotImpl.class);
+	private static final Logger log = LogManager.getLogger(PixelsMandelbrotImpl.class);
 
-	final MandelbrotElement[][] elementsScreen = new MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
+	final MandelbrotElement[][] elementsStaticMandelbrot = new MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
 	private final ArrayList<MandelbrotElement> elementsToRemember = new ArrayList<>();
 
 	private MandelbrotElement bestMatch;
@@ -32,16 +32,16 @@ class DomainMandelbrotImpl {
 
 	private static boolean firstDomainExecution = true;
 
-	static final DomainMandelbrotImpl DomainMandelbrot;
+	static final PixelsMandelbrotImpl PixelsMandelbrot;
 
-	private DomainMandelbrotImpl() {
+	private PixelsMandelbrotImpl() {
 	}
 
 	static {
 		log.info("init");
-		DomainMandelbrot = new DomainMandelbrotImpl();
+		PixelsMandelbrot = new PixelsMandelbrotImpl();
 		log.info("initiate");
-		DomainMandelbrot.domainScreenCreateInitialization();
+		PixelsMandelbrot.domainScreenCreateInitialization();
 	}
 
 	public final void domainScreenCreateInitialization() {
@@ -49,7 +49,7 @@ class DomainMandelbrotImpl {
 		for (int x = 0; x < RESOLUTION_WIDTH; x++) {
 			for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
 				MandelbrotElement element = new MandelbrotElement(AreaMandelbrot.screenToDomainRe(x), AreaMandelbrot.screenToDomainIm(y));
-				elementsScreen[x][y] = element;
+				elementsStaticMandelbrot[x][y] = element;
 			}
 		}
 	}
@@ -65,7 +65,7 @@ class DomainMandelbrotImpl {
 		for (int x = 0; x < RESOLUTION_WIDTH; x++) {
 			for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
 
-				elementZero = elementsScreen[x][y];
+				elementZero = elementsStaticMandelbrot[x][y];
 
 				boolean isActive = elementZero != null && elementZero.isActiveAny();
 
@@ -148,7 +148,7 @@ class DomainMandelbrotImpl {
 		}
 		if (bestMatch != null) {
 			conflictsOnPixel.remove(bestMatch);
-			elementsScreen[bestMatchAtX][bestMatchAtY] = bestMatch;
+			elementsStaticMandelbrot[bestMatchAtX][bestMatchAtY] = bestMatch;
 		}
 	}
 
@@ -174,7 +174,7 @@ class DomainMandelbrotImpl {
 		if (x < 0 || y < 0 || x >= RESOLUTION_WIDTH || y >= RESOLUTION_HEIGHT) {
 			return null;
 		}
-		MandelbrotElement el = elementsScreen[x][y];
+		MandelbrotElement el = elementsStaticMandelbrot[x][y];
 		if (el != null) {
 			return el.getValue();
 		}
@@ -213,7 +213,7 @@ class DomainMandelbrotImpl {
 
 			for (int x = 0; x < RESOLUTION_WIDTH; x++) {
 				for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
-					element = elementsScreen[x][y];
+					element = elementsStaticMandelbrot[x][y];
 					if (element != null) {
 						color = switch (element.getState()) {
 							case ActiveMoved -> ACTIVE_MOVED;
@@ -252,7 +252,7 @@ class DomainMandelbrotImpl {
 		MandelbrotElement element;
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
-				element = elementsScreen[xx][yy];
+				element = elementsStaticMandelbrot[xx][yy];
 				if (AreaMandelbrot.contains(element.originRe, element.originIm)) {
 					/* Move elements to new coordinates */
 					if (element.isHibernatedBlack_Neighbour()) {
@@ -260,7 +260,7 @@ class DomainMandelbrotImpl {
 					} else if (!element.isHibernatedBlack()
 							&& !element.isHibernatedBlack_Neighbour()
 							&& !element.isFixed()
-							&& FractalMachine.isVeryDeepBlack(xx, yy, elementsScreen)) {
+							&& FractalMachine.isVeryDeepBlack(xx, yy, elementsStaticMandelbrot)) {
 						element.setHibernatedBlack();
 					} else {
 						if (element.isActiveNew()) {
@@ -279,7 +279,7 @@ class DomainMandelbrotImpl {
 		 */
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
-				elementsScreen[xx][yy] = null;
+				elementsStaticMandelbrot[xx][yy] = null;
 			}
 		}
 
@@ -302,7 +302,7 @@ class DomainMandelbrotImpl {
 			newPositionX = m.py;
 
 			if (newPositionX != Mem.NOT && newPositionT != Mem.NOT) {
-				done = elementsScreen[newPositionT][newPositionX];
+				done = elementsStaticMandelbrot[newPositionT][newPositionX];
 				if (done != null) {
 					/* Conflict */
 					if (conflicts[newPositionT][newPositionX] == null) {
@@ -311,7 +311,7 @@ class DomainMandelbrotImpl {
 					conflicts[newPositionT][newPositionX].add(el);
 				} else {
 					/* OK; no conflict */
-					elementsScreen[newPositionT][newPositionX] = el;
+					elementsStaticMandelbrot[newPositionT][newPositionX] = el;
 				}
 			}
 		}
@@ -324,11 +324,11 @@ class DomainMandelbrotImpl {
 				if (conflictsOnPixel != null) {
 
 					/* Add the initial conflict */
-					element = elementsScreen[xx][yy];
+					element = elementsStaticMandelbrot[xx][yy];
 					conflictsOnPixel.add(element);
 
 					/* Find best match for the pixel with conflicts */
-					elementsScreen[xx][yy] = bestMatch(m, xx, yy, conflictsOnPixel);
+					elementsStaticMandelbrot[xx][yy] = bestMatch(m, xx, yy, conflictsOnPixel);
 
 					/* Find best match for pixels around */
 					if (!conflictsOnPixel.isEmpty()) {
@@ -351,10 +351,10 @@ class DomainMandelbrotImpl {
 		MandelbrotElement newElement;
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
-				if (elementsScreen[xx][yy] == null) {
+				if (elementsStaticMandelbrot[xx][yy] == null) {
 					AreaMandelbrot.screenToDomainCarry(m, xx, yy);
 					newElement = new MandelbrotElement(m.re, m.im);
-					elementsScreen[xx][yy] = newElement;
+					elementsStaticMandelbrot[xx][yy] = newElement;
 				}
 			}
 		}
@@ -366,14 +366,14 @@ class DomainMandelbrotImpl {
 		 */
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
-				element = elementsScreen[xx][yy];
+				element = elementsStaticMandelbrot[xx][yy];
 				if (element.isHibernatedBlack()) {
 					final int r = 3;
 					for (int x = -r; x < r; x++) {
 						for (int y = -r; y < r; y++) {
 							/* Set black neighbours in circle around deep black position */
 							if ((x * x) + (y * y) < (r * r)) {
-								FractalMachine.setAsDeepBlack(xx + x, yy - y, elementsScreen);
+								FractalMachine.setAsDeepBlack(xx + x, yy - y, elementsStaticMandelbrot);
 							}
 						}
 					}

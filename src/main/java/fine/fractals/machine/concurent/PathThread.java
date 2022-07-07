@@ -1,4 +1,4 @@
-package fine.fractals.concurent;
+package fine.fractals.machine.concurent;
 
 import fine.fractals.data.MandelbrotElement;
 import org.apache.logging.log4j.LogManager;
@@ -6,9 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-import static fine.fractals.Main.FRACTAL;
-import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
-import static fine.fractals.fractal.abst.Fractal.ITERATION_MIN;
+import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.*;
 
 public class PathThread implements Runnable {
 
@@ -25,7 +23,7 @@ public class PathThread implements Runnable {
 
         final ArrayList<double[]> path = new ArrayList<>();
 
-        final boolean pathTest = FRACTAL.calculatePath(el, path);
+        final boolean pathTest = FinebrotFractal.calculatePath(el, path);
 
         if (pathTest) {
             el.setHibernatedFinished();
@@ -36,7 +34,7 @@ public class PathThread implements Runnable {
              */
             if (path.size() > ITERATION_MIN) {
                 el.setHibernatedFinishedLong();
-                DomainFinebrot.addEscapePathLong(path);
+                PathsFinebrot.addEscapePathLong(path);
             }
         }
     }

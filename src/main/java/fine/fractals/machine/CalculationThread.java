@@ -5,8 +5,8 @@ import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.context.ApplicationImpl.*;
 import static fine.fractals.context.FractalEngineImpl.FractalEngine;
-import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
-import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 
 public class CalculationThread extends Thread {
 
@@ -32,9 +32,6 @@ public class CalculationThread extends Thread {
 
             if (REPEAT) {
                 Application.zoomIn();
-            } else {
-                log.info("No repeat, exit now.");
-                System.exit(0);
             }
 
             if (iteration == 1) {

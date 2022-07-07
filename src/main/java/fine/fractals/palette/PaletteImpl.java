@@ -1,4 +1,4 @@
-package fine.fractals.context;
+package fine.fractals.palette;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,8 +9,6 @@ import java.util.ArrayList;
 public class PaletteImpl {
 
     private static final Logger log = LogManager.getLogger(PaletteImpl.class);
-    private String name;
-
     public final ArrayList<Color> spectrum = new ArrayList<>();
 
     public static final PaletteImpl Palette;
@@ -21,14 +19,6 @@ public class PaletteImpl {
     }
 
     private PaletteImpl() {
-    }
-
-    public String name() {
-        return name;
-    }
-
-    public void name(String name) {
-        this.name = name;
     }
 
     public Color getSpectrumValue(int index) {

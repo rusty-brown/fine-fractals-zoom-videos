@@ -6,6 +6,8 @@ public class MemEuler extends Mem {
 
     public int iteration = 0;
 
+    public int spectra;
+
     public void euler() {
         if (Mathematician.isPrime(iteration)) {
             re = 0.01 / re;

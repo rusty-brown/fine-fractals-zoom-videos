@@ -1,11 +1,9 @@
-package fine.fractals.context.mandelbrot;
+package fine.fractals.fractal.mandelbrot;
 
-import fine.fractals.Main;
-import fine.fractals.concurent.PathThread;
 import fine.fractals.data.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
-import fine.fractals.fractal.abst.Fractal;
 import fine.fractals.machine.FractalMachine;
+import fine.fractals.machine.concurent.PathThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,12 +11,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
-import static fine.fractals.context.ApplicationImpl.TEST_OPTIMIZATION_FIX_SIZE;
+import static fine.fractals.context.ApplicationImpl.*;
 import static fine.fractals.context.TargetImpl.Target;
-import static fine.fractals.context.finebrot.DomainFinebrotImpl.DomainFinebrot;
-import static fine.fractals.context.mandelbrot.DomainMandelbrotImpl.DomainMandelbrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.FinebrotFractal;
+import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.PathsFinebrot;
+import static fine.fractals.fractal.mandelbrot.PixelsMandelbrotImpl.PixelsMandelbrot;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class MandelbrotImpl {
@@ -44,10 +41,10 @@ public class MandelbrotImpl {
     public void calculate() {
 
         log.info("calculate()");
-        final ArrayList<MandelbrotElement> domainFull = DomainMandelbrot.fetchDomainFull();
+        final ArrayList<MandelbrotElement> domainFull = PixelsMandelbrot.fetchDomainFull();
 
         log.info("calculate: " + domainFull.size() + ", which is full domain");
-        final ExecutorService executor = Executors.newFixedThreadPool(Main.COREs);
+        final ExecutorService executor = Executors.newFixedThreadPool(COREs);
 
         log.info("Start " + domainFull.size() + " threads");
         for (MandelbrotElement el : domainFull) {
@@ -78,9 +75,8 @@ public class MandelbrotImpl {
         }
         log.info("ExecutorService end.");
 
-        DomainFinebrot.domainToScreenGrid();
-
-        Fractal.update();
+        PathsFinebrot.domainToScreenGrid();
+        FinebrotFractal.update();
 
         log.info("calculate() finished");
     }
@@ -88,7 +84,7 @@ public class MandelbrotImpl {
     /* Used for OneTarget */
     public MandelbrotElement getElementAt(int x, int y) {
         try {
-            return DomainMandelbrot.elementsScreen[x][y];
+            return PixelsMandelbrot.elementsStaticMandelbrot[x][y];
         } catch (Exception e) {
             log.fatal("getElementAt()", e);
             return null;
@@ -107,7 +103,7 @@ public class MandelbrotImpl {
         /* Test lines left and right */
         for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
             for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
-                FractalMachine.testOptimizationBreakElement(xx, yy, DomainMandelbrot.elementsScreen[xx][yy], failedNumbersRe, failedNumbersIm, lastIsWhite, lastIsBlack);
+                FractalMachine.testOptimizationBreakElement(xx, yy, PixelsMandelbrot.elementsStaticMandelbrot[xx][yy], failedNumbersRe, failedNumbersIm, lastIsWhite, lastIsBlack);
             }
             lastIsBlack.setFalse();
             lastIsWhite.setFalse();
@@ -115,7 +111,7 @@ public class MandelbrotImpl {
         /* Test lines up and down */
         for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
             for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
-                FractalMachine.testOptimizationBreakElement(xx, yy, DomainMandelbrot.elementsScreen[xx][yy], failedNumbersRe, failedNumbersIm, lastIsWhite, lastIsBlack);
+                FractalMachine.testOptimizationBreakElement(xx, yy, PixelsMandelbrot.elementsStaticMandelbrot[xx][yy], failedNumbersRe, failedNumbersIm, lastIsWhite, lastIsBlack);
             }
             lastIsBlack.setFalse();
             lastIsWhite.setFalse();
@@ -129,7 +125,7 @@ public class MandelbrotImpl {
                 for (int y = -r; y < r; y++) {
                     if ((x * x) + (y * y) < (r * r)) {
                         /* These optimizations should be much better optimized. This touches points which were already fixed. */
-                        FractalMachine.setActiveMovedIfBlack(failedNumbersRe.get(i) + x, failedNumbersIm.get(i) + y, DomainMandelbrot.elementsScreen);
+                        FractalMachine.setActiveMovedIfBlack(failedNumbersRe.get(i) + x, failedNumbersIm.get(i) + y, PixelsMandelbrot.elementsStaticMandelbrot);
                     }
                 }
             }
@@ -139,22 +135,22 @@ public class MandelbrotImpl {
     public void fixDomainOptimizationOnClick() {
         int xx = Target.getScreenFromCenterX();
         int yy = Target.getScreenFromCenterY();
-        final int r = Main.neighbours;
+        final int r = neighbours;
         for (int x = -r; x < r; x++) {
             for (int y = -r; y < r; y++) {
                 if ((x * x) + (y * y) < (r * r)) {
-                    FractalMachine.setActiveToAddToCalculation(xx + x, yy + y, DomainMandelbrot.elementsScreen);
+                    FractalMachine.setActiveToAddToCalculation(xx + x, yy + y, PixelsMandelbrot.elementsStaticMandelbrot);
                 }
             }
         }
     }
 
     public void createMask() {
-        DomainMandelbrot.createMask();
+        PixelsMandelbrot.createMask();
     }
 
     public void domainForThisZoom() {
-        DomainMandelbrot.domainForThisZoom();
+        PixelsMandelbrot.domainForThisZoom();
     }
 }
 	

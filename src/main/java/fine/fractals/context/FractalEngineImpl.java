@@ -4,16 +4,16 @@ import fine.fractals.machine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.Main.SAVE_IMAGES;
-import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.ApplicationImpl.REPEAT;
-import static fine.fractals.context.finebrot.FinebrotImpl.Finebrot;
-import static fine.fractals.context.mandelbrot.MandelbrotImpl.Mandelbrot;
-import static fine.fractals.perfect.coloring.PerfectColorDistributionImpl.PerfectColorDistribution;
+import static fine.fractals.context.ApplicationImpl.SAVE_IMAGES;
+import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.PerfectColorDistribution;
+import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
+import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
 
 public class FractalEngineImpl {
 
     private static final Logger log = LogManager.getLogger(FractalEngineImpl.class);
+
     public static boolean calculationInProgress;
 
     public static final FractalEngineImpl FractalEngine;
@@ -33,7 +33,7 @@ public class FractalEngineImpl {
 
         calculationInProgress = true;
 
-        Finebrot.clear();
+        PixelsFinebrot.clear();
 
         if (updateDomain) {
             Mandelbrot.domainForThisZoom();
@@ -54,7 +54,7 @@ public class FractalEngineImpl {
             Mandelbrot.createMask();
         }
 
-        PerfectColorDistribution.perfectlyColorScreenValues();
+        PerfectColorDistribution.perfectlyColorFinebrotValues();
 
         if (SAVE_IMAGES) {
             FractalMachine.saveImages();

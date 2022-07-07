@@ -1,33 +1,23 @@
-package fine.fractals.fractal.abst;
+package fine.fractals.fractal.finebrot.infinite;
 
 import fine.fractals.data.MandelbrotElement;
-import fine.fractals.data.MemPhoenix;
+import fine.fractals.data.Mem;
+import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
 import java.util.ArrayList;
 
-import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 
-public abstract class FractalPhoenix extends Fractal {
+public abstract class FractalInfinite extends FractalFinite {
 
-    /*
-     * Phoenix fractal parameters
-     * c, p
-     */
-    protected double c;
-    protected double p;
-
-
-    public FractalPhoenix(String name) {
-        super(name);
+    public FractalInfinite() {
     }
-
-    public abstract void math(MemPhoenix m, double re, double im);
 
     @Override
     public boolean calculatePath(MandelbrotElement el, ArrayList<double[]> path) {
         int iterator = 0;
 
-        final MemPhoenix m = new MemPhoenix();
+        final Mem m = new Mem();
         m.re = el.originRe;
         m.im = el.originIm;
         while (m.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
@@ -35,11 +25,16 @@ public abstract class FractalPhoenix extends Fractal {
             math(m, el.originRe, el.originIm);
 
             if (AreaFinebrot.contains(m)) {
+                /* Calculation did not diverge */
                 path.add(new double[]{m.re, m.im});
             }
             iterator++;
         }
         el.setValues(iterator);
-        return iterator < Fractal.ITERATION_MAX;
+
+        /*
+         * Finite fractal
+         */
+        return iterator == ITERATION_MAX;
     }
 }

@@ -12,13 +12,13 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.APP_NAME;
 import static fine.fractals.context.TargetImpl.Target;
-import static fine.fractals.context.finebrot.AreaFinebrotImpl.AreaFinebrot;
-import static fine.fractals.context.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.fractal.abst.Fractal.NAME;
+import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.NAME;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 import static java.awt.Color.BLACK;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;

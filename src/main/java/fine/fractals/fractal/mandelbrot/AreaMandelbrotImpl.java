@@ -1,15 +1,15 @@
-package fine.fractals.context.mandelbrot;
+package fine.fractals.fractal.mandelbrot;
 
 import fine.fractals.data.Mem;
 import fine.fractals.formatter.Formatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.Main.RESOLUTION_HEIGHT;
-import static fine.fractals.Main.RESOLUTION_WIDTH;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.ZOOM;
 import static fine.fractals.context.TargetImpl.Target;
-import static fine.fractals.fractal.abst.Fractal.*;
+import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.*;
 
 public class AreaMandelbrotImpl {
 
@@ -140,11 +140,11 @@ public class AreaMandelbrotImpl {
 
     /* Generate domain elements */
     private void calculatePoints() {
-        for (int tt = 0; tt < RESOLUTION_WIDTH; tt++) {
-            numbersRe[tt] = borderLowRe + (this.plank * tt);
+        for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+            numbersRe[x] = borderLowRe + (this.plank * x);
         }
-        for (int xx = 0; xx < RESOLUTION_HEIGHT; xx++) {
-            numbersIm[xx] = borderLowIm + (this.plank * xx);
+        for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+            numbersIm[y] = borderLowIm + (this.plank * y);
         }
     }
 
