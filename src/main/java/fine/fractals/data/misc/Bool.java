@@ -1,6 +1,8 @@
 package fine.fractals.data.misc;
 
-/* Boolean to be passed as reference parameter */
+/**
+ * Boolean to be passed as reference parameter
+ */
 public class Bool {
 
     private boolean value;

@@ -10,10 +10,10 @@ import java.awt.event.MouseListener;
 
 import static fine.fractals.context.ApplicationImpl.Application;
 import static fine.fractals.context.ApplicationImpl.REPEAT;
-import static fine.fractals.context.FractalEngineImpl.calculationInProgress;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
+import static fine.fractals.machine.FractalEngineImpl.calculationInProgress;
 
 public class UIMouseListener implements MouseListener {
 

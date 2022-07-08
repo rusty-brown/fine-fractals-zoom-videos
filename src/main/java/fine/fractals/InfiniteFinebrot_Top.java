@@ -1,12 +1,11 @@
 package fine.fractals;
 
 import fine.fractals.color.PaletteBlackToWhite;
-import fine.fractals.data.Mem;
+import fine.fractals.data.mem.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.data.ResolutionMultiplier.none;
-import static fine.fractals.data.ResolutionMultiplier.square_11;
+import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
 
 public class InfiniteFinebrot_Top extends FractalFinite {
 

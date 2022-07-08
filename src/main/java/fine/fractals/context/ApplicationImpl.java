@@ -1,6 +1,6 @@
 package fine.fractals.context;
 
-import fine.fractals.data.ResolutionMultiplier;
+import fine.fractals.data.mandelbrot.ResolutionMultiplier;
 import fine.fractals.data.annotation.EditMe;
 import fine.fractals.formatter.Formatter;
 import fine.fractals.machine.CalculationThread;
@@ -12,7 +12,7 @@ import fine.fractals.windows.listener.UIMouseWheelListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.context.FractalEngineImpl.FractalEngine;
+import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 

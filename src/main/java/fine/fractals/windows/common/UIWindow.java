@@ -1,4 +1,4 @@
-package fine.fractals.windows.abst;
+package fine.fractals.windows.common;
 
 import fine.fractals.windows.adapter.UIMouseMotionAdapter;
 
@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static fine.fractals.context.TargetImpl.Target;
+import static fine.fractals.machine.TargetImpl.Target;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.RED;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;

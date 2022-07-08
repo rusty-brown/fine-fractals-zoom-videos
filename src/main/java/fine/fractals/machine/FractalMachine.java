@@ -1,6 +1,6 @@
 package fine.fractals.machine;
 
-import fine.fractals.data.MandelbrotElement;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,11 +32,11 @@ public abstract class FractalMachine {
 		try {
 			final String finebrotName = FILE_PATH + NAME + APP_NAME + iteration() + ".jpg";
 			log.info("Finebrot image: " + finebrotName);
-			saveImages(finebrotName, FinebrotImage);
+			saveImage(finebrotName, FinebrotImage);
 
 			final String mandelbrotName = DEBUG_PATH + NAME + APP_NAME + iteration() + "_mandelbrot.jpg";
 			log.info("Mandelbrot image: " + mandelbrotName);
-			saveImages(mandelbrotName, MandelbrotMaskImage);
+			saveImage(mandelbrotName, MandelbrotMaskImage);
 
 			log.info("saved.");
 		} catch (IOException e) {
@@ -45,7 +45,7 @@ public abstract class FractalMachine {
 		}
 	}
 
-	private static void saveImages(String fractalName, BufferedImage fractalImage) throws IOException {
+	private static void saveImage(String fractalName, BufferedImage fractalImage) throws IOException {
 		final JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
 		jpegParams.setCompressionMode(MODE_EXPLICIT);
 		jpegParams.setCompressionQuality(0.98f);
@@ -68,12 +68,11 @@ public abstract class FractalMachine {
 			return false;
 		}
 		Integer value;
-		/* r is a radius of a circle to verify non-zero values around */
+		/* r is a radius of a square to verify non-zero values around */
 		final int r = neighbours + 1;
 		for (int x = -r; x < r; x++) {
 			for (int y = -r; y < r; y++) {
 				if ((x * x) + (y * y) < (r * r)) {
-					/* Find value to be carried by HH.calculation */
 					int x2 = xx + x;
 					int y2 = yy + y;
 					value = valueAt(x2, y2, elements);
@@ -122,7 +121,7 @@ public abstract class FractalMachine {
 
 	public static void setAsDeepBlack(int x, int y, MandelbrotElement[][] elements) {
 		if (checkDomain(x, y)) {
-			/* Most probably Element of Mandelbrot set, don't recalculate */
+			/* Most probably Element of Mandelbrot set, don't calculate neighbours */
 			elements[x][y].setHibernatedBlackNeighbour();
 		}
 	}
@@ -135,9 +134,7 @@ public abstract class FractalMachine {
 			}
 			lastIsBlack.setTrue();
 			lastIsWhite.setFalse();
-
 		} else if (element.isHibernatedFinished()) {
-
 			if (lastIsBlack.is()) {
 				failedNumbersRe.add(x);
 				failedNumbersIm.add(y);
@@ -150,7 +147,6 @@ public abstract class FractalMachine {
 		}
 	}
 
-	// not correct;
 	public static void setActiveMovedIfBlack(int x, int y, MandelbrotElement[][] mandelbrot) {
 		MandelbrotElement element;
 		if (checkDomain(x, y)) {

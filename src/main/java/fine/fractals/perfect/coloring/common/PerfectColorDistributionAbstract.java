@@ -4,7 +4,8 @@ import fine.fractals.data.finebrot.FinebrotPixel;
 
 import java.util.Comparator;
 
-import static fine.fractals.context.TargetImpl.Target;
+import static fine.fractals.machine.TargetImpl.Target;
+import static java.lang.Double.compare;
 import static java.lang.Integer.compare;
 import static java.lang.Math.abs;
 
@@ -21,7 +22,7 @@ public abstract class PerfectColorDistributionAbstract {
     protected final Comparator<FinebrotPixel> comparator = (a, b) -> {
         int c = compare(a.pixelValue(), b.pixelValue());
         if (c == 0) {
-            return Double.compare(abs(a.px() - px), abs(b.px() - px));
+            return compare(abs(a.px() - px), abs(b.px() - px));
         }
         return c;
     };

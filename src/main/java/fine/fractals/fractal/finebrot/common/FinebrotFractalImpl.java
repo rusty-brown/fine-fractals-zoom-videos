@@ -1,6 +1,7 @@
 package fine.fractals.fractal.finebrot.common;
 
-import fine.fractals.data.MandelbrotElement;
+import fine.fractals.data.annotation.ThreadSafe;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.perfect.coloring.common.PerfectColorDistributionAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,6 +52,7 @@ public abstract class FinebrotFractalImpl {
 
 	private int iterationMax0;
 
+	@ThreadSafe
 	public abstract boolean calculatePath(MandelbrotElement el, final ArrayList<double[]> path);
 
 	public void update() {
@@ -60,18 +62,15 @@ public abstract class FinebrotFractalImpl {
 		}
 		final double size0 = INIT_FINEBROT_AREA_SIZE;
 		final double sizeNow = AreaFinebrot.sizeIm;
-
 		final double magnification = (size0 / sizeNow); // length 8 4 2 1 1/2 1/4 1/8
-
 		final double iterationDiv = (magnification * iterationMax0) - iterationMax0;
-		log.debug("(" + magnification + " | " + iterationDiv + ")");
+		log.debug("magnification" + magnification);
+		log.debug("iterationDiv" + iterationDiv);
 
 		ITERATION_MAX = (int) (iterationMax0 + (iterationDiv / 5000.0));
-
 		if (ITERATION_MAX > 300_000_000) {
 			ITERATION_MAX = 300_000_000;
 		}
-
 		log.info("ITERATION_MAX = " + ITERATION_MAX);
 	}
 }

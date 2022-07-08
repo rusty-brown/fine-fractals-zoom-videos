@@ -1,6 +1,5 @@
-package fine.fractals.context;
+package fine.fractals.machine;
 
-import fine.fractals.machine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,11 +13,11 @@ public class FractalEngineImpl {
 
     private static final Logger log = LogManager.getLogger(FractalEngineImpl.class);
 
-    public static boolean calculationInProgress;
-
     public static final FractalEngineImpl FractalEngine;
 
+    public static boolean calculationInProgress;
     private boolean updateDomain = false;
+    private boolean first = true;
 
     static {
         log.info("init");
@@ -28,26 +27,21 @@ public class FractalEngineImpl {
     private FractalEngineImpl() {
     }
 
-    private boolean first = true;
-
     public void calculate() {
         log.info("calculate()");
+        calculationInProgress = true;
 
         if (first) {
             first = false;
             Mandelbrot.domainScreenCreateInitialization();
         }
-
-        calculationInProgress = true;
-
         PixelsFinebrot.clear();
 
         if (updateDomain) {
             Mandelbrot.domainForThisZoom();
             updateDomain = false;
         }
-
-        Mandelbrot.createMask();
+        Mandelbrot.createMaskAndRepaint();
 
         /*
          * Mandelbrot calculation creates Finebrot data and image
@@ -57,8 +51,8 @@ public class FractalEngineImpl {
         if (REPEAT) {
             /* Test if Optimization didn't break anything */
             Mandelbrot.fixOptimizationBreak();
-
-            Mandelbrot.createMask();
+            /* Display Mandelbrot pixels status */
+            Mandelbrot.createMaskAndRepaint();
         }
 
         PerfectColorDistribution.perfectlyColorFinebrotValues();

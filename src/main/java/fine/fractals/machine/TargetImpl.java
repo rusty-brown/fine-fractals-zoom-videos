@@ -1,7 +1,7 @@
-package fine.fractals.context;
+package fine.fractals.machine;
 
-import fine.fractals.data.MandelbrotElement;
-import fine.fractals.data.Mem;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
+import fine.fractals.data.mem.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,6 +16,7 @@ public class TargetImpl {
 
     private String cTextRe = "";
     private String cTextIm = "";
+
     /* Coordinates counted from top left corner */
     private int scrRe;
     private int scrIm;
@@ -24,12 +25,7 @@ public class TargetImpl {
 
     private MandelbrotElement mandelbrotElement = null;
 
-    public static final TargetImpl Target;
-
-    static {
-        log.info("init");
-        Target = new TargetImpl();
-    }
+    public static final TargetImpl Target = new TargetImpl();
 
     private TargetImpl() {
     }
@@ -41,7 +37,6 @@ public class TargetImpl {
         this.scrIm = this.scrCornerIm - (RESOLUTION_HEIGHT / 2);
 
         Mem m = new Mem();
-
         if (!FractalEngineImpl.calculationInProgress) {
             String[] tmp = AreaMandelbrot.cToString(m, this.scrCornerRe, this.scrCornerIm);
             this.cTextRe = tmp[0];
@@ -59,7 +54,7 @@ public class TargetImpl {
                 this.cTextIm = "-";
             }
         }
-        /* I don't want to Move area domain and area image coordinates in case I want just Zoom in with Space */
+        /* Don't move AreaMandelbrot or AreaFinebrot - I may want to zoom in with space bar */
     }
 
     public int getScreenFromCenterX() {

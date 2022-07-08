@@ -1,7 +1,7 @@
 package fine.fractals.fractal.mandelbrot;
 
-import fine.fractals.data.MandelbrotElement;
-import fine.fractals.data.Mem;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
+import fine.fractals.data.mem.Mem;
 import fine.fractals.machine.FractalMachine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,9 +10,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.data.ResolutionMultiplier.none;
-import static fine.fractals.data.ResolutionMultiplier.square_alter;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.*;
+import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
+import static fine.fractals.data.mandelbrot.ResolutionMultiplier.square_alter;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 
@@ -107,10 +107,10 @@ class PixelsMandelbrotImpl {
 
 			final double pn = AreaMandelbrot.plank() / multiplier;
 			final int half = (multiplier - 1) / 2;
+			/* This fills the pixel with multiple points */
 			for (int x = -half; x <= half; x++) {
 				for (int y = -half; y <= half; y++) {
 					if (x != 0 || y != 0) {
-						/* This fills the pixel with multiple points */
 						domainFull.add(new MandelbrotElement(elementZero.originRe + (x * pn), elementZero.originIm + (y * pn)));
 					}
 					/* else do nothing, there already is element 0 in the center of this pixel */
@@ -121,7 +121,6 @@ class PixelsMandelbrotImpl {
 
 	private void dropBestMatchToEmptyNeighbour(Mem m, int x, int y, ArrayList<MandelbrotElement> conflictsOnPixel) {
 		bestMatch = null;
-
 		dist = 0;
 		double distMin = 42;
 		for (MandelbrotElement element : conflictsOnPixel) {
@@ -148,7 +147,7 @@ class PixelsMandelbrotImpl {
 	double tryBestMatch(Mem m, int x, int y, MandelbrotElement element, double distMin) {
 		if (emptyAt(x, y)) {
 			AreaMandelbrot.screenToDomainCarry(m, x, y);
-			dist = dist(m.re, m.im, element.originRe, element.originIm);
+			dist = quad(m.re, m.im, element.originRe, element.originIm);
 			if (dist < distMin) {
 				distMin = dist;
 				bestMatch = element;
@@ -180,7 +179,7 @@ class PixelsMandelbrotImpl {
 		MandelbrotElement ret = null;
 		for (MandelbrotElement el : conflictsOnPixel) {
 			AreaMandelbrot.screenToDomainCarry(m, x, y);
-			dist = dist(m.re, m.im, el.originRe, el.originIm);
+			dist = quad(m.re, m.im, el.originRe, el.originIm);
 			if (dist < distMin) {
 				distMin = dist;
 				ret = el;
@@ -191,9 +190,9 @@ class PixelsMandelbrotImpl {
 	}
 
 	/**
-	 * This is not distance. It is quadrance
+	 * This is Quadrance
 	 */
-	double dist(double aRe, double aIm, double bRe, double bIm) {
+	double quad(double aRe, double aIm, double bRe, double bIm) {
 		return (aRe - bRe) * (aRe - bRe) + (aIm - bIm) * (aIm - bIm);
 	}
 
@@ -230,17 +229,14 @@ class PixelsMandelbrotImpl {
 		}
 	}
 
-	/*-----------------------------------------------------------------------------*/
-
-
 	/*
 	 * This is called already after zoom
 	 */
 	public void domainForThisZoom() {
-
 		/*
-		 * Scan area elements (old positions from previous calculation) to be -
-		 * moved to new positions (remembered) or skipped calculation for them.
+		 * Scan area elements (old positions from previous calculation)
+		 * They will be moved to new positions (remembered)
+		 * And calculation will be skipped for them.
 		 */
 		MandelbrotElement element;
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
@@ -265,9 +261,8 @@ class PixelsMandelbrotImpl {
 			}
 		}
 
-
 		/*
-		 * Delete all elements assigned to screen coordinates.
+		 * Delete all elements assigned to Mandelbrot coordinates.
 		 * Some are remembered and will be moved.
 		 */
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
@@ -282,7 +277,6 @@ class PixelsMandelbrotImpl {
 		int newPositionT;
 		int newPositionX;
 		MandelbrotElement done;
-
 		Mem m = new Mem();
 
 		@SuppressWarnings(value = "unchecked")
@@ -290,7 +284,6 @@ class PixelsMandelbrotImpl {
 		for (MandelbrotElement el : elementsToRemember) {
 
 			AreaMandelbrot.domainToScreenCarry(m, el.originRe, el.originIm);
-
 			newPositionT = m.px;
 			newPositionX = m.py;
 
@@ -309,8 +302,10 @@ class PixelsMandelbrotImpl {
 			}
 		}
 		ArrayList<MandelbrotElement> conflictsOnPixel;
-		/* Resolve found conflicts */
-		/* More Elements hit same pixel after zoom */
+		/*
+		 * Resolve conflicts
+		 * Because of zooming, multiple Elements may have moved to the same pixel
+		 */
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
 				conflictsOnPixel = conflicts[xx][yy];
@@ -355,7 +350,6 @@ class PixelsMandelbrotImpl {
 		/*
 		 * Calculation for some positions should be skipped as they are to far away form any divergent position. (They are deep black)
 		 * Skipp also calculation for their neighbours. (Black neighbour)
-		 * Try to guess value of new elements if all values around them are the very similar.
 		 */
 		for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
 			for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {

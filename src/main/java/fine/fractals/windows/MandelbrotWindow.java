@@ -1,6 +1,6 @@
 package fine.fractals.windows;
 
-import fine.fractals.windows.abst.UIWindow;
+import fine.fractals.windows.common.UIWindow;
 import fine.fractals.windows.adapter.UIKeyAdapter;
 import fine.fractals.windows.adapter.UIMouseMotionAdapter;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
@@ -15,7 +15,7 @@ import java.awt.*;
 import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
 import static fine.fractals.context.ApplicationImpl.APP_NAME;
-import static fine.fractals.context.TargetImpl.Target;
+import static fine.fractals.machine.TargetImpl.Target;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.NAME;
@@ -67,6 +67,7 @@ public class MandelbrotWindow extends UIWindow {
 		super.paintComponent(g);
 		final Graphics2D g2d = (Graphics2D) g.create();
 		this.frame.setTitle(this.name);
+
 		log.debug("drawImage");
 		/* image size fit to window size */
 		g2d.drawImage(MandelbrotMaskImage, 0, 0, getWidth(), getHeight(), null);
@@ -91,16 +92,16 @@ public class MandelbrotWindow extends UIWindow {
 			g2d.drawString(Target.getTextIm(), col(2), row(line));
 			line++;
 
-			/* Area size domain */
+			/* Area size Mandelbrot */
 			g2d.drawString("Domain h/w: ", col(0), row(line));
 			g2d.drawString(AreaMandelbrot.sizeImString(), col(1), row(line));
-			g2d.drawString(AreaMandelbrot.sizeReTString(), col(2), row(line));
+			g2d.drawString(AreaMandelbrot.sizeReString(), col(2), row(line));
 			line++;
 
-			/* Area size image */
+			/* Area size Finebrot */
 			g2d.drawString("Domain h/w: ", col(0), row(line));
 			g2d.drawString(AreaFinebrot.sizeImString(), col(1), row(line));
-			g2d.drawString(AreaFinebrot.sizeReTString(), col(2), row(line));
+			g2d.drawString(AreaFinebrot.sizeReString(), col(2), row(line));
 			line++;
 
 			/* Mandelbrot Element value */

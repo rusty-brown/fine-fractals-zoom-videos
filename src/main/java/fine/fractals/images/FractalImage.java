@@ -11,4 +11,5 @@ public class FractalImage {
     public static final BufferedImage FinebrotImage = new BufferedImage(RESOLUTION_WIDTH, RESOLUTION_HEIGHT, TYPE_INT_RGB);
 
     public static final BufferedImage MandelbrotMaskImage = new BufferedImage(RESOLUTION_WIDTH, RESOLUTION_HEIGHT, TYPE_INT_RGB);
+
 }

@@ -1,7 +1,7 @@
 package fine.fractals.fractal.finebrot.euler;
 
-import fine.fractals.data.Mem;
-import fine.fractals.data.MemEuler;
+import fine.fractals.data.mem.Mem;
+import fine.fractals.data.mem.MemEuler;
 import fine.fractals.fractal.finebrot.common.PathsFinebrotAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,20 +43,14 @@ public class PathsEulerFinebrotImpl extends PathsFinebrotAbstract {
         int added = 0;
 
         final MemEuler m = new MemEuler();
-
         double[] tmp;
-
         for (ArrayList<double[]> path : paths) {
             for (int i = 0; i < path.size() - 1; i++) {
-
                 tmp = path.get(i);
                 AreaFinebrot.domainToScreenCarry(m, tmp[0], tmp[1]);
-
                 if (m.px != Mem.NOT && m.py != Mem.NOT) {
                     added++;
-
                     FractalEuler.colorsFor(m, i, path.size());
-
                     PixelsEulerFinebrot.add(m.px, m.py, m.spectra);
                 }
             }

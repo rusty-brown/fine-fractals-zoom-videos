@@ -1,12 +1,11 @@
 package fine.fractals;
 
 import fine.fractals.color.PaletteBlackToWhite;
-import fine.fractals.data.MemPhoenix;
+import fine.fractals.data.mem.MemPhoenix;
 import fine.fractals.fractal.finebrot.phoenix.FractalPhoenix;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.data.ResolutionMultiplier.none;
-import static fine.fractals.data.ResolutionMultiplier.square_11;
+import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
 
 public class GloriousHead extends FractalPhoenix {
 

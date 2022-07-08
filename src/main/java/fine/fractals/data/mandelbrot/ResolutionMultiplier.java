@@ -1,4 +1,4 @@
-package fine.fractals.data;
+package fine.fractals.data.mandelbrot;
 
 @SuppressWarnings(value = "unused")
 public enum ResolutionMultiplier {
@@ -9,7 +9,7 @@ public enum ResolutionMultiplier {
 
     /**
      * two opposite square corners altering each calculation
-     * center point remains only relevant re,im point for state of Mandelbrot domain pixel (hibernated, active, active new, etc)
+     * center point remains the only relevant re,im point for state of Mandelbrot domain pixel (hibernated, active, active new, etc)
      */
     square_alter,
 

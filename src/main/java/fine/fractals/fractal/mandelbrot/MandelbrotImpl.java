@@ -1,9 +1,9 @@
 package fine.fractals.fractal.mandelbrot;
 
-import fine.fractals.data.MandelbrotElement;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
 import fine.fractals.machine.FractalMachine;
-import fine.fractals.machine.concurent.PathThread;
+import fine.fractals.machine.concurent.PathCalculationThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,10 +12,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.FinebrotFractal;
 import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.PathsFinebrot;
 import static fine.fractals.fractal.mandelbrot.PixelsMandelbrotImpl.PixelsMandelbrot;
+import static fine.fractals.machine.TargetImpl.Target;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class MandelbrotImpl {
@@ -31,7 +31,6 @@ public class MandelbrotImpl {
      * Calculate Domain Values
      */
     public void calculate() {
-
         log.info("calculate()");
         final ArrayList<MandelbrotElement> domainFull = PixelsMandelbrot.fetchDomainFull();
 
@@ -40,7 +39,7 @@ public class MandelbrotImpl {
 
         log.info("Start " + domainFull.size() + " threads");
         for (MandelbrotElement el : domainFull) {
-            executor.execute(new PathThread(el));
+            executor.execute(new PathCalculationThread(el));
         }
 
         try {
@@ -65,12 +64,9 @@ public class MandelbrotImpl {
             log.error("Executor waiting interrupted.");
             System.exit(1);
         }
-        log.info("ExecutorService end.");
 
         PathsFinebrot.domainToScreenGrid();
         FinebrotFractal.update();
-
-        log.info("calculate() finished");
     }
 
     /* Used for OneTarget */
@@ -137,8 +133,9 @@ public class MandelbrotImpl {
         }
     }
 
-    public void createMask() {
+    public void createMaskAndRepaint() {
         PixelsMandelbrot.createMask();
+        Application.repaintMandelbrotWindow();
     }
 
     public void domainForThisZoom() {
@@ -149,4 +146,3 @@ public class MandelbrotImpl {
         PixelsMandelbrot.domainScreenCreateInitialization();
     }
 }
-	

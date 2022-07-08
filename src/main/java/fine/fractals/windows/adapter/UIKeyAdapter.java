@@ -9,7 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import static fine.fractals.context.ApplicationImpl.Application;
-import static fine.fractals.context.TargetImpl.Target;
+import static fine.fractals.machine.TargetImpl.Target;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.ITERATION_MAX;
 import static fine.fractals.windows.MandelbrotWindow.showInfo;

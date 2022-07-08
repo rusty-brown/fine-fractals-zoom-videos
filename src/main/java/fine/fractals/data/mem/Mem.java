@@ -1,8 +1,8 @@
-package fine.fractals.data;
+package fine.fractals.data.mem;
 
 public class Mem {
 
-	public static final int NOT = 0;
+	public static final int NOT = Integer.MIN_VALUE;
 
 	public double re;
 	public double im;
@@ -17,6 +17,11 @@ public class Mem {
 	public int py;
 
 	public Mem() {
+	}
+
+	public Mem(double originRe, double originIm) {
+		this.re = originRe;
+		this.im = originIm;
 	}
 
 	public void plus(double r, double i) {

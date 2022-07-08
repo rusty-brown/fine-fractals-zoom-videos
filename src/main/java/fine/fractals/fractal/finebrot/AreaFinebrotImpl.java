@@ -1,15 +1,13 @@
 package fine.fractals.fractal.finebrot;
 
-import fine.fractals.data.Mem;
+import fine.fractals.data.mem.Mem;
 import fine.fractals.formatter.Formatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
-import static fine.fractals.context.ApplicationImpl.ZOOM;
-import static fine.fractals.context.TargetImpl.Target;
+import static fine.fractals.context.ApplicationImpl.*;
 import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.*;
+import static fine.fractals.machine.TargetImpl.Target;
 
 public class AreaFinebrotImpl {
 
@@ -30,9 +28,6 @@ public class AreaFinebrotImpl {
 	private double borderLowIm;
 	private double borderHighRe;
 	private double borderHighIm;
-
-	/* Plank's length */
-	/* It depends on Height which is resolution domain Y */
 	private double plank;
 
 	private final int resolutionHalfRe;
@@ -48,7 +43,7 @@ public class AreaFinebrotImpl {
 	}
 
 	private AreaFinebrotImpl() {
-		log.debug("AreaFinebrotImpl");
+		log.debug("AreaFinebrotImpl()");
 		this.resolutionHalfRe = RESOLUTION_WIDTH / 2;
 		this.resolutionHalfIm = RESOLUTION_HEIGHT / 2;
 
@@ -118,7 +113,7 @@ public class AreaFinebrotImpl {
 		initiate();
 	}
 
-	public String sizeReTString() {
+	public String sizeReString() {
 		return Formatter.roundString(this.sizeRe);
 	}
 

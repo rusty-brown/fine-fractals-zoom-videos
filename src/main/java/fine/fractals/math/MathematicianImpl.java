@@ -1,6 +1,6 @@
 package fine.fractals.math;
 
-import fine.fractals.data.Mem;
+import fine.fractals.data.mem.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +30,6 @@ public class MathematicianImpl {
 
 	public void initPrimes() {
 		log.info("initPrimes()");
-
 		PRIMES = new HashSet<>();
 		for (int i = 0; i < ITERATION_MAX; i++) {
 			if (isPrimeInit(i)) {
@@ -41,7 +40,6 @@ public class MathematicianImpl {
 
 	public void initFibonacci() {
 		log.info("initFibonacci()");
-
 		FIBONACCI = new HashSet<>();
 		int a = 0;
 		int b = 1;
@@ -56,7 +54,6 @@ public class MathematicianImpl {
 
 	public void initPerfectNumbers() {
 		log.info("initPerfectNumbers()");
-
 		PERFECT = new HashSet<>();
 		for (int i = 0; i <= ITERATION_MAX; i++) {
 			if (isPerfectInit(i)) {
@@ -67,7 +64,6 @@ public class MathematicianImpl {
 
 	public void initSquares() {
 		log.info("initSquares()");
-
 		SQUARE = new HashSet<>();
 		int sq;
 		for (int i = 0; i * i <= ITERATION_MAX; i++) {
@@ -116,21 +112,20 @@ public class MathematicianImpl {
 	/**
 	 * (t^2 + x^2 - 2at)^2 = 4a^2 (t^2 + x^2)
 	 */
-	public static boolean isOutsideCardioid(double reT, double imX) {
+	public static boolean isOutsideCardioid(double re, double im) {
 		final double a = 0.25;
-		final double t = reT - 0.25;
+		final double t = re - 0.25;
 		final double t2 = t * t;
-		final double x2 = imX * imX;
+		final double x2 = im * im;
 		final double leftSide = t2 + x2 + 2 * a * t;
-
 		return leftSide * leftSide > 4 * a * a * (t2 + x2);
 	}
 
 	/**
-	 * circle with center at -1 and radius 1/4
+	 * circle with center at re=-1,im=0 and radius 1/4
 	 */
-	public static boolean isOutsideCircle(double reT, double imX) {
-		return ((reT + 1) * (reT + 1)) + (imX * imX) > 0.0625;
+	public static boolean isOutsideCircle(double re, double im) {
+		return ((re + 1) * (re + 1)) + (im * im) > 0.0625;
 	}
 
 	public void multiplyBy(Mem m, double re, double im) {

@@ -1,7 +1,8 @@
 package fine.fractals.fractal.finebrot.finite;
 
-import fine.fractals.data.MandelbrotElement;
-import fine.fractals.data.Mem;
+import fine.fractals.data.annotation.ThreadSafe;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
+import fine.fractals.data.mem.Mem;
 import fine.fractals.fractal.finebrot.PixelsFinebrotImpl;
 import fine.fractals.fractal.finebrot.common.FinebrotFractalImpl;
 import fine.fractals.perfect.coloring.PerfectColorDistributionImpl;
@@ -27,14 +28,14 @@ public abstract class FractalFinite extends FinebrotFractalImpl {
     public abstract void math(Mem m, double re, double im);
 
     @Override
+    @ThreadSafe
     public boolean calculatePath(MandelbrotElement el, ArrayList<double[]> path) {
         int iterator = 0;
-
-        final Mem m = new Mem();
-        m.re = el.originRe;
-        m.im = el.originIm;
+        final Mem m = new Mem(el.originRe, el.originIm);
         while (m.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
-
+            /*
+             * fractal calculation
+             */
             math(m, el.originRe, el.originIm);
 
             if (AreaFinebrot.contains(m)) {

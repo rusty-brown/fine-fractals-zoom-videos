@@ -1,6 +1,6 @@
 package fine.fractals.fractal.finebrot.finite;
 
-import fine.fractals.data.Mem;
+import fine.fractals.data.mem.Mem;
 import fine.fractals.fractal.finebrot.common.PathsFinebrotAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
-import static java.util.Objects.requireNonNull;
 
 public class PathsFinebrotImpl extends PathsFinebrotAbstract {
 
@@ -41,14 +40,11 @@ public class PathsFinebrotImpl extends PathsFinebrotAbstract {
         int added = 0;
 
         final Mem m = new Mem();
-
         double[] tmp;
-
         for (ArrayList<double[]> path : paths) {
             for (int i = 0; i < path.size() - 1; i++) {
                 tmp = path.get(i);
                 AreaFinebrot.domainToScreenCarry(m, tmp[0], tmp[1]);
-
                 if (m.px != Mem.NOT && m.py != Mem.NOT) {
                     added++;
                     PixelsFinebrot.add(m.px, m.py);
@@ -67,7 +63,6 @@ public class PathsFinebrotImpl extends PathsFinebrotAbstract {
             }
             paths.removeIf(ArrayList::isEmpty);
         }
-
         log.debug("* Removed: " + removed);
         log.debug("* Added:   " + added);
     }

@@ -1,7 +1,8 @@
 package fine.fractals.fractal.finebrot.infinite;
 
-import fine.fractals.data.MandelbrotElement;
-import fine.fractals.data.Mem;
+import fine.fractals.data.annotation.ThreadSafe;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
+import fine.fractals.data.mem.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
 import java.util.ArrayList;
@@ -14,18 +15,17 @@ public abstract class FractalInfinite extends FractalFinite {
     }
 
     @Override
+    @ThreadSafe
     public boolean calculatePath(MandelbrotElement el, ArrayList<double[]> path) {
         int iterator = 0;
-
-        final Mem m = new Mem();
-        m.re = el.originRe;
-        m.im = el.originIm;
+        final Mem m = new Mem(el.originRe, el.originIm);
         while (m.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
-
+            /*
+             * fractal calculation
+             */
             math(m, el.originRe, el.originIm);
 
             if (AreaFinebrot.contains(m)) {
-                /* Calculation did not diverge */
                 path.add(new double[]{m.re, m.im});
             }
             iterator++;
@@ -33,7 +33,7 @@ public abstract class FractalInfinite extends FractalFinite {
         el.setValues(iterator);
 
         /*
-         * Finite fractal
+         * Infinite fractal
          */
         return iterator == ITERATION_MAX;
     }

@@ -1,4 +1,4 @@
-package fine.fractals.data;
+package fine.fractals.data.mandelbrot;
 
 public class MandelbrotElement extends MandelbrotElementAbstract {
 

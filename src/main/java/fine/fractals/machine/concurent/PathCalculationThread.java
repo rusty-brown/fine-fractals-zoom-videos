@@ -1,6 +1,7 @@
 package fine.fractals.machine.concurent;
 
-import fine.fractals.data.MandelbrotElement;
+import fine.fractals.data.annotation.ThreadSafe;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,19 +9,20 @@ import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.*;
 
-public class PathThread implements Runnable {
+
+public class PathCalculationThread implements Runnable {
 
     @SuppressWarnings(value = "unused")
-    private static final Logger log = LogManager.getLogger(PathThread.class);
+    private static final Logger log = LogManager.getLogger(PathCalculationThread.class);
 
     private final MandelbrotElement el;
 
-    public PathThread(MandelbrotElement el) {
+    public PathCalculationThread(MandelbrotElement el) {
         this.el = el;
     }
 
+    @ThreadSafe
     public void run() {
-
         final ArrayList<double[]> path = new ArrayList<>();
 
         final boolean pathTest = FinebrotFractal.calculatePath(el, path);

@@ -1,8 +1,8 @@
 package fine.fractals.windows;
 
-import fine.fractals.windows.abst.UIWindow;
 import fine.fractals.windows.adapter.UIKeyAdapter;
 import fine.fractals.windows.adapter.UIMouseMotionAdapter;
+import fine.fractals.windows.common.UIWindow;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
 import fine.fractals.windows.listener.UIMouseListener;
 import fine.fractals.windows.listener.UIMouseWheelListener;
@@ -12,9 +12,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
-import static fine.fractals.context.ApplicationImpl.APP_NAME;
+import static fine.fractals.context.ApplicationImpl.*;
 import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.NAME;
 import static fine.fractals.images.FractalImage.FinebrotImage;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -58,11 +56,9 @@ public class FinebrotWindow extends UIWindow {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
 		final Graphics2D g2d = (Graphics2D) g.create();
 		/* image size fit to window size */
 		g2d.drawImage(FinebrotImage, 0, 0, getWidth(), getHeight(), null);
-
 		super.drawMouseCursor(g2d);
 	}
 

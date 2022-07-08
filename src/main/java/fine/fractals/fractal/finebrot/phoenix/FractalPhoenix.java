@@ -1,7 +1,8 @@
 package fine.fractals.fractal.finebrot.phoenix;
 
-import fine.fractals.data.MandelbrotElement;
-import fine.fractals.data.MemPhoenix;
+import fine.fractals.data.annotation.ThreadSafe;
+import fine.fractals.data.mandelbrot.MandelbrotElement;
+import fine.fractals.data.mem.MemPhoenix;
 import fine.fractals.fractal.finebrot.common.FinebrotFractalImpl;
 
 import java.util.ArrayList;
@@ -17,21 +18,20 @@ public abstract class FractalPhoenix extends FinebrotFractalImpl {
     protected double c;
     protected double p;
 
-
     public FractalPhoenix() {
     }
 
     public abstract void math(MemPhoenix m, double re, double im);
 
     @Override
+    @ThreadSafe
     public boolean calculatePath(MandelbrotElement el, ArrayList<double[]> path) {
         int iterator = 0;
-
-        final MemPhoenix m = new MemPhoenix();
-        m.re = el.originRe;
-        m.im = el.originIm;
+        final MemPhoenix m = new MemPhoenix(el.originRe, el.originIm);
         while (m.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
-
+            /*
+             * fractal calculation
+             */
             math(m, el.originRe, el.originIm);
 
             if (AreaFinebrot.contains(m)) {

@@ -1,14 +1,14 @@
-package fine.fractals.data;
+package fine.fractals.data.mandelbrot;
 
-import fine.fractals.data.mandelbrot.MandelbrotState;
+import fine.fractals.data.mandelbrot.MandelbrotPixelState;
 
-import static fine.fractals.data.mandelbrot.MandelbrotState.*;
+import static fine.fractals.data.mandelbrot.MandelbrotPixelState.*;
 
 public abstract class MandelbrotElementAbstract {
 
 	protected int value;
 
-	protected MandelbrotState state = ActiveNew;
+	protected MandelbrotPixelState state = ActiveNew;
 
 	public MandelbrotElementAbstract() {
 		this.value = 0;
@@ -43,12 +43,10 @@ public abstract class MandelbrotElementAbstract {
 		return this.state == HibernatedFinishedTooShort;
 	}
 
-	/* Inside means that path of this divergent element had enough hits inside displayed area image */
 	public boolean isHibernatedFinishedLong() {
 		return this.state == HibernatedFinishedLong;
 	}
 
-	/* set both real and correct value */
 	public void setValues(int value) {
 		this.value = value;
 	}
@@ -104,7 +102,7 @@ public abstract class MandelbrotElementAbstract {
 		return this.state == ActiveNew || this.state == ActiveMoved || this.state == ActiveFixed;
 	}
 
-	public MandelbrotState getState() {
+	public MandelbrotPixelState getState() {
 		return this.state;
 	}
 }

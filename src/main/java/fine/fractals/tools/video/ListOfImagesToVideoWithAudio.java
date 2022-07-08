@@ -1,5 +1,6 @@
 package fine.fractals.tools.video;
 
+import fine.fractals.data.annotation.EditMe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bytedeco.javacv.*;
@@ -25,8 +26,11 @@ public class ListOfImagesToVideoWithAudio {
 
     private static final Logger log = LogManager.getLogger(ListOfImagesToVideoWithAudio.class);
 
-    private static final String VIDEO_NAME = "Finebrot_ff_1.avi";
+    @EditMe
+    private static final String VIDEO_NAME = "Finebrot_1.avi";
+    @EditMe
     private static final String AUDIO_FILE = "/home/lukas/Downloads/Arcadia.mp3";
+    @EditMe
     private static final String FINEBROT_IMAGE_LOCATION = "/home/lukas/Fractals/";
 
     private final List<URL> urls = new ArrayList<>();
@@ -35,24 +39,18 @@ public class ListOfImagesToVideoWithAudio {
     private Java2DFrameConverter converter;
     private FrameGrabber audioGrabber;
 
-    private static final ListOfImagesToVideoWithAudio VideoMaker;
-
-    static {
-        log.info("init");
-        VideoMaker = new ListOfImagesToVideoWithAudio();
-    }
+    private static final ListOfImagesToVideoWithAudio VideoMaker = new ListOfImagesToVideoWithAudio();
 
     private ListOfImagesToVideoWithAudio() {
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         VideoMaker.makeListOfFinebrotImages();
         VideoMaker.makeVideoWithAudio();
     }
 
     private void makeListOfFinebrotImages() throws IOException {
-        log.info("listOfFinebrotImages()");
-
+        log.info("makeListOfFinebrotImages()");
         try (Stream<Path> paths = Files.walk(Paths.get(FINEBROT_IMAGE_LOCATION))) {
             paths.sorted().filter(Files::isRegularFile)
                     .forEach(path -> {
@@ -66,7 +64,7 @@ public class ListOfImagesToVideoWithAudio {
     }
 
     private void makeVideoWithAudio() throws IOException {
-        log.info("createVideo()");
+        log.info("makeVideoWithAudio()");
 
         try {
             log.info("audioGrabber");

@@ -2,12 +2,12 @@ package fine.fractals.windows.adapter;
 
 import fine.fractals.windows.MandelbrotWindow;
 import fine.fractals.windows.FinebrotWindow;
-import fine.fractals.windows.abst.UIWindow;
+import fine.fractals.windows.common.UIWindow;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import static fine.fractals.context.TargetImpl.Target;
+import static fine.fractals.machine.TargetImpl.Target;
 
 public class UIMouseMotionAdapter extends MouseMotionAdapter {
 	private final UIWindow meWindow;

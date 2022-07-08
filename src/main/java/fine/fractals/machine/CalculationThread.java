@@ -4,9 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.context.FractalEngineImpl.FractalEngine;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
 
 public class CalculationThread extends Thread {
 
@@ -36,7 +36,6 @@ public class CalculationThread extends Thread {
 
             if (iteration == 1) {
                 Application.initUIWindows();
-                /* Move to initial target coordinate after initialization of FractalEngine */
                 AreaMandelbrot.moveToInitialCoordinates();
                 AreaFinebrot.moveToInitialCoordinates();
             }

@@ -1,6 +1,6 @@
 package fine.fractals.data.mandelbrot;
 
-public enum MandelbrotState {
+public enum MandelbrotPixelState {
 
     ActiveNew,
     /**
