@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 
-
 public class PathCalculationThread implements Runnable {
 
     @SuppressWarnings(value = "unused")

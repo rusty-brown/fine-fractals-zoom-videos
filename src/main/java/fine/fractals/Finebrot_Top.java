@@ -1,6 +1,7 @@
 package fine.fractals;
 
 import fine.fractals.color.PaletteBlackToWhite;
+import fine.fractals.color.PalettePurpleToWhite;
 import fine.fractals.data.mem.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
@@ -37,10 +38,10 @@ public class Finebrot_Top extends FractalFinite {
         RESOLUTION_HEIGHT = 1080;
         RESOLUTION_MULTIPLIER = none;
 
-        REPEAT = false;
-        SAVE_IMAGES = false;
+        REPEAT = true;
+        SAVE_IMAGES = true;
         FinebrotFractal = new Finebrot_Top();
-        Palette = new PaletteBlackToWhite();
+        Palette = new PalettePurpleToWhite();
 
         Application.execute();
     }

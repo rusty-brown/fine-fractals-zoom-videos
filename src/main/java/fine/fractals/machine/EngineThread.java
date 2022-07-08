@@ -8,17 +8,17 @@ import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot
 import static fine.fractals.machine.ApplicationImpl.*;
 import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
 
-public class CalculationThread extends Thread {
+public class EngineThread extends Thread {
 
-    private static final Logger log = LogManager.getLogger(CalculationThread.class);
+    private static final Logger log = LogManager.getLogger(EngineThread.class);
 
-    private CalculationThread() {
+    private EngineThread() {
         log.debug("constructor");
     }
 
     public static void calculate() {
         log.info("calculate");
-        CalculationThread thread = new CalculationThread();
+        EngineThread thread = new EngineThread();
         thread.start();
     }
 

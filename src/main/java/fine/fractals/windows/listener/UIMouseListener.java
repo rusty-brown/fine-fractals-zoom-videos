@@ -1,6 +1,6 @@
 package fine.fractals.windows.listener;
 
-import fine.fractals.machine.CalculationThread;
+import fine.fractals.machine.EngineThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +33,7 @@ public class UIMouseListener implements MouseListener {
                     AreaMandelbrot.moveToCoordinates();
                     AreaFinebrot.moveToCoordinates();
                     Application.zoomIn();
-                    CalculationThread.calculate();
+                    EngineThread.calculate();
                 }
             } else {
                 log.info("Left click, FIX, then use Enter");

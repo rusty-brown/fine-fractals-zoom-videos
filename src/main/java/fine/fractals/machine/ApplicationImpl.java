@@ -107,7 +107,7 @@ public class ApplicationImpl {
     public void execute() {
         log.debug("execute()");
         initUIWindows();
-        CalculationThread.calculate();
+        EngineThread.calculate();
     }
 
     public void repaintWindows() {
