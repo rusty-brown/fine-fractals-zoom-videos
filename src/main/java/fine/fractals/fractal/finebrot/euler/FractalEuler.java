@@ -16,17 +16,14 @@ public abstract class FractalEuler extends FinebrotFractalImpl {
 
     private static final Logger log = LogManager.getLogger(FractalEuler.class);
 
-    public static final PixelsEulerFinebrotImpl PixelsEulerFinebrot;
+    public static PixelsEulerFinebrotImpl PixelsEulerFinebrot;
 
-    static {
-        log.info("init");
+    public FractalEuler() {
+        log.info("FractalEuler()");
         PixelsEulerFinebrot = new PixelsEulerFinebrotImpl();
 
         PerfectColorDistribution = new EulerPerfectColorDistributionImpl();
         PathsFinebrot = new PathsEulerFinebrotImpl();
-    }
-
-    public FractalEuler() {
     }
 
     public abstract void math(MemEuler m, double re, double im);

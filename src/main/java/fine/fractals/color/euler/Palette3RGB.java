@@ -15,15 +15,15 @@ public abstract class Palette3RGB {
     public static void init() {
         log.info("init");
 
-        ColorUtils.toPalette(PaletteEuler3.spectrumR,
+        ColorUtils.toPalette(PaletteEuler3.spectrumRed,
                 circleUp,
                 black, RED
         );
-        ColorUtils.toPalette(PaletteEuler3.spectrumG,
+        ColorUtils.toPalette(PaletteEuler3.spectrumGreen,
                 circleUp,
                 black, GREEN
         );
-        ColorUtils.toPalette(PaletteEuler3.spectrumB,
+        ColorUtils.toPalette(PaletteEuler3.spectrumBlue,
                 circleUp,
                 black, BLUE
         );

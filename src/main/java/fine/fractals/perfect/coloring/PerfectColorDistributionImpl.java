@@ -24,6 +24,7 @@ public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstra
     static final List<FinebrotPixel> pixels = new ArrayList<>();
 
     public PerfectColorDistributionImpl() {
+        log.info("PerfectColorDistributionImpl()");
     }
 
     public void perfectlyColorFinebrotValues() {
@@ -93,7 +94,7 @@ public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstra
         log.debug("painted:                   " + pi);
 
         /*
-         * Behold, the coloring is perfect!
+         * Behold, the coloring is perfect
          */
 
         log.debug("clear pixels");

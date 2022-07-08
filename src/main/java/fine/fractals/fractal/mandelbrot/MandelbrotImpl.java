@@ -22,17 +22,9 @@ public class MandelbrotImpl {
 
     private static final Logger log = LogManager.getLogger(MandelbrotImpl.class);
 
-    public static final MandelbrotImpl Mandelbrot;
+    public static final MandelbrotImpl Mandelbrot = new MandelbrotImpl();
 
-    /*
-     * MANDELBROT FRACTAL IS THE MandelbrotDomain
-     */
     private MandelbrotImpl() {
-    }
-
-    static {
-        log.info("init");
-        Mandelbrot = new MandelbrotImpl();
     }
 
     /*
@@ -151,6 +143,10 @@ public class MandelbrotImpl {
 
     public void domainForThisZoom() {
         PixelsMandelbrot.domainForThisZoom();
+    }
+
+    public void domainScreenCreateInitialization() {
+        PixelsMandelbrot.domainScreenCreateInitialization();
     }
 }
 	

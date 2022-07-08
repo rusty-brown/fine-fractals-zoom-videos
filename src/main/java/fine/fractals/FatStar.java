@@ -5,7 +5,7 @@ import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.infinite.FractalInfinite;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.data.ResolutionMultiplier.square_11;
+import static fine.fractals.data.ResolutionMultiplier.none;
 
 public class FatStar extends FractalInfinite {
 
@@ -40,7 +40,7 @@ public class FatStar extends FractalInfinite {
 
 		REPEAT = false;
 		SAVE_IMAGES = false;
-		RESOLUTION_MULTIPLIER = square_11;
+		RESOLUTION_MULTIPLIER = none;
 
 		Application.execute();
 	}

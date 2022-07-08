@@ -19,7 +19,7 @@ public abstract class PalettePurpleToWhite {
         ColorUtils.toPalette(
                 Palette.spectrum,
                 circleUp,
-                new Color(38, 17, 54),
+                new Color(28, 7, 44),
                 new Color(255, 255, 255)
         );
     }

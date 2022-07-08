@@ -16,17 +16,12 @@ public abstract class FractalFinite extends FinebrotFractalImpl {
 
     private static final Logger log = LogManager.getLogger(FractalFinite.class);
 
-    public static final PixelsFinebrotImpl PixelsFinebrot;
-
-    static {
-        log.info("init");
-        PixelsFinebrot = new PixelsFinebrotImpl();
-
-        PerfectColorDistribution = new PerfectColorDistributionImpl();
-        PathsFinebrot = new PathsFinebrotImpl();
-    }
+    public static final PixelsFinebrotImpl PixelsFinebrot = new PixelsFinebrotImpl();
 
     public FractalFinite() {
+        log.info("FractalFinite()");
+        PerfectColorDistribution = new PerfectColorDistributionImpl();
+        PathsFinebrot = new PathsFinebrotImpl();
     }
 
     public abstract void math(Mem m, double re, double im);

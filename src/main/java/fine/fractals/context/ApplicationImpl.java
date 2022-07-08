@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import static fine.fractals.context.FractalEngineImpl.FractalEngine;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.data.ResolutionMultiplier.square_alter;
 
 public class ApplicationImpl {
 
@@ -41,7 +40,7 @@ public class ApplicationImpl {
      * - calculates two more points per each pixel
      */
     @EditMe
-    public static ResolutionMultiplier RESOLUTION_MULTIPLIER = square_alter;
+    public static ResolutionMultiplier RESOLUTION_MULTIPLIER;
 
     /*
      * How many pixels round specific element will be investigated for optimization.

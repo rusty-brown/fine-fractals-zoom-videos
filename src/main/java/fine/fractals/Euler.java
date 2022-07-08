@@ -5,7 +5,7 @@ import fine.fractals.data.MemEuler;
 import fine.fractals.fractal.finebrot.euler.FractalEuler;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.data.ResolutionMultiplier.none;
+import static fine.fractals.data.ResolutionMultiplier.*;
 import static fine.fractals.math.MathematicianImpl.Mathematician;
 
 public class Euler extends FractalEuler {
@@ -44,7 +44,7 @@ public class Euler extends FractalEuler {
 
 		REPEAT = false;
 		SAVE_IMAGES = false;
-		RESOLUTION_MULTIPLIER = none;
+		RESOLUTION_MULTIPLIER = square_3;
 
 		Application.execute();
 	}

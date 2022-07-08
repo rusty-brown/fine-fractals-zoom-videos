@@ -1,7 +1,11 @@
 package fine.fractals;
 
+import fine.fractals.color.PaletteBlueToWhite;
 import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
+
+import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.data.ResolutionMultiplier.square_alter;
 
 public class Finebrot_Side extends FractalFinite {
 
@@ -23,5 +27,18 @@ public class Finebrot_Side extends FractalFinite {
     public void math(Mem m, double originRe, double originIm) {
         m.square();
         m.plus(originRe, originIm);
+    }
+
+    public static void main(String[] args) {
+
+        FinebrotFractal = new Finebrot_Top();
+
+        PaletteBlueToWhite.init();
+
+        REPEAT = true;
+        SAVE_IMAGES = false;
+        RESOLUTION_MULTIPLIER = square_alter;
+
+        Application.execute();
     }
 }

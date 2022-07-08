@@ -28,8 +28,15 @@ public class FractalEngineImpl {
     private FractalEngineImpl() {
     }
 
+    private boolean first = true;
+
     public void calculate() {
         log.info("calculate()");
+
+        if (first) {
+            first = false;
+            Mandelbrot.domainScreenCreateInitialization();
+        }
 
         calculationInProgress = true;
 

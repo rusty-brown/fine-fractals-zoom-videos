@@ -32,16 +32,9 @@ class PixelsMandelbrotImpl {
 
 	private static boolean firstDomainExecution = true;
 
-	static final PixelsMandelbrotImpl PixelsMandelbrot;
+	static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
 
 	private PixelsMandelbrotImpl() {
-	}
-
-	static {
-		log.info("init");
-		PixelsMandelbrot = new PixelsMandelbrotImpl();
-		log.info("initiate");
-		PixelsMandelbrot.domainScreenCreateInitialization();
 	}
 
 	public final void domainScreenCreateInitialization() {

@@ -5,19 +5,16 @@ import fine.fractals.perfect.coloring.common.PerfectColorDistributionAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
-import static fine.fractals.context.TargetImpl.Target;
 import static fine.fractals.fractal.finebrot.euler.FractalEuler.PixelsEulerFinebrot;
+import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.*;
 import static fine.fractals.images.FractalImage.FinebrotImage;
 import static fine.fractals.palette.PaletteEulerImpl.PaletteEuler3;
-import static java.lang.Double.compare;
-import static java.lang.Integer.compare;
-import static java.lang.Math.abs;
 
 public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
 
@@ -26,165 +23,170 @@ public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionA
     /**
      * Finebrot pixels, order by value
      */
-    static final List<FinebrotPixel> pixelsR = new ArrayList<>();
-    static final List<FinebrotPixel> pixelsG = new ArrayList<>();
-    static final List<FinebrotPixel> pixelsB = new ArrayList<>();
+    static final List<FinebrotPixel> pixelsRed = new ArrayList<>();
+    static final List<FinebrotPixel> pixelsGreen = new ArrayList<>();
+    static final List<FinebrotPixel> pixelsBlue = new ArrayList<>();
 
     public EulerPerfectColorDistributionImpl() {
+        log.info("EulerPerfectColorDistributionImpl()");
     }
 
     public void perfectlyColorFinebrotValues() {
         log.info("perfectlyColorScreenValues()");
 
-        int zeroValueElementsR = 0;
-        int zeroValueElementsG = 0;
-        int zeroValueElementsB = 0;
+        int zeroValueElementsRed = 0;
+        int zeroValueElementsGreen = 0;
+        int zeroValueElementsBlue = 0;
 
         /* identify zero and low-value elements as zero or noise */
-        final int threshold = 4;
+        final int threshold = 1;
 
         /* read screen values */
         for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
             for (int x = 0; x < RESOLUTION_WIDTH; x++) {
-                int r = PixelsEulerFinebrot.valueAt(x, y, 0);
-                int g = PixelsEulerFinebrot.valueAt(x, y, 1);
-                int b = PixelsEulerFinebrot.valueAt(x, y, 2);
+                int r = PixelsEulerFinebrot.valueAt(x, y, red);
+                int g = PixelsEulerFinebrot.valueAt(x, y, green);
+                int b = PixelsEulerFinebrot.valueAt(x, y, blue);
                 if (r <= threshold) {
-                    zeroValueElementsR++;
+                    zeroValueElementsRed++;
                 }
                 if (g <= threshold) {
-                    zeroValueElementsG++;
+                    zeroValueElementsGreen++;
                 }
                 if (b <= threshold) {
-                    zeroValueElementsB++;
+                    zeroValueElementsBlue++;
                 }
-                pixelsR.add(new FinebrotPixel(r, x, y));
-                pixelsG.add(new FinebrotPixel(r, x, y));
-                pixelsB.add(new FinebrotPixel(b, x, y));
+                pixelsRed.add(new FinebrotPixel(r, x, y));
+                pixelsGreen.add(new FinebrotPixel(g, x, y));
+                pixelsBlue.add(new FinebrotPixel(b, x, y));
             }
         }
 
         /*
          *  order pixels from the smallest to the highest value
          */
-
-        pixelsR.sort(comparator);
-        pixelsG.sort(comparator);
-        pixelsB.sort(comparator);
+        pixelsRed.sort(comparator);
+        pixelsGreen.sort(comparator);
+        pixelsBlue.sort(comparator);
 
         final int allPixelsTotal = RESOLUTION_WIDTH * RESOLUTION_HEIGHT;
-        final int allPixelsNonZeroR = allPixelsTotal - zeroValueElementsR;
-        final int allPixelsNonZeroG = allPixelsTotal - zeroValueElementsG;
-        final int allPixelsNonZeroB = allPixelsTotal - zeroValueElementsB;
+        final int allPixelsNonZeroRed = allPixelsTotal - zeroValueElementsRed;
+        final int allPixelsNonZeroGreen = allPixelsTotal - zeroValueElementsGreen;
+        final int allPixelsNonZeroBlue = allPixelsTotal - zeroValueElementsBlue;
         final int paletteColorCount = PaletteEuler3.colorResolution(); // same
-        final int singleColorUseR = ((int) ((double) allPixelsNonZeroR / (double) paletteColorCount));
-        final int singleColorUseG = ((int) ((double) allPixelsNonZeroG / (double) paletteColorCount));
-        final int singleColorUseB = ((int) ((double) allPixelsNonZeroB / (double) paletteColorCount));
-        final int leftR = allPixelsNonZeroR - (paletteColorCount * singleColorUseR);
-        final int leftG = allPixelsNonZeroG - (paletteColorCount * singleColorUseG);
-        final int leftB = allPixelsNonZeroB - (paletteColorCount * singleColorUseB);
+        final int singleColorUseRed = ((int) ((double) allPixelsNonZeroRed / (double) paletteColorCount));
+        final int singleColorUseGreen = ((int) ((double) allPixelsNonZeroGreen / (double) paletteColorCount));
+        final int singleColorUseBlue = ((int) ((double) allPixelsNonZeroBlue / (double) paletteColorCount));
+        final int leftRed = allPixelsNonZeroRed - (paletteColorCount * singleColorUseRed);
+        final int leftGreen = allPixelsNonZeroGreen - (paletteColorCount * singleColorUseGreen);
+        final int leftBlue = allPixelsNonZeroBlue - (paletteColorCount * singleColorUseBlue);
 
         log.debug("------------------------------------");
         log.debug("All pixels to paint:        " + allPixelsTotal);
-        log.debug("--------------------------->" + (zeroValueElementsR + leftR + (singleColorUseR * paletteColorCount)));
-        log.debug("--------------------------->" + (zeroValueElementsG + leftG + (singleColorUseG * paletteColorCount)));
-        log.debug("--------------------------->" + (zeroValueElementsB + leftB + (singleColorUseB * paletteColorCount)));
-        log.debug("Zero value pixels to paint: " + zeroValueElementsR);
-        log.debug("Zero value pixels to paint: " + zeroValueElementsG);
-        log.debug("Zero value pixels to paint: " + zeroValueElementsB);
-        log.debug("Non zero pixels to paint:   " + allPixelsNonZeroR);
-        log.debug("Non zero pixels to paint:   " + allPixelsNonZeroG);
-        log.debug("Non zero pixels to paint:   " + allPixelsNonZeroB);
+        log.debug("--------------------------->" + (zeroValueElementsRed + leftRed + (singleColorUseRed * paletteColorCount)));
+        log.debug("--------------------------->" + (zeroValueElementsGreen + leftGreen + (singleColorUseGreen * paletteColorCount)));
+        log.debug("--------------------------->" + (zeroValueElementsBlue + leftBlue + (singleColorUseBlue * paletteColorCount)));
+        log.debug("Zero value pixels to paint: " + zeroValueElementsRed);
+        log.debug("Zero value pixels to paint: " + zeroValueElementsGreen);
+        log.debug("Zero value pixels to paint: " + zeroValueElementsBlue);
+        log.debug("Non zero pixels to paint:   " + allPixelsNonZeroRed);
+        log.debug("Non zero pixels to paint:   " + allPixelsNonZeroGreen);
+        log.debug("Non zero pixels to paint:   " + allPixelsNonZeroBlue);
         log.debug("Spectrum, available colors: " + paletteColorCount);
-        log.debug("Pixels per each color:      " + singleColorUseR);
-        log.debug("Pixels per each color:      " + singleColorUseG);
-        log.debug("Pixels per each color:      " + singleColorUseB);
-        log.debug("left:                       " + leftR);
-        log.debug("left:                       " + leftG);
-        log.debug("left:                       " + leftB);
+        log.debug("Pixels per each color:      " + singleColorUseRed);
+        log.debug("Pixels per each color:      " + singleColorUseGreen);
+        log.debug("Pixels per each color:      " + singleColorUseBlue);
+        log.debug("left:                       " + leftRed);
+        log.debug("left:                       " + leftGreen);
+        log.debug("left:                       " + leftBlue);
         log.debug("------------------------------------");
 
         /* pixel index */
-        int piR;
+        int piRed;
         FinebrotPixel sp;
-
-
         /* paint mismatched pixel amount with the least value colour */
-        for (piR = 0; piR < leftR + zeroValueElementsR; piR++) {
-            sp = pixelsR.get(piR);
-            FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueR(0).getRGB());
+        for (piRed = 0; piRed < leftRed + zeroValueElementsRed; piRed++) {
+            sp = pixelsRed.get(piRed);
+            PixelsEulerFinebrot.set(sp.px(), sp.py(), red, 0);
         }
-
         /* color all remaining pixels, these are order by value */
         for (int paletteColourIndex = 0; paletteColourIndex < paletteColorCount; paletteColourIndex++) {
-            for (int ci = 0; ci < singleColorUseR; ci++) {
+            for (int ci = 0; ci < singleColorUseRed; ci++) {
                 /* color all these pixels with same color */
-                sp = pixelsR.get(piR++);
+                sp = pixelsRed.get(piRed++);
                 if (sp.pixelValue() <= threshold) {
-                    /* color zero-value elements and low-value-noise with the darkest color */
-                    FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueR(0).getRGB());
+                    PixelsEulerFinebrot.set(sp.px(), sp.py(), red, 0);
                 } else {
                     /* perfect-color all significant pixels */
-                    FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueR(paletteColourIndex).getRGB());
+                    PixelsEulerFinebrot.set(sp.px(), sp.py(), red, PaletteEuler3.getSpectrumValueRed(paletteColourIndex).getRed());
                 }
             }
         }
 
-        int piG;
-
-        for (piG = 0; piG < leftG + zeroValueElementsG; piG++) {
-            sp = pixelsG.get(piG);
-            FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueG(0).getRGB());
+        int piGreen;
+        for (piGreen = 0; piGreen < leftGreen + zeroValueElementsGreen; piGreen++) {
+            sp = pixelsGreen.get(piGreen);
+            PixelsEulerFinebrot.set(sp.px(), sp.py(), green, 0);
         }
-
         /* color all remaining pixels, these are order by value */
         for (int paletteColourIndex = 0; paletteColourIndex < paletteColorCount; paletteColourIndex++) {
-            for (int ci = 0; ci < singleColorUseG; ci++) {
+            for (int ci = 0; ci < singleColorUseGreen; ci++) {
                 /* color all these pixels with same color */
-                sp = pixelsG.get(piG++);
+                sp = pixelsGreen.get(piGreen++);
                 if (sp.pixelValue() <= threshold) {
                     /* color zero-value elements and low-value-noise with the darkest color */
-                    FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueG(0).getRGB());
+                    PixelsEulerFinebrot.set(sp.px(), sp.py(), green, 0);
                 } else {
                     /* perfect-color all significant pixels */
-                    FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueG(paletteColourIndex).getRGB());
+                    PixelsEulerFinebrot.set(sp.px(), sp.py(), green, PaletteEuler3.getSpectrumValueGreen(paletteColourIndex).getGreen());
                 }
             }
         }
 
-        int piB;
-
-        for (piB = 0; piB < leftB + zeroValueElementsB; piB++) {
-            sp = pixelsB.get(piB);
-            FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueB(0).getRGB());
+        int piBlue;
+        for (piBlue = 0; piBlue < leftBlue + zeroValueElementsBlue; piBlue++) {
+            sp = pixelsBlue.get(piBlue);
+            PixelsEulerFinebrot.set(sp.px(), sp.py(), blue, 0);
         }
-
         /* color all remaining pixels, these are order by value */
         for (int paletteColourIndex = 0; paletteColourIndex < paletteColorCount; paletteColourIndex++) {
-            for (int ci = 0; ci < singleColorUseB; ci++) {
+            for (int ci = 0; ci < singleColorUseBlue; ci++) {
                 /* color all these pixels with same color */
-                sp = pixelsB.get(piB++);
+                sp = pixelsBlue.get(piBlue++);
                 if (sp.pixelValue() <= threshold) {
                     /* color zero-value elements and low-value-noise with the darkest color */
-                    FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueB(0).getRGB());
+                    PixelsEulerFinebrot.set(sp.px(), sp.py(), blue, 0);
                 } else {
                     /* perfect-color all significant pixels */
-                    FinebrotImage.setRGB(sp.px(), sp.py(), PaletteEuler3.getSpectrumValueB(paletteColourIndex).getRGB());
+                    PixelsEulerFinebrot.set(sp.px(), sp.py(), blue, PaletteEuler3.getSpectrumValueBlue(paletteColourIndex).getBlue());
                 }
             }
         }
 
-        log.debug("painted:                   " + piR);
-        log.debug("painted:                   " + piG);
-        log.debug("painted:                   " + piB);
+        log.debug("painted:                   " + piRed);
+        log.debug("painted:                   " + piGreen);
+        log.debug("painted:                   " + piBlue);
 
         /*
-         * Behold, the coloring is perfect!
+         * read 3 screen colors
+         * write image colors
+         */
+        for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+            for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+                int r = PixelsEulerFinebrot.valueAt(x, y, red);
+                int g = PixelsEulerFinebrot.valueAt(x, y, green);
+                int b = PixelsEulerFinebrot.valueAt(x, y, blue);
+                FinebrotImage.setRGB(x, y, new Color(r, g, b).getRGB());
+            }
+        }
+
+        /*
+         * Behold, the coloring is perfect
          */
 
         log.debug("clear pixels");
-        pixelsR.clear();
-        pixelsG.clear();
-        pixelsB.clear();
+        pixelsRed.clear();
+        pixelsGreen.clear();
+        pixelsBlue.clear();
     }
 }
