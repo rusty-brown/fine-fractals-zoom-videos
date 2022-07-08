@@ -2,6 +2,8 @@ package fine.fractals;
 
 import fine.fractals.color.euler.Palette3RGB;
 import fine.fractals.data.MemEuler;
+import fine.fractals.data.ResolutionMultiplier;
+import fine.fractals.data.annotation.EditMe;
 import fine.fractals.fractal.finebrot.euler.FractalEuler;
 
 import static fine.fractals.context.ApplicationImpl.*;
@@ -42,9 +44,12 @@ public class Euler extends FractalEuler {
 
 		Palette3RGB.init();
 
+		RESOLUTION_WIDTH = 1920;
+		RESOLUTION_HEIGHT = 1080;
+		RESOLUTION_MULTIPLIER = none;
+
 		REPEAT = false;
 		SAVE_IMAGES = false;
-		RESOLUTION_MULTIPLIER = square_3;
 
 		Application.execute();
 	}

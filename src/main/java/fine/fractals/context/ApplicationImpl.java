@@ -26,23 +26,16 @@ public class ApplicationImpl {
      * 2560 1440 quad HD
      */
     @EditMe
-    public static int RESOLUTION_WIDTH = 1920;
-    public static int RESOLUTION_HEIGHT = 1080;
+    public static int RESOLUTION_WIDTH;
+    public static int RESOLUTION_HEIGHT;
 
     @EditMe
-    public static boolean SAVE_IMAGES = false;
+    public static boolean SAVE_IMAGES;
 
-    /**
-     * Sets now many points will be used for calculation per each pixel
-     * value: 1
-     * - calculate only one element per each Mandelbrot pixel, [re,im] in the center of the pixel
-     * value: 2
-     * - calculates two more points per each pixel
-     */
     @EditMe
     public static ResolutionMultiplier RESOLUTION_MULTIPLIER;
 
-    /*
+    /**
      * How many pixels round specific element will be investigated for optimization.
      * If there is nothing interesting going on around specific pixel, the pixel will be ignored.
      */
@@ -52,7 +45,7 @@ public class ApplicationImpl {
 
     public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
 
-    /*
+    /**
      * Distance in px around convergent element.
      * Dead pixels around divergent pixel elements will be recalculated.
      * Optimization mechanism will break for less than 4

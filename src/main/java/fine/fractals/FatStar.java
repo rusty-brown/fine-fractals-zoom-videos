@@ -38,9 +38,12 @@ public class FatStar extends FractalInfinite {
 
 		PaletteBlackToWhite.init();
 
+		RESOLUTION_WIDTH = 1920;
+		RESOLUTION_HEIGHT = 1080;
+		RESOLUTION_MULTIPLIER = none;
+
 		REPEAT = false;
 		SAVE_IMAGES = false;
-		RESOLUTION_MULTIPLIER = none;
 
 		Application.execute();
 	}

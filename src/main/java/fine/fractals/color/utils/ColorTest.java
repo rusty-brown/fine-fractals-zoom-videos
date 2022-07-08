@@ -73,5 +73,4 @@ public class ColorTest extends JComponent {
         log.debug("getPreferredSize()");
         return new Dimension(resolution, height);
     }
-
 }

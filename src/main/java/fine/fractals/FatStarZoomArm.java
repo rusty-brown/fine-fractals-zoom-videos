@@ -5,6 +5,7 @@ import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.infinite.FractalInfinite;
 
 import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.data.ResolutionMultiplier.none;
 import static fine.fractals.data.ResolutionMultiplier.square_11;
 
 public class FatStarZoomArm extends FractalInfinite {
@@ -38,9 +39,12 @@ public class FatStarZoomArm extends FractalInfinite {
 
 		PaletteBlackToWhite.init();
 
+		RESOLUTION_WIDTH = 1920;
+		RESOLUTION_HEIGHT = 1080;
+		RESOLUTION_MULTIPLIER = none;
+
 		REPEAT = false;
 		SAVE_IMAGES = false;
-		RESOLUTION_MULTIPLIER = square_11;
 
 		Application.execute();
 	}

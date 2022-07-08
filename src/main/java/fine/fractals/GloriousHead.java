@@ -5,6 +5,7 @@ import fine.fractals.data.MemPhoenix;
 import fine.fractals.fractal.finebrot.phoenix.FractalPhoenix;
 
 import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.data.ResolutionMultiplier.none;
 import static fine.fractals.data.ResolutionMultiplier.square_11;
 
 public class GloriousHead extends FractalPhoenix {
@@ -50,9 +51,12 @@ public class GloriousHead extends FractalPhoenix {
 
 		PaletteBlackToWhite.init();
 
+		RESOLUTION_WIDTH = 1920;
+		RESOLUTION_HEIGHT = 1080;
+		RESOLUTION_MULTIPLIER = none;
+
 		REPEAT = false;
 		SAVE_IMAGES = false;
-		RESOLUTION_MULTIPLIER = square_11;
 
 		Application.execute();
 	}

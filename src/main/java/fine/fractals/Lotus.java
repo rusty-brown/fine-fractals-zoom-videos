@@ -5,7 +5,7 @@ import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
 import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.data.ResolutionMultiplier.square_11;
+import static fine.fractals.data.ResolutionMultiplier.none;
 
 public class Lotus extends FractalFinite {
 
@@ -37,9 +37,12 @@ public class Lotus extends FractalFinite {
 
         PaletteBlackToWhite.init();
 
+        RESOLUTION_WIDTH = 1920;
+        RESOLUTION_HEIGHT = 1080;
+        RESOLUTION_MULTIPLIER = none;
+
         REPEAT = false;
         SAVE_IMAGES = false;
-        RESOLUTION_MULTIPLIER = square_11;
 
         Application.execute();
     }

@@ -5,6 +5,7 @@ import fine.fractals.data.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
 import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.data.ResolutionMultiplier.none;
 import static fine.fractals.data.ResolutionMultiplier.square_alter;
 
 public class Finebrot_Side extends FractalFinite {
@@ -35,9 +36,12 @@ public class Finebrot_Side extends FractalFinite {
 
         PaletteBlueToWhite.init();
 
+        RESOLUTION_WIDTH = 1920;
+        RESOLUTION_HEIGHT = 1080;
+        RESOLUTION_MULTIPLIER = none;
+
         REPEAT = true;
         SAVE_IMAGES = false;
-        RESOLUTION_MULTIPLIER = square_alter;
 
         Application.execute();
     }
