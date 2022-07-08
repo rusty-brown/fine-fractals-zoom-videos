@@ -9,7 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-import static fine.fractals.palette.PaletteImpl.Palette;
+import static fine.fractals.color.common.PaletteImpl.Palette;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -30,7 +30,7 @@ public class ColorTest extends JComponent {
     }
 
     private ColorTest() {
-        log.debug("init");
+        log.debug("constructor");
         this.resolution = Palette.colorResolution();
         this.testImage = new BufferedImage(resolution, height, TYPE_INT_RGB);
 

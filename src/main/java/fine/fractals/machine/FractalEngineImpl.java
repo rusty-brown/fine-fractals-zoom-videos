@@ -3,11 +3,10 @@ package fine.fractals.machine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.context.ApplicationImpl.REPEAT;
-import static fine.fractals.context.ApplicationImpl.SAVE_IMAGES;
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.PerfectColorDistribution;
-import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PerfectColorDistribution;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.SAVE_IMAGES;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
+import static fine.fractals.machine.ApplicationImpl.REPEAT;
 
 public class FractalEngineImpl {
 
@@ -25,6 +24,7 @@ public class FractalEngineImpl {
     }
 
     private FractalEngineImpl() {
+        log.debug("constructor");
     }
 
     public void calculate() {
@@ -35,7 +35,6 @@ public class FractalEngineImpl {
             first = false;
             Mandelbrot.domainScreenCreateInitialization();
         }
-        PixelsFinebrot.clear();
 
         if (updateDomain) {
             Mandelbrot.domainForThisZoom();

@@ -9,12 +9,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
+import static fine.fractals.color.common.PaletteEulerImpl.PaletteEuler3;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.finebrot.euler.FractalEuler.PixelsEulerFinebrot;
 import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.*;
 import static fine.fractals.images.FractalImage.FinebrotImage;
-import static fine.fractals.palette.PaletteEulerImpl.PaletteEuler3;
 
 public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
 
@@ -28,7 +28,7 @@ public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionA
     static final List<FinebrotPixel> pixelsBlue = new ArrayList<>();
 
     public EulerPerfectColorDistributionImpl() {
-        log.info("EulerPerfectColorDistributionImpl()");
+        log.debug("constructor");
     }
 
     public void perfectlyColorFinebrotValues() {
@@ -188,5 +188,6 @@ public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionA
         pixelsRed.clear();
         pixelsGreen.clear();
         pixelsBlue.clear();
+        PixelsEulerFinebrot.clear();
     }
 }

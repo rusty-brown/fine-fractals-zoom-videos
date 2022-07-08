@@ -15,12 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.context.ApplicationImpl.APP_NAME;
-import static fine.fractals.context.ApplicationImpl.iteration;
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.NAME;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 import static fine.fractals.images.FractalImage.FinebrotImage;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
+import static fine.fractals.machine.ApplicationImpl.*;
 import static javax.imageio.ImageWriteParam.MODE_EXPLICIT;
 
 public abstract class FractalMachine {

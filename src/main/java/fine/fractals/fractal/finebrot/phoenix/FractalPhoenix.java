@@ -3,13 +3,13 @@ package fine.fractals.fractal.finebrot.phoenix;
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mem.MemPhoenix;
-import fine.fractals.fractal.finebrot.common.FinebrotFractalImpl;
+import fine.fractals.fractal.finebrot.common.FinebrotCommonImpl;
 
 import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 
-public abstract class FractalPhoenix extends FinebrotFractalImpl {
+public abstract class FractalPhoenix extends FinebrotCommonImpl {
 
     /*
      * Phoenix fractal parameters

@@ -3,8 +3,8 @@ package fine.fractals.fractal.finebrot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 
 public class PixelsFinebrotImpl {
 
@@ -13,12 +13,13 @@ public class PixelsFinebrotImpl {
     private static final Logger log = LogManager.getLogger(PixelsFinebrotImpl.class);
 
     public PixelsFinebrotImpl() {
-        log.info("FinebrotImpl()");
-        this.elementsStaticFinebrot = new int[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
+        log.debug("constructor");
+        log.debug("[" + RESOLUTION_WIDTH + "][" + RESOLUTION_HEIGHT + "]");
+        elementsStaticFinebrot = new int[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
     }
 
     public void add(int x, int y) {
-        this.elementsStaticFinebrot[x][y] += 1;
+        elementsStaticFinebrot[x][y] += 1;
     }
 
     public void clear() {

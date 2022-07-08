@@ -5,11 +5,9 @@ import fine.fractals.formatter.Formatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
-import static fine.fractals.context.ApplicationImpl.ZOOM;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
+import static fine.fractals.machine.ApplicationImpl.ZOOM;
 import static fine.fractals.machine.TargetImpl.Target;
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.*;
 
 public class AreaMandelbrotImpl {
 
@@ -40,6 +38,7 @@ public class AreaMandelbrotImpl {
     }
 
     private AreaMandelbrotImpl() {
+        log.debug("constructor");
         double size = INIT_MANDELBROT_AREA_SIZE;
         this.resolutionHalfRe = RESOLUTION_WIDTH / 2;
         this.resolutionHalfIm = RESOLUTION_HEIGHT / 2;

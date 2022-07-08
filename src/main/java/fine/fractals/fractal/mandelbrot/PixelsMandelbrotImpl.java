@@ -9,10 +9,10 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static fine.fractals.context.ApplicationImpl.*;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.*;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.square_alter;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 
@@ -38,7 +38,7 @@ class PixelsMandelbrotImpl {
 	}
 
 	public final void domainScreenCreateInitialization() {
-		log.info("domainScreenCreateInitialization()");
+        log.debug("constructor");
 		for (int x = 0; x < RESOLUTION_WIDTH; x++) {
 			for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
 				MandelbrotElement element = new MandelbrotElement(AreaMandelbrot.screenToDomainRe(x), AreaMandelbrot.screenToDomainIm(y));
@@ -80,7 +80,6 @@ class PixelsMandelbrotImpl {
 		/* Switch wrapping the next time */
 		odd = !odd;
 
-		log.info("Domain elements to calculate: " + domainFull.size());
 		return domainFull;
 	}
 

@@ -1,7 +1,6 @@
-package fine.fractals.fractal.finebrot.finite;
+package fine.fractals.fractal.finebrot.common;
 
 import fine.fractals.data.mem.Mem;
-import fine.fractals.fractal.finebrot.common.PathsFinebrotAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
 
-public class PathsFinebrotImpl extends PathsFinebrotAbstract {
+public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
 
     private static final Logger log = LogManager.getLogger(PathsFinebrotImpl.class);
 
@@ -23,6 +22,7 @@ public class PathsFinebrotImpl extends PathsFinebrotAbstract {
     private final ArrayList<ArrayList<double[]>> paths = new ArrayList<>();
 
     public PathsFinebrotImpl() {
+        log.debug("constructor");
     }
 
     /*

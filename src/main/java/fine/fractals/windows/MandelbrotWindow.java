@@ -1,8 +1,8 @@
 package fine.fractals.windows;
 
-import fine.fractals.windows.common.UIWindow;
 import fine.fractals.windows.adapter.UIKeyAdapter;
 import fine.fractals.windows.adapter.UIMouseMotionAdapter;
+import fine.fractals.windows.common.UIWindow;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
 import fine.fractals.windows.listener.UIMouseListener;
 import fine.fractals.windows.listener.UIMouseWheelListener;
@@ -12,14 +12,12 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
-import static fine.fractals.context.ApplicationImpl.APP_NAME;
-import static fine.fractals.machine.TargetImpl.Target;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.NAME;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
+import static fine.fractals.machine.ApplicationImpl.APP_NAME;
+import static fine.fractals.machine.TargetImpl.Target;
 import static java.awt.Color.BLACK;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 

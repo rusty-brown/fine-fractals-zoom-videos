@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.*;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 
 
 public class PathCalculationThread implements Runnable {

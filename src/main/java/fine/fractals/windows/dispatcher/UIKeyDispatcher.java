@@ -16,7 +16,7 @@ public class UIKeyDispatcher implements KeyEventDispatcher {
     private static final Logger log = LogManager.getLogger(UIKeyDispatcher.class);
 
     public UIKeyDispatcher() {
-
+        log.debug("constructor");
     }
 
     public static boolean isCtrl() {

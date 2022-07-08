@@ -4,11 +4,13 @@ import fine.fractals.color.euler.Palette3RGB;
 import fine.fractals.data.mem.MemEuler;
 import fine.fractals.fractal.finebrot.euler.FractalEuler;
 
-import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.data.mandelbrot.ResolutionMultiplier.*;
+import static fine.fractals.color.common.PaletteEulerImpl.PaletteEuler3;
+import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
+import static fine.fractals.machine.ApplicationImpl.Application;
+import static fine.fractals.machine.ApplicationImpl.REPEAT;
 import static fine.fractals.math.MathematicianImpl.Mathematician;
 
-public class Euler extends FractalEuler {
+public final class Euler extends FractalEuler {
 
 	public Euler() {
 		NAME = "Euler";
@@ -38,16 +40,14 @@ public class Euler extends FractalEuler {
 
 	public static void main(String[] args) {
 
-		FinebrotFractal = new Euler();
-
-		Palette3RGB.init();
-
 		RESOLUTION_WIDTH = 1920;
 		RESOLUTION_HEIGHT = 1080;
 		RESOLUTION_MULTIPLIER = none;
 
 		REPEAT = false;
 		SAVE_IMAGES = false;
+		FinebrotFractal = new Euler();
+		PaletteEuler3 = new Palette3RGB();
 
 		Application.execute();
 	}

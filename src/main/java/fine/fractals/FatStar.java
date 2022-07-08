@@ -4,8 +4,10 @@ import fine.fractals.color.PaletteBlackToWhite;
 import fine.fractals.data.mem.Mem;
 import fine.fractals.fractal.finebrot.infinite.FractalInfinite;
 
-import static fine.fractals.context.ApplicationImpl.*;
+import static fine.fractals.color.common.PaletteImpl.Palette;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
+import static fine.fractals.machine.ApplicationImpl.Application;
+import static fine.fractals.machine.ApplicationImpl.REPEAT;
 
 public class FatStar extends FractalInfinite {
 
@@ -34,16 +36,14 @@ public class FatStar extends FractalInfinite {
 
 	public static void main(String[] args) {
 
-		FinebrotFractal = new FatStar();
-
-		PaletteBlackToWhite.init();
-
 		RESOLUTION_WIDTH = 1920;
 		RESOLUTION_HEIGHT = 1080;
 		RESOLUTION_MULTIPLIER = none;
 
 		REPEAT = false;
 		SAVE_IMAGES = false;
+		FinebrotFractal = new FatStar();
+		Palette = new PaletteBlackToWhite();
 
 		Application.execute();
 	}

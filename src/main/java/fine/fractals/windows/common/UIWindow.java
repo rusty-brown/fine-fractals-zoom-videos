@@ -1,6 +1,8 @@
 package fine.fractals.windows.common;
 
 import fine.fractals.windows.adapter.UIMouseMotionAdapter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +15,14 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 public abstract class UIWindow extends JComponent {
 
+	private static final Logger log = LogManager.getLogger(UIWindow.class);
+
 	private boolean active = false;
 	protected UIMouseMotionAdapter motionAdapter;
 	protected String name;
 
 	protected UIWindow() {
+		log.debug("constructor");
 	}
 
 	protected void hideDefaultCursor(JFrame frame) {

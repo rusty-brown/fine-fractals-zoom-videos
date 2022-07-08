@@ -1,5 +1,6 @@
 package fine.fractals.color;
 
+import fine.fractals.color.common.PaletteImpl;
 import fine.fractals.color.utils.ColorTest;
 import fine.fractals.color.utils.ColorUtils;
 import org.apache.logging.log4j.LogManager;
@@ -7,16 +8,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 
-import static fine.fractals.palette.PaletteImpl.Palette;
-
-public abstract class PalettePlasma {
+public class PalettePlasma extends PaletteImpl {
 
     private static final Logger log = LogManager.getLogger(PalettePlasma.class);
 
-    public static void init() {
-        log.info("init");
-        ColorUtils.toPaletteLinearSpectrum(
-                Palette.spectrum,
+    public PalettePlasma() {
+        log.debug("constructor");
+        ColorUtils.toPaletteLinearSpectrum(spectrum,
                 new Color(7, 1, 116),
                 new Color(37, 1, 133),
                 new Color(62, 0, 145),
@@ -32,7 +30,7 @@ public abstract class PalettePlasma {
     }
 
     public static void main(String[] args) {
-        PalettePlasma.init();
+        Palette = new PalettePlasma();
         ColorTest.execute();
     }
 }

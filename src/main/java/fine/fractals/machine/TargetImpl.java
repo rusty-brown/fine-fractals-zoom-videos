@@ -5,8 +5,8 @@ import fine.fractals.data.mem.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
 
@@ -28,6 +28,7 @@ public class TargetImpl {
     public static final TargetImpl Target = new TargetImpl();
 
     private TargetImpl() {
+        log.debug("constructor");
     }
 
     public void update(int mousePositionX, int mousePositionY) {

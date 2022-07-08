@@ -1,9 +1,7 @@
-package fine.fractals.context;
+package fine.fractals.machine;
 
-import fine.fractals.data.mandelbrot.ResolutionMultiplier;
 import fine.fractals.data.annotation.EditMe;
 import fine.fractals.formatter.Formatter;
-import fine.fractals.machine.CalculationThread;
 import fine.fractals.windows.FinebrotWindow;
 import fine.fractals.windows.MandelbrotWindow;
 import fine.fractals.windows.dispatcher.UIKeyDispatcher;
@@ -12,28 +10,25 @@ import fine.fractals.windows.listener.UIMouseWheelListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
 
 public class ApplicationImpl {
 
+    public static final String USER_HOME = System.getProperty("user.home");
     /**
-     * Image resolution height & width
-     * 800 600
-     * 1080 1920 full HD high
-     * 1920 1080 full HD
-     * 2560 1440 quad HD
+     * Create the folder in your home directory or change the path
      */
     @EditMe
-    public static int RESOLUTION_WIDTH;
-    public static int RESOLUTION_HEIGHT;
+    public static final String FILE_PATH = USER_HOME + "/Fractals/";
 
     @EditMe
-    public static boolean SAVE_IMAGES;
+    public static final String DEBUG_PATH = USER_HOME + "/Fractals-debug/";
 
-    @EditMe
-    public static ResolutionMultiplier RESOLUTION_MULTIPLIER;
+    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
     /**
      * How many pixels round specific element will be investigated for optimization.
@@ -55,19 +50,6 @@ public class ApplicationImpl {
     public static final int TEST_OPTIMIZATION_FIX_SIZE = 4;
 
     public static final String APP_NAME = "_" + Formatter.now();
-    public static final String USER_HOME = System.getProperty("user.home");
-
-    /**
-     * Image in resolution Application.RESOLUTION_IMAGE_SAVE_FOR = 2000 will be saved to the location below
-     * <p>
-     * Create the folder in your home directory or change the path
-     */
-    @EditMe
-    public static final String FILE_PATH = USER_HOME + "/Fractals/";
-    @EditMe
-    public static final String DEBUG_PATH = USER_HOME + "/Fractals-debug/";
-
-    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
     public static boolean REPEAT = true;
 
@@ -90,6 +72,7 @@ public class ApplicationImpl {
     }
 
     private ApplicationImpl() {
+        log.debug("constructor");
     }
 
     public void initUIWindows() {
@@ -123,6 +106,7 @@ public class ApplicationImpl {
 
     public void execute() {
         log.debug("execute()");
+        initUIWindows();
         CalculationThread.calculate();
     }
 

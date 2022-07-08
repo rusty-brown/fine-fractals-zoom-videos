@@ -3,9 +3,7 @@ package fine.fractals.fractal.finebrot.finite;
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mem.Mem;
-import fine.fractals.fractal.finebrot.PixelsFinebrotImpl;
-import fine.fractals.fractal.finebrot.common.FinebrotFractalImpl;
-import fine.fractals.perfect.coloring.PerfectColorDistributionImpl;
+import fine.fractals.fractal.finebrot.common.FinebrotCommonImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,16 +11,12 @@ import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 
-public abstract class FractalFinite extends FinebrotFractalImpl {
+public abstract class FractalFinite extends FinebrotCommonImpl {
 
     private static final Logger log = LogManager.getLogger(FractalFinite.class);
 
-    public static final PixelsFinebrotImpl PixelsFinebrot = new PixelsFinebrotImpl();
-
     public FractalFinite() {
-        log.info("FractalFinite()");
-        PerfectColorDistribution = new PerfectColorDistributionImpl();
-        PathsFinebrot = new PathsFinebrotImpl();
+        log.debug("constructor");
     }
 
     public abstract void math(Mem m, double re, double im);

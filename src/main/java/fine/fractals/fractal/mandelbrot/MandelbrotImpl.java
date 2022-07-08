@@ -11,10 +11,9 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.FinebrotFractal;
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.PathsFinebrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 import static fine.fractals.fractal.mandelbrot.PixelsMandelbrotImpl.PixelsMandelbrot;
+import static fine.fractals.machine.ApplicationImpl.*;
 import static fine.fractals.machine.TargetImpl.Target;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -25,6 +24,7 @@ public class MandelbrotImpl {
     public static final MandelbrotImpl Mandelbrot = new MandelbrotImpl();
 
     private MandelbrotImpl() {
+        log.debug("constructor");
     }
 
     /*
@@ -80,7 +80,7 @@ public class MandelbrotImpl {
     }
 
     public void fixOptimizationBreak() {
-        log.info("fixOptimizationBreak()");
+        log.debug("fixOptimizationBreak()");
 
         /* Last tested pixel is Hibernated as Converged (Calculation finished) */
         Bool lastIsWhite = new Bool();

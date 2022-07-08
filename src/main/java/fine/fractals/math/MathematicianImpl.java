@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.ITERATION_MAX;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.ITERATION_MAX;
 
 @SuppressWarnings(value = "unused")
 public class MathematicianImpl {

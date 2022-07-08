@@ -3,8 +3,8 @@ package fine.fractals.fractal.finebrot.euler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 
 public class PixelsEulerFinebrotImpl {
 
@@ -17,7 +17,8 @@ public class PixelsEulerFinebrotImpl {
     private static final Logger log = LogManager.getLogger(PixelsEulerFinebrotImpl.class);
 
     public PixelsEulerFinebrotImpl() {
-        log.debug("PixelsEulerFinebrotImpl()");
+        log.debug("constructor");
+        log.debug("[" + RESOLUTION_WIDTH + "][" + RESOLUTION_HEIGHT + "]");
         this.elementsStaticScreenRed = new int[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
         this.elementsStaticScreenGreen = new int[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
         this.elementsStaticScreenBlue = new int[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];

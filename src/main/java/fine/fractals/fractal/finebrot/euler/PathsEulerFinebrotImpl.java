@@ -2,7 +2,7 @@ package fine.fractals.fractal.finebrot.euler;
 
 import fine.fractals.data.mem.Mem;
 import fine.fractals.data.mem.MemEuler;
-import fine.fractals.fractal.finebrot.common.PathsFinebrotAbstract;
+import fine.fractals.fractal.finebrot.common.PathsFinebrotCommonImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +12,7 @@ import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.finebrot.euler.FractalEuler.PixelsEulerFinebrot;
 import static java.util.Objects.requireNonNull;
 
-public class PathsEulerFinebrotImpl extends PathsFinebrotAbstract {
+public class PathsEulerFinebrotImpl extends PathsFinebrotCommonImpl {
 
     private static final Logger log = LogManager.getLogger(PathsEulerFinebrotImpl.class);
 
@@ -37,7 +37,7 @@ public class PathsEulerFinebrotImpl extends PathsFinebrotAbstract {
     }
 
     public void domainToScreenGrid() {
-        log.info("domainToScreenGrid()");
+        log.debug("constructor");
 
         int removed = 0;
         int added = 0;

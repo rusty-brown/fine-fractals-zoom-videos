@@ -12,9 +12,9 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static fine.fractals.context.ApplicationImpl.*;
-import static fine.fractals.fractal.finebrot.common.FinebrotFractalImpl.NAME;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 import static fine.fractals.images.FractalImage.FinebrotImage;
+import static fine.fractals.machine.ApplicationImpl.APP_NAME;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class FinebrotWindow extends UIWindow {
@@ -27,7 +27,7 @@ public class FinebrotWindow extends UIWindow {
 						  UIMouseWheelListener uiMouseWheelListener,
 						  UIKeyDispatcher uiKeyDispatcher
 	) {
-		log.debug("initialize");
+		log.debug("constructor");
 		super.name = NAME + " - " + APP_NAME;
 
 		this.frame = new JFrame(name);

@@ -3,7 +3,7 @@ package fine.fractals.fractal.finebrot.euler;
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mem.MemEuler;
-import fine.fractals.fractal.finebrot.common.FinebrotFractalImpl;
+import fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl;
 import fine.fractals.perfect.coloring.EulerPerfectColorDistributionImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,14 +14,15 @@ import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.*;
 import static fine.fractals.math.MathematicianImpl.Mathematician;
 
-public abstract class FractalEuler extends FinebrotFractalImpl {
+public abstract class FractalEuler extends FinebrotAbstractImpl {
 
     private static final Logger log = LogManager.getLogger(FractalEuler.class);
 
-    public static PixelsEulerFinebrotImpl PixelsEulerFinebrot = new PixelsEulerFinebrotImpl();
+    public static PixelsEulerFinebrotImpl PixelsEulerFinebrot;
 
     public FractalEuler() {
-        log.info("FractalEuler()");
+        log.debug("constructor");
+        PixelsEulerFinebrot = new PixelsEulerFinebrotImpl();
         PerfectColorDistribution = new EulerPerfectColorDistributionImpl();
         PathsFinebrot = new PathsEulerFinebrotImpl();
     }

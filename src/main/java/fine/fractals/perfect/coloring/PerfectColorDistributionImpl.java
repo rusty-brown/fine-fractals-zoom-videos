@@ -8,11 +8,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.context.ApplicationImpl.RESOLUTION_WIDTH;
+import static fine.fractals.color.common.PaletteImpl.Palette;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
 import static fine.fractals.images.FractalImage.FinebrotImage;
-import static fine.fractals.palette.PaletteImpl.Palette;
 
 public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
 
@@ -24,7 +24,7 @@ public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstra
     static final List<FinebrotPixel> pixels = new ArrayList<>();
 
     public PerfectColorDistributionImpl() {
-        log.info("PerfectColorDistributionImpl()");
+        log.debug("constructor");
     }
 
     public void perfectlyColorFinebrotValues() {
@@ -99,5 +99,6 @@ public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstra
 
         log.debug("clear pixels");
         pixels.clear();
+        PixelsFinebrot.clear();
     }
 }

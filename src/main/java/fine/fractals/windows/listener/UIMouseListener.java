@@ -8,11 +8,11 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import static fine.fractals.context.ApplicationImpl.Application;
-import static fine.fractals.context.ApplicationImpl.REPEAT;
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
+import static fine.fractals.machine.ApplicationImpl.Application;
+import static fine.fractals.machine.ApplicationImpl.REPEAT;
 import static fine.fractals.machine.FractalEngineImpl.calculationInProgress;
 
 public class UIMouseListener implements MouseListener {
@@ -20,6 +20,7 @@ public class UIMouseListener implements MouseListener {
     private static final Logger log = LogManager.getLogger(UIMouseListener.class);
 
     public UIMouseListener() {
+        log.debug("constructor");
     }
 
     @Override

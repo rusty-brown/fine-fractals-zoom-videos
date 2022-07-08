@@ -11,6 +11,10 @@ public class UIMouseWheelListener implements MouseWheelListener {
 
     private static final Logger log = LogManager.getLogger(UIMouseWheelListener.class);
 
+    public UIMouseWheelListener() {
+        log.debug("constructor");
+    }
+
     @Override
     public void mouseWheelMoved(MouseWheelEvent mwe) {
 
