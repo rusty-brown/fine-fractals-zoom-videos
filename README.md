@@ -12,7 +12,7 @@ We calculate at least one calculation path for each pixel on the screen.
 All these **calculation paths together** are what makes the **Finebrot fractal**.
 
 ![Infinite Finebrot](src/main/resources/images/Finebrot.jpg)
-![Infinite Finebrot](src/main/resources/images/Euler.jpg)
+![Infinite Finebrot](src/main/resources/images/Fat-Star.jpg)
 
 A mathematician might call generated Finebrot an **orbital density map**
 
@@ -69,6 +69,7 @@ Calculation is the same
 
 ![Infinite Finebrot](src/main/resources/images/Infinite-Finebrot.jpg)
 
+
 but we are interested in each point of the **calculation path**.
 
 That is calculation `path`, represented as `ArrayList<double[]> path`
@@ -104,6 +105,8 @@ Path elements re,im which move out of the screen boundary are removed. But there
 For **full HD** video it is **recommended** to have at least **16GB RAM**.
 
 To save memory set RESOLUTION_MULTIPLIER = none.
+
+![Infinite Finebrot](src/main/resources/images/Euler.jpg)
 
 ## How to make Video from images with sound
 
