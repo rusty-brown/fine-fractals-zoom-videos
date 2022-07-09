@@ -67,11 +67,11 @@ public class AreaFinebrotImpl {
 				&& m.im < this.borderHighIm;
 	}
 
-	public boolean contains(double re, double im) {
-		return re > this.borderLowRe
-				&& re < this.borderHighRe
-				&& im > this.borderLowIm
-				&& im < this.borderHighIm;
+	public boolean isOutside(double re, double im) {
+		return re < this.borderLowRe
+				|| re > this.borderHighRe
+				|| im < this.borderLowIm
+				|| im > this.borderHighIm;
 	}
 
 	public void domainToScreenCarry(Mem m, double re, double im) {

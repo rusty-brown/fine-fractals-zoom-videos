@@ -1,6 +1,5 @@
 package fine.fractals;
 
-import fine.fractals.color.PaletteBlackToWhite;
 import fine.fractals.color.PalettePurpleToWhite;
 import fine.fractals.data.mem.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;

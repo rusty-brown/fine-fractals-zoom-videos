@@ -13,14 +13,6 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
 
     private static final Logger log = LogManager.getLogger(PathsFinebrotImpl.class);
 
-    private int counter = 0;
-
-    /**
-     * re; im
-     * double[2] is better than 2x Double
-     */
-    private final ArrayList<ArrayList<double[]>> paths = new ArrayList<>();
-
     public PathsFinebrotImpl() {
         log.debug("constructor");
     }
@@ -36,7 +28,6 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
     public void domainToScreenGrid() {
         log.info("domainToScreenGrid()");
 
-        int removed = 0;
         int added = 0;
 
         final Mem m = new Mem();
@@ -55,19 +46,9 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
                 log.error("path can't be null");
             }
         }
+        log.debug("* Added:   " + added);
 
         /* remove elements which moved our fo zoomed area */
-        counter++;
-        if (counter % 5 == 0) {
-            log.debug("Remove elements which zoomed out");
-            for (ArrayList<double[]> path : paths) {
-                if (path.removeIf(el -> !AreaFinebrot.contains(el[0], el[1]))) {
-                    removed++;
-                }
-            }
-            paths.removeIf(ArrayList::isEmpty);
-        }
-        log.debug("* Removed: " + removed);
-        log.debug("* Added:   " + added);
+        removeElementsOutside();
     }
 }

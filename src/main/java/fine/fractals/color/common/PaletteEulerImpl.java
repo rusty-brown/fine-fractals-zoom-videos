@@ -11,9 +11,9 @@ public abstract class PaletteEulerImpl {
     private static final Logger log = LogManager.getLogger(PaletteEulerImpl.class);
 
     public static PaletteEulerImpl PaletteEuler3;
-    public ArrayList<Color> spectrumRed = new ArrayList<>();
-    public ArrayList<Color> spectrumGreen = new ArrayList<>();
-    public ArrayList<Color> spectrumBlue = new ArrayList<>();
+    public final ArrayList<Color> spectrumRed = new ArrayList<>();
+    public final ArrayList<Color> spectrumGreen = new ArrayList<>();
+    public final ArrayList<Color> spectrumBlue = new ArrayList<>();
 
     public PaletteEulerImpl() {
         log.debug("constructor");

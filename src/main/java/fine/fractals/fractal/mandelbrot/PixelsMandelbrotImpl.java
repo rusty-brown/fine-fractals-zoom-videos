@@ -41,7 +41,7 @@ class PixelsMandelbrotImpl {
 	 */
 	private static boolean firstDomainExecution = true;
 
-	private int chunkAmount = 40;
+	private final int chunkAmount = 40;
 
 	static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
 

@@ -11,7 +11,8 @@ public abstract class PaletteImpl {
     private static final Logger log = LogManager.getLogger(PaletteImpl.class);
 
     public static PaletteImpl Palette;
-    public ArrayList<Color> spectrum = new ArrayList<>();
+
+    public final ArrayList<Color> spectrum = new ArrayList<>();
 
     protected PaletteImpl() {
         log.debug("constructor");
