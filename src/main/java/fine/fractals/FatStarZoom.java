@@ -42,7 +42,7 @@ public class FatStarZoom extends FractalInfinite {
 
 		REPEAT = false;
 		SAVE_IMAGES = false;
-		FinebrotFractal = new FatStar();
+		FinebrotFractal = new FatStarZoom();
 		Palette = new PaletteBlackToWhite();
 
 		Application.execute();
