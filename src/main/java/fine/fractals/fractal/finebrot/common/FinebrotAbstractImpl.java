@@ -33,6 +33,7 @@ public abstract class FinebrotAbstractImpl {
      * 1080 1920 full HD high
      * 1920 1080 full HD
      * 2560 1440 quad HD
+     * Resolution should be divisible by PixelsMandelbrotImpl.chunkAmount = 40
      */
     public static int RESOLUTION_WIDTH;
     public static int RESOLUTION_HEIGHT;

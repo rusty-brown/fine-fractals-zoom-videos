@@ -9,15 +9,18 @@ import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
+import static java.lang.System.currentTimeMillis;
 
-public class PathCalculationThread implements Runnable {
+public class CalculationPathThread implements Runnable {
 
     @SuppressWarnings(value = "unused")
-    private static final Logger log = LogManager.getLogger(PathCalculationThread.class);
+    private static final Logger log = LogManager.getLogger(CalculationPathThread.class);
+
+    private static long lastMandelbrotRefresh = 0;
 
     private final ArrayList<MandelbrotElement> mandelbrotElementsPart;
 
-    public PathCalculationThread(ArrayList<MandelbrotElement> mandelbrotElementsPart) {
+    public CalculationPathThread(ArrayList<MandelbrotElement> mandelbrotElementsPart) {
         this.mandelbrotElementsPart = mandelbrotElementsPart;
     }
 
@@ -43,6 +46,9 @@ public class PathCalculationThread implements Runnable {
                 }
             }
         }
-        Mandelbrot.createMaskAndRepaint();
+        if (lastMandelbrotRefresh + 42 < currentTimeMillis()) {
+            lastMandelbrotRefresh = currentTimeMillis();
+            Mandelbrot.createMaskAndRepaint();
+        }
     }
 }

@@ -3,7 +3,7 @@ package fine.fractals.fractal.mandelbrot;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.misc.Bool;
 import fine.fractals.machine.FractalMachine;
-import fine.fractals.machine.concurent.PathCalculationThread;
+import fine.fractals.machine.concurent.CalculationPathThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +43,7 @@ public class MandelbrotImpl {
         final ExecutorService executor = Executors.newFixedThreadPool(COREs);
 
         for (ArrayList<MandelbrotElement> part : domainFullChunkedAndWrapped) {
-            executor.execute(new PathCalculationThread(part));
+            executor.execute(new CalculationPathThread(part));
         }
 
         try {

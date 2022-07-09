@@ -46,8 +46,8 @@ class PixelsMandelbrotImpl {
 	static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
 
 	public PixelsMandelbrotImpl() {
-		assertEquals(0, RESOLUTION_WIDTH % chunkAmount);
-		assertEquals(0, RESOLUTION_HEIGHT % chunkAmount);
+		assertEquals("RESOLUTION_WIDTH " + RESOLUTION_WIDTH + " must be divisible by chunkAmount = " + chunkAmount, 0, RESOLUTION_WIDTH % chunkAmount);
+		assertEquals("RESOLUTION_HEIGHT " + RESOLUTION_HEIGHT + " must be divisible by chunkAmount = " + chunkAmount, 0, RESOLUTION_HEIGHT % chunkAmount);
 	}
 
 	public final void domainScreenCreateInitialization() {
