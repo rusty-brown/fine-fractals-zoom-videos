@@ -28,6 +28,9 @@ public class ApplicationImpl {
     @EditMe
     public static final String DEBUG_PATH = USER_HOME + "/Fractals-debug/";
 
+    @EditMe
+    public static final boolean IGNORE_DEBUG_FILES = false;
+
     private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
 
     /**
@@ -55,6 +58,9 @@ public class ApplicationImpl {
 
     /* Increase this only in CalculationThread */
     public static int iteration = 0;
+
+    private boolean paintingMandelbrotBusy = false;
+    private boolean paintingFinebrotBusy = false;
 
     private MandelbrotWindow mandelbrotWindow;
     private FinebrotWindow finebrotWindow;
@@ -110,15 +116,22 @@ public class ApplicationImpl {
         EngineThread.calculate();
     }
 
-    public void repaintWindows() {
-        log.info("repaintWindows()");
-        this.finebrotWindow.frame.repaint();
-        this.mandelbrotWindow.frame.repaint();
+    public void repaintFinebrotWindows() {
+        log.info("repaintFinebrotWindows()");
+        if (!paintingFinebrotBusy) {
+            paintingFinebrotBusy = true;
+            finebrotWindow.frame.repaint();
+        }
+        paintingFinebrotBusy = false;
     }
 
     public void repaintMandelbrotWindow() {
         log.debug("repaintMandelbrotWindow()");
-        mandelbrotWindow.frame.repaint();
+        if (!paintingMandelbrotBusy) {
+            paintingMandelbrotBusy = true;
+            mandelbrotWindow.frame.repaint();
+        }
+        paintingMandelbrotBusy = false;
     }
 
     public void zoomIn() {

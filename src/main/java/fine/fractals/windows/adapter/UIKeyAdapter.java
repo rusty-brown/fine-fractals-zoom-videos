@@ -39,7 +39,10 @@ public class UIKeyAdapter extends KeyAdapter {
                 Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(targetString), null);
             }
             case VK_I -> showInfo = !showInfo;
-            case VK_R -> Application.repaintWindows();
+            case VK_R -> {
+                Application.repaintMandelbrotWindow();
+                Application.repaintFinebrotWindows();
+            }
             case VK_MINUS -> {
                 ITERATION_MAX *= 0.95;
                 log.info("ITERATION_MAX  = " + ITERATION_MAX);

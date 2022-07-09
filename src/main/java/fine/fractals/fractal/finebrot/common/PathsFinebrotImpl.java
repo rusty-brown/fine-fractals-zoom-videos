@@ -42,13 +42,17 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
         final Mem m = new Mem();
         double[] tmp;
         for (ArrayList<double[]> path : paths) {
-            for (int i = 0; i < path.size() - 1; i++) {
-                tmp = path.get(i);
-                AreaFinebrot.domainToScreenCarry(m, tmp[0], tmp[1]);
-                if (m.px != Mem.NOT && m.py != Mem.NOT) {
-                    added++;
-                    PixelsFinebrot.add(m.px, m.py);
+            if (path != null) {
+                for (int i = 0; i < path.size() - 1; i++) {
+                    tmp = path.get(i);
+                    AreaFinebrot.domainToScreenCarry(m, tmp[0], tmp[1]);
+                    if (m.px != Mem.NOT && m.py != Mem.NOT) {
+                        added++;
+                        PixelsFinebrot.add(m.px, m.py);
+                    }
                 }
+            } else {
+                log.error("path can't be null");
             }
         }
 

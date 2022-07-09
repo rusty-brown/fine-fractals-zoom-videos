@@ -37,7 +37,7 @@ public class EngineThread extends Thread {
                 AreaMandelbrot.moveToInitialCoordinates();
                 AreaFinebrot.moveToInitialCoordinates();
             }
-            Application.repaintWindows();
+            Application.repaintFinebrotWindows();
         } while (REPEAT);
     }
 }

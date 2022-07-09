@@ -38,7 +38,8 @@ public class UIMouseListener implements MouseListener {
             } else {
                 log.info("Left click, FIX, then use Enter");
                 Mandelbrot.fixDomainOptimizationOnClick();
-                Application.repaintWindows();
+                Application.repaintMandelbrotWindow();
+                Application.repaintFinebrotWindows();
             }
         } else {
             log.info("click skipped");

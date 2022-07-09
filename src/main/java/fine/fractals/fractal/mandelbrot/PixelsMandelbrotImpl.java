@@ -15,6 +15,7 @@ import static fine.fractals.data.mandelbrot.ResolutionMultiplier.square_alter;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
+import static org.junit.Assert.assertEquals;
 
 class PixelsMandelbrotImpl {
 
@@ -26,19 +27,31 @@ class PixelsMandelbrotImpl {
 	private MandelbrotElement bestMatch;
 	private int bestMatchAtX;
 	private int bestMatchAtY;
-	private double dist;
+
+	/**
+	 * Distance measured as quadrance - without square root
+	 */
+	private double quad;
 
 	static boolean maskDone = true;
 
+	/**
+	 * Don't do any wrapping the first time
+	 * Because Mandelbrot elements are not optimized
+	 */
 	private static boolean firstDomainExecution = true;
+
+	private int chunkAmount = 40;
 
 	static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
 
-	private PixelsMandelbrotImpl() {
+	public PixelsMandelbrotImpl() {
+		assertEquals(0, RESOLUTION_WIDTH % chunkAmount);
+		assertEquals(0, RESOLUTION_HEIGHT % chunkAmount);
 	}
 
 	public final void domainScreenCreateInitialization() {
-        log.debug("constructor");
+		log.debug("constructor");
 		for (int x = 0; x < RESOLUTION_WIDTH; x++) {
 			for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
 				MandelbrotElement element = new MandelbrotElement(AreaMandelbrot.screenToDomainRe(x), AreaMandelbrot.screenToDomainIm(y));
@@ -49,38 +62,56 @@ class PixelsMandelbrotImpl {
 
 	private boolean odd = true;
 
-	public ArrayList<MandelbrotElement> fetchDomainFull() {
-		log.debug("fetchDomainFull()");
+	public ArrayList<ArrayList<MandelbrotElement>> fetchDomainWrappedParts() {
+		log.debug("fetchDomainWrappedParts()");
 
+		int chunkSizeX = RESOLUTION_WIDTH / chunkAmount;
+		int chunkSizeY = RESOLUTION_HEIGHT / chunkAmount;
+
+		final ArrayList<ArrayList<MandelbrotElement>> domainFull = new ArrayList<>();
+
+		/* All the pixel (domain) will be split to 40 chunks */
+		for (int x = 0; x < chunkAmount; x++) {
+			for (int y = 0; y < chunkAmount; y++) {
+
+				final ArrayList<MandelbrotElement> chunkOfElements = makeChunk(
+						x * chunkSizeX, (x + 1) * chunkSizeX,
+						y * chunkSizeY, (y + 1) * chunkSizeY
+				);
+
+				if (!chunkOfElements.isEmpty()) {
+					domainFull.add(chunkOfElements);
+				}
+			}
+		}
+
+		firstDomainExecution = false;
+
+		/* Switch wrapping the next time */
+		odd = !odd;
+
+		return domainFull;
+	}
+
+	private ArrayList<MandelbrotElement> makeChunk(int xFrom, int xTo, int yFrom, int yTo) {
+		final ArrayList<MandelbrotElement> chunk = new ArrayList<>();
 		MandelbrotElement elementZero;
-		final ArrayList<MandelbrotElement> domainFull = new ArrayList<>();
-
-		for (int x = 0; x < RESOLUTION_WIDTH; x++) {
-			for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
-
+		for (int x = xFrom; x < xTo; x++) {
+			for (int y = yFrom; y < yTo; y++) {
 				elementZero = elementsStaticMandelbrot[x][y];
-
 				boolean isActive = elementZero != null && elementZero.isActiveAny();
-
-				/* First calculation */
 				if (isActive) {
-					domainFull.add(elementZero);
-
+					chunk.add(elementZero);
 					if (!firstDomainExecution) {
 						// TODO try also with: OR FractalMachine.someNeighboursFinishedLong(t, x, elementsScreen);
 						if (RESOLUTION_MULTIPLIER != none) {
-							wrap(domainFull, elementZero);
+							wrap(chunk, elementZero);
 						}
 					}
 				}
 			}
 		}
-		/* Don't do any wrapping the first time */
-		firstDomainExecution = false;
-		/* Switch wrapping the next time */
-		odd = !odd;
-
-		return domainFull;
+		return chunk;
 	}
 
 	private void wrap(ArrayList<MandelbrotElement> domainFull, MandelbrotElement elementZero) {
@@ -120,7 +151,7 @@ class PixelsMandelbrotImpl {
 
 	private void dropBestMatchToEmptyNeighbour(Mem m, int x, int y, ArrayList<MandelbrotElement> conflictsOnPixel) {
 		bestMatch = null;
-		dist = 0;
+		quad = 0;
 		double distMin = 42;
 		for (MandelbrotElement element : conflictsOnPixel) {
 			/* up */
@@ -146,9 +177,9 @@ class PixelsMandelbrotImpl {
 	double tryBestMatch(Mem m, int x, int y, MandelbrotElement element, double distMin) {
 		if (emptyAt(x, y)) {
 			AreaMandelbrot.screenToDomainCarry(m, x, y);
-			dist = quad(m.re, m.im, element.originRe, element.originIm);
-			if (dist < distMin) {
-				distMin = dist;
+			quad = quadrance(m.re, m.im, element.originRe, element.originIm);
+			if (quad < distMin) {
+				distMin = quad;
 				bestMatch = element;
 				bestMatchAtX = x;
 				bestMatchAtY = y;
@@ -178,9 +209,9 @@ class PixelsMandelbrotImpl {
 		MandelbrotElement ret = null;
 		for (MandelbrotElement el : conflictsOnPixel) {
 			AreaMandelbrot.screenToDomainCarry(m, x, y);
-			dist = quad(m.re, m.im, el.originRe, el.originIm);
-			if (dist < distMin) {
-				distMin = dist;
+			quad = quadrance(m.re, m.im, el.originRe, el.originIm);
+			if (quad < distMin) {
+				distMin = quad;
 				ret = el;
 			}
 		}
@@ -188,14 +219,11 @@ class PixelsMandelbrotImpl {
 		return ret;
 	}
 
-	/**
-	 * This is Quadrance
-	 */
-	double quad(double aRe, double aIm, double bRe, double bIm) {
+	double quadrance(double aRe, double aIm, double bRe, double bIm) {
 		return (aRe - bRe) * (aRe - bRe) + (aIm - bIm) * (aIm - bIm);
 	}
 
-	public void createMask() {
+	public boolean createMask() {
 		log.debug("createMask()");
 		if (maskDone) {
 			maskDone = false;
@@ -223,8 +251,10 @@ class PixelsMandelbrotImpl {
 				}
 			}
 			maskDone = true;
+			return true;
 		} else {
-			log.error("createMask() refresh way too fast");
+			log.debug("createMask() refresh way too fast");
+			return false;
 		}
 	}
 

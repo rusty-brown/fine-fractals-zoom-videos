@@ -43,7 +43,7 @@ public class FractalEngineImpl {
         Mandelbrot.createMaskAndRepaint();
 
         /*
-         * Mandelbrot calculation creates Finebrot data and image
+         * Mandelbrot calculation creates Finebrot data
          */
         Mandelbrot.calculate();
 

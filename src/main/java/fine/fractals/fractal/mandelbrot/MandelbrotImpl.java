@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,14 +33,17 @@ public class MandelbrotImpl {
      */
     public void calculate() {
         log.info("calculate()");
-        final ArrayList<MandelbrotElement> domainFull = PixelsMandelbrot.fetchDomainFull();
 
-        log.info("calculate: " + domainFull.size() + ", which is full domain");
+        final ArrayList<ArrayList<MandelbrotElement>> domainFullChunkedAndWrapped = PixelsMandelbrot.fetchDomainWrappedParts();
+
+        Collections.shuffle(domainFullChunkedAndWrapped);
+
+        log.debug("calculate: " + domainFullChunkedAndWrapped.size() + " chunks");
+
         final ExecutorService executor = Executors.newFixedThreadPool(COREs);
 
-        log.info("Start " + domainFull.size() + " threads");
-        for (MandelbrotElement el : domainFull) {
-            executor.execute(new PathCalculationThread(el));
+        for (ArrayList<MandelbrotElement> part : domainFullChunkedAndWrapped) {
+            executor.execute(new PathCalculationThread(part));
         }
 
         try {
@@ -134,8 +138,10 @@ public class MandelbrotImpl {
     }
 
     public void createMaskAndRepaint() {
-        PixelsMandelbrot.createMask();
-        Application.repaintMandelbrotWindow();
+        boolean change = PixelsMandelbrot.createMask();
+        if (change) {
+            Application.repaintMandelbrotWindow();
+        }
     }
 
     public void domainForThisZoom() {
