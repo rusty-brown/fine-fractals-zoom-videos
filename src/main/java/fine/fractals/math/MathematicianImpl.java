@@ -1,5 +1,6 @@
 package fine.fractals.math;
 
+import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mem.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,6 +9,7 @@ import java.util.HashSet;
 
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.ITERATION_MAX;
 
+@ThreadSafe
 @SuppressWarnings(value = "unused")
 public class MathematicianImpl {
 
