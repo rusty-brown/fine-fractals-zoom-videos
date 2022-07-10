@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
-import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_MPEG4;
 import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_YUV420P;
 
@@ -36,6 +34,11 @@ public class ListOfImagesToVideoWithAudio {
     private static final String AUDIO_FILE = "/home/lukas/Downloads/Arcadia.mp3";
     @EditMe
     private static final String FINEBROT_IMAGE_LOCATION = "/home/lukas/Fractals/";
+    @EditMe
+    private static final int RESOLUTION_WIDTH = 1920;
+    @EditMe
+    private static final int RESOLUTION_HEIGHT = 1080;
+
     private static final ListOfImagesToVideoWithAudio VideoMaker = new ListOfImagesToVideoWithAudio();
     private final List<URL> urls = new ArrayList<>();
     private FFmpegFrameRecorder recorder;
@@ -84,6 +87,9 @@ public class ListOfImagesToVideoWithAudio {
             log.info("converter");
             converter = new Java2DFrameConverter();
 
+            log.info("RESOLUTION_WIDTH = " + RESOLUTION_WIDTH);
+            log.info("RESOLUTION_HEIGHT = " + RESOLUTION_HEIGHT);
+
             log.info("zoom in");
             renderListOfImages();
 
@@ -125,6 +131,7 @@ public class ListOfImagesToVideoWithAudio {
 
     private void renderListOfImages() throws IOException {
         for (URL url : urls) {
+            log.info(url);
             recorder.record(converter.getFrame(ImageIO.read(url)));
         }
     }
