@@ -5,7 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.machine.ApplicationImpl.*;
+import static fine.fractals.machine.ApplicationImpl.Application;
+import static fine.fractals.machine.ApplicationImpl.REPEAT;
+import static fine.fractals.machine.ApplicationImpl.iteration;
 import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
 
 public class EngineThread extends Thread {

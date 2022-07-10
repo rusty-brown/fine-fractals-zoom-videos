@@ -45,7 +45,8 @@ public abstract class FractalEuler extends FinebrotAbstractImpl {
             }
             iterator++;
         }
-        el.setValues(iterator);
+        el.setValue(iterator);
+        el.setHibernatedState(iterator);
         return iterator < ITERATION_MAX;
     }
 

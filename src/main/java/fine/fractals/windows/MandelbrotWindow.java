@@ -13,7 +13,9 @@ import javax.swing.*;
 import java.awt.*;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
-import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.NAME;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 import static fine.fractals.machine.ApplicationImpl.APP_NAME;
@@ -100,12 +102,6 @@ public class MandelbrotWindow extends UIWindow {
 			g2d.drawString("Domain h/w: ", col(0), row(line));
 			g2d.drawString(AreaFinebrot.sizeImString(), col(1), row(line));
 			g2d.drawString(AreaFinebrot.sizeReString(), col(2), row(line));
-			line++;
-
-			/* Mandelbrot Element value */
-			g2d.drawString("El. value: ", col(0), row(line));
-			g2d.drawString(Target.getMandelbrotValue(), col(1), row(line));
-			g2d.drawString(Target.getMandelbrotState(), col(2), row(line));
 		}
 	}
 

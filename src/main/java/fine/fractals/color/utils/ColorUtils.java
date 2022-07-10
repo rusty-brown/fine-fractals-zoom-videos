@@ -1,14 +1,38 @@
 package fine.fractals.color.utils;
 
+import fine.fractals.data.mandelbrot.MandelbrotElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
 
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.*;
+
 public abstract class ColorUtils {
 
     private static final Logger log = LogManager.getLogger(ColorUtils.class);
+
+    public static Color colorForState(MandelbrotElement element) {
+        switch (element.state()) {
+            case ActiveNew -> {
+                return ACTIVE_NEW;
+            }
+            case FinishedSuccess -> {
+                return FINISHED_SUCCESS;
+            }
+            case FinishedTooShort -> {
+                return FINISHED_TOO_SHORT;
+            }
+            case HibernatedDeepBlack -> {
+                return HIBERNATED_DEEP_BLACK;
+            }
+            case FinishedTooLong -> {
+                return FINISHED_TOO_LONG;
+            }
+            default -> throw new RuntimeException("Unknown MandelbrotElement state");
+        }
+    }
 
     public enum Function {
         linear1, linear3, linear7, quadratic, q3, q4, q5, exp, exp2, circleDown, circleUp

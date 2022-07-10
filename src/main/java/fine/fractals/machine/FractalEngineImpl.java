@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PerfectColorDistribution;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.SAVE_IMAGES;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
-import static fine.fractals.machine.ApplicationImpl.REPEAT;
 
 public class FractalEngineImpl {
 
@@ -46,13 +45,6 @@ public class FractalEngineImpl {
          * Mandelbrot calculation creates Finebrot data
          */
         Mandelbrot.calculate();
-
-        if (REPEAT) {
-            /* Test if Optimization didn't break anything */
-            Mandelbrot.fixOptimizationBreak();
-            /* Display Mandelbrot pixels status */
-            Mandelbrot.createMaskAndRepaint();
-        }
 
         PerfectColorDistribution.perfectlyColorFinebrotValues();
 

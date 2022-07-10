@@ -43,15 +43,6 @@ public class ApplicationImpl {
 
     public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
 
-    /**
-     * Distance in px around convergent element.
-     * Dead pixels around divergent pixel elements will be recalculated.
-     * Optimization mechanism will break for less than 4
-     * Distance around is +- 4
-     * This value may need to be increased for more complicated fractals
-     */
-    public static final int TEST_OPTIMIZATION_FIX_SIZE = 4;
-
     public static final String APP_NAME = "_" + Formatter.now();
 
     public static boolean REPEAT = true;

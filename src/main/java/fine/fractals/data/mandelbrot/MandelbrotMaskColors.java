@@ -2,18 +2,18 @@ package fine.fractals.data.mandelbrot;
 
 import java.awt.*;
 
-import static java.awt.Color.*;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.GRAY;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.RED;
+import static java.awt.Color.WHITE;
 
 public class MandelbrotMaskColors {
 
-    public static final Color NULL = CYAN;
-    public static final Color ACTIVE_MOVED = YELLOW;
     public static final Color ACTIVE_NEW = GREEN;
-    public static final Color ACTIVE_FIXED = BLUE;
-    public static final Color ACTIVE_RECALCULATE = ORANGE;
-    public static final Color HIBERNATED_BLACK = BLACK;
-    public static final Color HIBERNATED_BLACK_NEIGHBOR = GRAY;
-    public static final Color HIBERNATED_FINISHED_TOO_SHORT = WHITE;
-    public static final Color HIBERNATED_FINISHED_LONG = RED;
+    public static final Color FINISHED_TOO_LONG = BLACK;
+    public static final Color HIBERNATED_DEEP_BLACK = GRAY;
+    public static final Color FINISHED_TOO_SHORT = WHITE;
+    public static final Color FINISHED_SUCCESS = RED;
 
 }

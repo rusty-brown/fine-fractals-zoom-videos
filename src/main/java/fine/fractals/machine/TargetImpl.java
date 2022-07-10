@@ -82,26 +82,6 @@ public class TargetImpl {
         return this.cTextIm;
     }
 
-    public String getMandelbrotValue() {
-        if (this.mandelbrotElement != null) {
-            try {
-                int value = this.mandelbrotElement.getValue();
-                return String.valueOf(value);
-            } catch (NullPointerException ex) {
-                /* expect int corrected = null */
-                log.fatal("getMandelbrotValue() null");
-            }
-        }
-        return "-";
-    }
-
-    public String getMandelbrotState() {
-        if (this.mandelbrotElement != null) {
-            return this.mandelbrotElement.getState().toString();
-        }
-        return "-";
-    }
-
     public double re() {
         return scrRe;
     }

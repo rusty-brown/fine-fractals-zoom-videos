@@ -10,7 +10,6 @@ import java.awt.event.MouseListener;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.ApplicationImpl.REPEAT;
 import static fine.fractals.machine.FractalEngineImpl.calculationInProgress;
@@ -36,10 +35,7 @@ public class UIMouseListener implements MouseListener {
                     EngineThread.calculate();
                 }
             } else {
-                log.info("Left click, FIX, then use Enter");
-                Mandelbrot.fixDomainOptimizationOnClick();
-                Application.repaintMandelbrotWindow();
-                Application.repaintFinebrotWindows();
+                log.info("Left click");
             }
         } else {
             log.info("click skipped");
