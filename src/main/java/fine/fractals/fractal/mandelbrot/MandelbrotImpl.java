@@ -69,11 +69,6 @@ public class MandelbrotImpl {
             log.error("Executor waiting interrupted.");
             System.exit(1);
         }
-
-        PathsFinebrot.domainToScreenGrid();
-        FinebrotFractal.update();
-
-        Application.repaintMandelbrotWindow();
     }
 
     /* Used for OneTarget */
@@ -86,18 +81,15 @@ public class MandelbrotImpl {
         }
     }
 
-    public void createMaskAndRepaint() {
-        boolean change = PixelsMandelbrot.createMask();
-        if (change) {
-            Application.repaintMandelbrotWindow();
-        }
-    }
-
     public void recalculatePixelsPositionsForThisZoom() {
         PixelsMandelbrot.recalculatePixelsPositionsForThisZoom();
     }
 
     public void initializeDomainElements() {
         PixelsMandelbrot.initializeDomainElements();
+    }
+
+    public void maskFullUpdate() {
+        PixelsMandelbrot.maskFullUpdate();
     }
 }

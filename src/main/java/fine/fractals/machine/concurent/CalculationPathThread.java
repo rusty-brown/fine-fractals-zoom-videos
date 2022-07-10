@@ -11,6 +11,7 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.FinebrotF
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.ITERATION_MIN;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PathsFinebrot;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
+import static fine.fractals.machine.ApplicationImpl.Application;
 import static java.lang.System.currentTimeMillis;
 
 public class CalculationPathThread implements Runnable {
@@ -46,9 +47,14 @@ public class CalculationPathThread implements Runnable {
                 }
             }
         }
-        if (lastMandelbrotRefresh + 42 < currentTimeMillis()) {
+        if (lastMandelbrotRefresh + 97 < currentTimeMillis()) {
+            /*
+             * Handle refresh with calculation progress for all the threads
+             */
             lastMandelbrotRefresh = currentTimeMillis();
-            Mandelbrot.createMaskAndRepaint();
+
+            Mandelbrot.maskFullUpdate();
+            Application.repaintMandelbrotWindow();
         }
     }
 }

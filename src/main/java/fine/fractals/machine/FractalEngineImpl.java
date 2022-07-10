@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.PathsFinebrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PerfectColorDistribution;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.SAVE_IMAGES;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
@@ -32,22 +34,38 @@ public class FractalEngineImpl extends Thread {
     public void run() {
         do {
             log.info("Iteration: " + iteration++);
-
             calculationInProgress = true;
 
+            /*
+             * Make Mandelbrot domain for this calculation
+             */
             if (first) {
                 first = false;
                 Mandelbrot.initializeDomainElements();
             } else {
                 Mandelbrot.recalculatePixelsPositionsForThisZoom();
-                Mandelbrot.createMaskAndRepaint();
             }
 
+            Mandelbrot.maskFullUpdate();
+            Application.repaintMandelbrotWindow();
+
             /*
-             * Mandelbrot calculation creates Finebrot data
+             * Execute calculation machinery
              */
             Mandelbrot.calculate();
 
+            /*
+             * Mirror calculation paths to Finebrot pixels
+             */
+            PathsFinebrot.domainToScreenGrid();
+            FinebrotFractal.update();
+
+            Mandelbrot.maskFullUpdate();
+            Application.repaintMandelbrotWindow();
+
+            /*
+             * Paint and refresh updated Finebrot
+             */
             PerfectColorDistribution.perfectlyColorFinebrotValues();
             Application.repaintFinebrotWindow();
 
@@ -62,6 +80,9 @@ public class FractalEngineImpl extends Thread {
             if (iteration == 1) {
                 AreaMandelbrot.moveToInitialCoordinates();
                 AreaFinebrot.moveToInitialCoordinates();
+
+                Mandelbrot.maskFullUpdate();
+                Application.repaintMandelbrotWindow();
             }
         } while (REPEAT);
     }

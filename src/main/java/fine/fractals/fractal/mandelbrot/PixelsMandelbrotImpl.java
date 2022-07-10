@@ -16,8 +16,8 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTIO
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_MULTIPLIER;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
+import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.ApplicationImpl.neighbours;
 import static org.junit.Assert.assertEquals;
 
@@ -29,7 +29,7 @@ public class PixelsMandelbrotImpl {
      * Singleton instance
      */
     static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
-    static boolean maskDone = true;
+
     /**
      * Don't do any wrapping the first time
      * Because Mandelbrot elements are not optimized
@@ -148,20 +148,21 @@ public class PixelsMandelbrotImpl {
         }
     }
 
-    public boolean createMask() {
+    public void maskFullUpdate() {
         log.debug("createMask()");
-        if (maskDone) {
-            maskDone = false;
-            for (int x = 0; x < RESOLUTION_WIDTH; x++) {
-                for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
-                    MandelbrotMaskImage.setRGB(x, y, colorForState(elementsStaticMandelbrot[x][y]).getRGB());
-                }
+        for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+            for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+                MandelbrotMaskImage.setRGB(x, y, colorForState(elementsStaticMandelbrot[x][y]).getRGB());
             }
-            maskDone = true;
-            return true;
-        } else {
-            log.debug("createMask() skip");
-            return false;
+        }
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void maskUpdate(int xFrom, int xTo, int yFrom, int yTo) {
+        for (int x = xFrom; x < xTo; x++) {
+            for (int y = yFrom; y < yTo; y++) {
+                MandelbrotMaskImage.setRGB(x, y, colorForState(elementsStaticMandelbrot[x][y]).getRGB());
+            }
         }
     }
 
@@ -233,7 +234,8 @@ public class PixelsMandelbrotImpl {
         /*
          * Repaint with only moved elements
          */
-        Mandelbrot.createMaskAndRepaint();
+        maskFullUpdate();
+        Application.repaintMandelbrotWindow();
 
         /*
          * Create new elements on positions where nothing was moved to
