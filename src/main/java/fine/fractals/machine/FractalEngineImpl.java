@@ -9,8 +9,12 @@ import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
 
 public class FractalEngineImpl {
 
-    public static final FractalEngineImpl FractalEngine;
     private static final Logger log = LogManager.getLogger(FractalEngineImpl.class);
+
+    /**
+     * Singleton instance
+     */
+    public static final FractalEngineImpl FractalEngine;
     public static boolean calculationInProgress;
 
     static {

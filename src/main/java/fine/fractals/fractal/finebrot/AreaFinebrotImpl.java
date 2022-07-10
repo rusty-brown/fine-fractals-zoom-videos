@@ -15,8 +15,12 @@ import static fine.fractals.machine.TargetImpl.Target;
 
 public class AreaFinebrotImpl {
 
-    public static final AreaFinebrotImpl AreaFinebrot;
     private static final Logger log = LogManager.getLogger(AreaFinebrotImpl.class);
+
+    /**
+     * Singleton instance
+     */
+    public static final AreaFinebrotImpl AreaFinebrot;
 
     static {
         log.info("init");

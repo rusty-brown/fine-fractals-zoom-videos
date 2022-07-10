@@ -15,8 +15,12 @@ import static fine.fractals.machine.TargetImpl.Target;
 
 public class AreaMandelbrotImpl {
 
-    public static final AreaMandelbrotImpl AreaMandelbrot;
     private static final Logger log = LogManager.getLogger(AreaMandelbrotImpl.class);
+
+    /**
+     * Singleton instance
+     */
+    public static final AreaMandelbrotImpl AreaMandelbrot;
 
     static {
         log.info("init");

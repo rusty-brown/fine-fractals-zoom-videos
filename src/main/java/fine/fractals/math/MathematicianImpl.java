@@ -13,8 +13,12 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.ITERATION
 @SuppressWarnings(value = "unused")
 public class MathematicianImpl {
 
-    public static final MathematicianImpl Mathematician;
     private static final Logger log = LogManager.getLogger(MathematicianImpl.class);
+
+    /**
+     * Singleton instance
+     */
+    public static final MathematicianImpl Mathematician;
     private static HashSet<Integer> PRIMES;
     private static HashSet<Integer> FIBONACCI;
     private static HashSet<Integer> PERFECT;

@@ -18,6 +18,8 @@ import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
 
 public class ApplicationImpl {
 
+    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
+
     public static final String USER_HOME = System.getProperty("user.home");
     /**
      * Create the folder in your home directory or change the path
@@ -37,8 +39,11 @@ public class ApplicationImpl {
     public static final int neighbours = 4;
     public static final double ZOOM = 0.98;
     public static final String APP_NAME = "_" + Formatter.now();
+
+    /**
+     * Singleton instance
+     */
     public static final ApplicationImpl Application;
-    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
     public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
     public static boolean REPEAT = true;
     /* Increase this only in CalculationThread */

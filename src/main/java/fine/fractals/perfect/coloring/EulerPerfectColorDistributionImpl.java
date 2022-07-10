@@ -20,13 +20,14 @@ import static fine.fractals.images.FractalImage.FinebrotImage;
 
 public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
 
+    private final static Logger log = LogManager.getLogger(EulerPerfectColorDistributionImpl.class);
+
     /**
      * Finebrot pixels, order by value
      */
     static final List<FinebrotPixel> pixelsRed = new ArrayList<>();
     static final List<FinebrotPixel> pixelsGreen = new ArrayList<>();
     static final List<FinebrotPixel> pixelsBlue = new ArrayList<>();
-    private final static Logger log = LogManager.getLogger(EulerPerfectColorDistributionImpl.class);
 
     public EulerPerfectColorDistributionImpl() {
         log.debug("constructor");

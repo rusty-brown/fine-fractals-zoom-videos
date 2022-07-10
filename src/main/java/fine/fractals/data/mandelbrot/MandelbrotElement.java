@@ -12,7 +12,6 @@ public class MandelbrotElement implements Comparable<MandelbrotElement> {
     public final double originRe;
     public final double originIm;
 
-    private int value;
     private MandelbrotPixelState state;
 
     MandelbrotElement(double originRe, double originIm, MandelbrotPixelState state) {
@@ -31,10 +30,6 @@ public class MandelbrotElement implements Comparable<MandelbrotElement> {
 
     public boolean isFinishedSuccess() {
         return state == FinishedSuccess;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 
     public void setHibernatedState(int iterator) {

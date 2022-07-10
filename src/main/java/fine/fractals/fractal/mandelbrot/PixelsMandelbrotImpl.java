@@ -22,8 +22,12 @@ import static org.junit.Assert.assertEquals;
 
 class PixelsMandelbrotImpl {
 
-    static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
     private static final Logger log = LogManager.getLogger(PixelsMandelbrotImpl.class);
+
+    /**
+     * Singleton instance
+     */
+    static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
     static boolean maskDone = true;
     /**
      * Don't do any wrapping the first time
