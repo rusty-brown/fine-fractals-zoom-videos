@@ -5,7 +5,7 @@ import fine.fractals.data.mem.Mem;
 import fine.fractals.fractal.finebrot.finite.FractalFinite;
 
 import static fine.fractals.color.common.PaletteImpl.Palette;
-import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
+import static fine.fractals.data.mandelbrot.ResolutionMultiplier.square_alter;
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.ApplicationImpl.REPEAT;
 
@@ -30,7 +30,7 @@ public class Finebrot_Side extends FractalFinite {
 
         RESOLUTION_WIDTH = 1920;
         RESOLUTION_HEIGHT = 1080;
-        RESOLUTION_MULTIPLIER = none;
+        RESOLUTION_MULTIPLIER = square_alter;
 
         REPEAT = true;
         SAVE_IMAGES = false;

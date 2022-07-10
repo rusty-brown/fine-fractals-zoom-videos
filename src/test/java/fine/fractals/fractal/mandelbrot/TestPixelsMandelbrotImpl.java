@@ -16,7 +16,7 @@ public class TestPixelsMandelbrotImpl {
         RESOLUTION_WIDTH = 680;
         RESOLUTION_HEIGHT = 640;
         final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
-        PixelsMandelbrot.domainScreenCreateInitialization();
+        PixelsMandelbrot.initializeDomainElements();
         ArrayList<ArrayList<MandelbrotElement>> arrayLists = PixelsMandelbrot.fetchDomainWrappedParts();
 
         int total = 0;

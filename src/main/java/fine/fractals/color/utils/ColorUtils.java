@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.ACTIVE_NEW;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_SUCCESS;
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_SUCCESS_PAST;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_TOO_LONG;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_TOO_SHORT;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.HIBERNATED_DEEP_BLACK;
@@ -19,6 +20,14 @@ public abstract class ColorUtils {
 
     public static Color colorForState(MandelbrotElement element) {
         switch (element.state()) {
+            /* most of the elements are going to be */
+            case FinishedSuccessPast -> {
+                return FINISHED_SUCCESS_PAST;
+            }
+            /* or */
+            case HibernatedDeepBlack -> {
+                return HIBERNATED_DEEP_BLACK;
+            }
             case ActiveNew -> {
                 return ACTIVE_NEW;
             }
@@ -27,9 +36,6 @@ public abstract class ColorUtils {
             }
             case FinishedTooShort -> {
                 return FINISHED_TOO_SHORT;
-            }
-            case HibernatedDeepBlack -> {
-                return HIBERNATED_DEEP_BLACK;
             }
             case FinishedTooLong -> {
                 return FINISHED_TOO_LONG;

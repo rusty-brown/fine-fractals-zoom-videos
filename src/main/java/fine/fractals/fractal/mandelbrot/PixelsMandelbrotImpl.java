@@ -1,7 +1,6 @@
 package fine.fractals.fractal.mandelbrot;
 
 import fine.fractals.data.mandelbrot.MandelbrotElement;
-import fine.fractals.data.mandelbrot.MandelbrotElementFactory;
 import fine.fractals.data.mem.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 
 import static fine.fractals.color.utils.ColorUtils.colorForState;
 import static fine.fractals.data.mandelbrot.MandelbrotElementFactory.activeNew;
+import static fine.fractals.data.mandelbrot.MandelbrotElementFactory.hibernatedDeepBlack;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.square_alter;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
@@ -36,7 +36,7 @@ class PixelsMandelbrotImpl {
     private static boolean firstDomainExecution = true;
     final MandelbrotElement[][] elementsStaticMandelbrot = new MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
     private final ArrayList<MandelbrotElement> elementsToRemember = new ArrayList<>();
-    private final int chunkAmount = 40;
+    private final int chunkAmount = 20;
     private boolean odd = true;
 
     public PixelsMandelbrotImpl() {
@@ -49,7 +49,7 @@ class PixelsMandelbrotImpl {
                 && y >= 0 && y < RESOLUTION_HEIGHT;
     }
 
-    public final void domainScreenCreateInitialization() {
+    public final void initializeDomainElements() {
         log.debug("constructor");
         for (int x = 0; x < RESOLUTION_WIDTH; x++) {
             for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
@@ -89,6 +89,9 @@ class PixelsMandelbrotImpl {
         return domainFull;
     }
 
+    /**
+     * Makes small square domain part
+     */
     private ArrayList<MandelbrotElement> makeChunk(int xFrom, int xTo, int yFrom, int yTo) {
         final ArrayList<MandelbrotElement> chunk = new ArrayList<>();
         MandelbrotElement elementZero;
@@ -229,16 +232,21 @@ class PixelsMandelbrotImpl {
         /*
          * Create new elements on positions where nothing was moved to
          */
+        MandelbrotElement el;
         for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
             for (int x = 0; x < RESOLUTION_WIDTH; x++) {
-                if (elementsStaticMandelbrot[x][y] == null) {
+                el = elementsStaticMandelbrot[x][y];
+                if (el == null) {
                     AreaMandelbrot.screenToDomainCarry(m, x, y);
                     if (allNeighborsFinishedTooLong(x, y)) {
                         /* Calculation for some positions should be skipped as they are too far away form any long successful divergent position */
-                        elementsStaticMandelbrot[x][y] = MandelbrotElementFactory.hibernatedDeepBlack(m.re, m.im);
+                        elementsStaticMandelbrot[x][y] = hibernatedDeepBlack(m.re, m.im);
                     } else {
                         elementsStaticMandelbrot[x][y] = activeNew(m.re, m.im);
                     }
+                } else {
+                    /* If relevant, mark it as element from previous calculation iteration */
+                    el.past();
                 }
             }
         }
@@ -259,8 +267,7 @@ class PixelsMandelbrotImpl {
                 int yy = y + b;
                 if (checkDomain(xx, yy)) {
                     el = elementsStaticMandelbrot[xx][yy];
-                    if (el != null &&
-                            (el.isFinishedSuccess() || el.isFinishedTooShort())) {
+                    if (el != null && (el.isFinishedSuccess() || el.isFinishedTooShort())) {
                         return false;
                     }
                 }

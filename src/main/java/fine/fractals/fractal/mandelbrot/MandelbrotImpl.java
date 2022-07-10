@@ -37,14 +37,13 @@ public class MandelbrotImpl {
         log.info("calculate()");
 
         final ArrayList<ArrayList<MandelbrotElement>> domainFullChunkedAndWrapped = PixelsMandelbrot.fetchDomainWrappedParts();
-
         Collections.shuffle(domainFullChunkedAndWrapped);
 
-        log.debug("calculate: " + domainFullChunkedAndWrapped.size() + " chunks");
-
         final ExecutorService executor = Executors.newFixedThreadPool(COREs);
-
         for (ArrayList<MandelbrotElement> part : domainFullChunkedAndWrapped) {
+            /*
+             * Calculate independently each domain chunk
+             */
             executor.execute(new CalculationPathThread(part));
         }
 
@@ -53,14 +52,14 @@ public class MandelbrotImpl {
             /* wait maximum 1 hour for frame to finish */
             boolean terminated = executor.awaitTermination(59, MINUTES);
             if (terminated) {
-                log.info("ExecutorService is terminated");
+                log.debug("ExecutorService is terminated");
             } else {
-                log.fatal("ExecutorService NOT terminated");
+                log.error("ExecutorService NOT terminated");
 
-                /*  1 hour */
+                /* 1 hour */
                 int countOneHour = 60 * 60;
                 while (!executor.isTerminated()) {
-                    log.info("ExecutorService not terminated <- " + countOneHour);
+                    log.error("ExecutorService not terminated <- " + countOneHour);
                     // wait 1s
                     Thread.sleep(1000);
                     countOneHour--;
@@ -71,8 +70,10 @@ public class MandelbrotImpl {
             System.exit(1);
         }
 
+        Application.repaintMandelbrotWindow();
         PathsFinebrot.domainToScreenGrid();
         FinebrotFractal.update();
+        Application.repaintMandelbrotWindow();
     }
 
     /* Used for OneTarget */
@@ -96,7 +97,7 @@ public class MandelbrotImpl {
         PixelsMandelbrot.domainForThisZoom();
     }
 
-    public void domainScreenCreateInitialization() {
-        PixelsMandelbrot.domainScreenCreateInitialization();
+    public void initializeDomainElements() {
+        PixelsMandelbrot.initializeDomainElements();
     }
 }

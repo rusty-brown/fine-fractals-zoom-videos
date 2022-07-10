@@ -2,6 +2,7 @@ package fine.fractals.data.mandelbrot;
 
 import static fine.fractals.data.mandelbrot.MandelbrotPixelState.ActiveNew;
 import static fine.fractals.data.mandelbrot.MandelbrotPixelState.FinishedSuccess;
+import static fine.fractals.data.mandelbrot.MandelbrotPixelState.FinishedSuccessPast;
 import static fine.fractals.data.mandelbrot.MandelbrotPixelState.FinishedTooLong;
 import static fine.fractals.data.mandelbrot.MandelbrotPixelState.FinishedTooShort;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_MAX;
@@ -46,6 +47,12 @@ public class MandelbrotElement implements Comparable<MandelbrotElement> {
 
     public MandelbrotPixelState state() {
         return state;
+    }
+
+    public void past() {
+        if (state == FinishedSuccess) {
+            state = FinishedSuccessPast;
+        }
     }
 
     /**

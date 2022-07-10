@@ -35,7 +35,7 @@ public class FractalEngineImpl {
 
         if (first) {
             first = false;
-            Mandelbrot.domainScreenCreateInitialization();
+            Mandelbrot.initializeDomainElements();
         }
 
         if (updateDomain) {

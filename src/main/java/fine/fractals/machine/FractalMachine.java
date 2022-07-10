@@ -22,6 +22,9 @@ import static fine.fractals.machine.ApplicationImpl.IGNORE_DEBUG_FILES;
 import static fine.fractals.machine.ApplicationImpl.iteration;
 import static javax.imageio.ImageWriteParam.MODE_EXPLICIT;
 
+/**
+ * FractalMachine is a multipurpose class. It used to do many things, like save files with Finebrot paths data.
+ */
 public abstract class FractalMachine {
 
     private static final Logger log = LogManager.getLogger(FractalMachine.class);
