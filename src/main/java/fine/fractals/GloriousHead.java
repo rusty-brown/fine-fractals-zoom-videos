@@ -11,52 +11,52 @@ import static fine.fractals.machine.ApplicationImpl.REPEAT;
 
 public class GloriousHead extends FractalPhoenix {
 
-	public GloriousHead() {
-		NAME = "GloriousHead";
+    public GloriousHead() {
+        NAME = "GloriousHead";
 
-		c = 0.35;
-		p = -0.25;
+        c = 0.35;
+        p = -0.25;
 
-		ITERATION_MAX = 2500;
-		ITERATION_MIN = 8;
+        ITERATION_MAX = 2500;
+        ITERATION_MIN = 8;
 
-		INIT_MANDELBROT_AREA_SIZE = 2.5;
-		INIT_MANDELBROT_TARGET_re = -0.25;
-		INIT_MANDELBROT_TARGET_im = 0.0;
+        INIT_MANDELBROT_AREA_SIZE = 2.5;
+        INIT_MANDELBROT_TARGET_re = -0.25;
+        INIT_MANDELBROT_TARGET_im = 0.0;
 
-		INIT_FINEBROT_AREA_SIZE = INIT_MANDELBROT_AREA_SIZE;
-		INIT_FINEBROT_TARGET_re = INIT_MANDELBROT_TARGET_re;
-		INIT_FINEBROT_TARGET_im = INIT_MANDELBROT_TARGET_im;
-	}
+        INIT_FINEBROT_AREA_SIZE = INIT_MANDELBROT_AREA_SIZE;
+        INIT_FINEBROT_TARGET_re = INIT_MANDELBROT_TARGET_re;
+        INIT_FINEBROT_TARGET_im = INIT_MANDELBROT_TARGET_im;
+    }
 
-	@Override
-	public void math(MemPhoenix m, double originRe, double originIm) {
-		m.square();
+    public static void main(String[] args) {
 
-		m.re += c;
-		m.re += p * m.prev_prev_re;
-		m.im += p * m.prev_prev_im;
+        RESOLUTION_WIDTH = 1920;
+        RESOLUTION_HEIGHT = 1080;
+        RESOLUTION_MULTIPLIER = none;
 
-		/* previous iteration */
-		m.prev_prev_re = m.prev_re;
-		m.prev_prev_im = m.prev_im;
-		m.prev_re = m.re;
-		m.prev_im = m.im;
+        REPEAT = false;
+        SAVE_IMAGES = false;
+        FinebrotFractal = new GloriousHead();
+        Palette = new PaletteBlackToWhite();
 
-		m.plus(originRe, originIm);
-	}
+        Application.execute();
+    }
 
-	public static void main(String[] args) {
+    @Override
+    public void math(MemPhoenix m, double originRe, double originIm) {
+        m.square();
 
-		RESOLUTION_WIDTH = 1920;
-		RESOLUTION_HEIGHT = 1080;
-		RESOLUTION_MULTIPLIER = none;
+        m.re += c;
+        m.re += p * m.prev_prev_re;
+        m.im += p * m.prev_prev_im;
 
-		REPEAT = false;
-		SAVE_IMAGES = false;
-		FinebrotFractal = new GloriousHead();
-		Palette = new PaletteBlackToWhite();
+        /* previous iteration */
+        m.prev_prev_re = m.prev_re;
+        m.prev_prev_im = m.prev_im;
+        m.prev_re = m.re;
+        m.prev_im = m.im;
 
-		Application.execute();
-	}
+        m.plus(originRe, originIm);
+    }
 }

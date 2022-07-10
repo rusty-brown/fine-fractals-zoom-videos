@@ -12,43 +12,43 @@ import static fine.fractals.math.MathematicianImpl.Mathematician;
 
 public final class Euler extends FractalEuler {
 
-	public Euler() {
-		NAME = "Euler";
+    public Euler() {
+        NAME = "Euler";
 
-		ITERATION_MAX = 80000;
-		ITERATION_MIN = 42;
+        ITERATION_MAX = 80000;
+        ITERATION_MIN = 42;
 
-		INIT_MANDELBROT_AREA_SIZE = 4.0;
-		INIT_MANDELBROT_TARGET_re = 0.0;
-		INIT_MANDELBROT_TARGET_im = 0.0;
+        INIT_MANDELBROT_AREA_SIZE = 4.0;
+        INIT_MANDELBROT_TARGET_re = 0.0;
+        INIT_MANDELBROT_TARGET_im = 0.0;
 
-		INIT_FINEBROT_AREA_SIZE = INIT_MANDELBROT_AREA_SIZE;
-		INIT_FINEBROT_TARGET_re = INIT_MANDELBROT_TARGET_re;
-		INIT_FINEBROT_TARGET_im = INIT_MANDELBROT_TARGET_im;
+        INIT_FINEBROT_AREA_SIZE = INIT_MANDELBROT_AREA_SIZE;
+        INIT_FINEBROT_TARGET_re = INIT_MANDELBROT_TARGET_re;
+        INIT_FINEBROT_TARGET_im = INIT_MANDELBROT_TARGET_im;
 
-		Mathematician.initPrimes();
-	}
+        Mathematician.initPrimes();
+    }
 
-	@Override
-	public void math(MemEuler m, double originRe, double originIm) {
-		m.square();
-		m.plus(originRe, originIm);
-		m.euler();
-		m.square();
-		m.plus(originRe, originIm);
-	}
+    public static void main(String[] args) {
 
-	public static void main(String[] args) {
+        RESOLUTION_WIDTH = 1920;
+        RESOLUTION_HEIGHT = 1080;
+        RESOLUTION_MULTIPLIER = none;
 
-		RESOLUTION_WIDTH = 1920;
-		RESOLUTION_HEIGHT = 1080;
-		RESOLUTION_MULTIPLIER = none;
+        REPEAT = false;
+        SAVE_IMAGES = false;
+        FinebrotFractal = new Euler();
+        PaletteEuler3 = new Palette3RGB();
 
-		REPEAT = false;
-		SAVE_IMAGES = false;
-		FinebrotFractal = new Euler();
-		PaletteEuler3 = new Palette3RGB();
+        Application.execute();
+    }
 
-		Application.execute();
-	}
+    @Override
+    public void math(MemEuler m, double originRe, double originIm) {
+        m.square();
+        m.plus(originRe, originIm);
+        m.euler();
+        m.square();
+        m.plus(originRe, originIm);
+    }
 }

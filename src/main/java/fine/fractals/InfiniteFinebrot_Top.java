@@ -26,12 +26,6 @@ public class InfiniteFinebrot_Top extends FractalFinite {
         INIT_FINEBROT_TARGET_im = 0.0;
     }
 
-    @Override
-    public void math(Mem m, double originRe, double originIm) {
-        m.square();
-        m.plus(originRe, originIm);
-    }
-
     public static void main(String[] args) {
 
         RESOLUTION_WIDTH = 1920;
@@ -44,5 +38,11 @@ public class InfiniteFinebrot_Top extends FractalFinite {
         Palette = new PaletteBlackToWhite();
 
         Application.execute();
+    }
+
+    @Override
+    public void math(Mem m, double originRe, double originIm) {
+        m.square();
+        m.plus(originRe, originIm);
     }
 }

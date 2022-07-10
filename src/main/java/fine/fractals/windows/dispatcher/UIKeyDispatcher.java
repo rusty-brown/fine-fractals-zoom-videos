@@ -6,14 +6,16 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import static java.awt.event.KeyEvent.*;
+import static java.awt.event.KeyEvent.KEY_PRESSED;
+import static java.awt.event.KeyEvent.KEY_RELEASED;
+import static java.awt.event.KeyEvent.VK_ALT;
+import static java.awt.event.KeyEvent.VK_CONTROL;
 
 public class UIKeyDispatcher implements KeyEventDispatcher {
 
+    private static final Logger log = LogManager.getLogger(UIKeyDispatcher.class);
     private static boolean ctrlPressed = false;
     private static boolean altPressed = false;
-
-    private static final Logger log = LogManager.getLogger(UIKeyDispatcher.class);
 
     public UIKeyDispatcher() {
         log.debug("constructor");

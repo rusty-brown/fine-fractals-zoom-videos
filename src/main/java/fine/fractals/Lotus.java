@@ -26,13 +26,6 @@ public class Lotus extends FractalFinite {
         INIT_FINEBROT_TARGET_im = INIT_MANDELBROT_TARGET_im;
     }
 
-    @Override
-    public void math(Mem m, double originRe, double originIm) {
-        m.conjugation();
-        m.square();
-        m.plus(originRe, originIm);
-    }
-
     public static void main(String[] args) {
 
         RESOLUTION_WIDTH = 1920;
@@ -45,5 +38,12 @@ public class Lotus extends FractalFinite {
         Palette = new PaletteBlackToWhite();
 
         Application.execute();
+    }
+
+    @Override
+    public void math(Mem m, double originRe, double originIm) {
+        m.conjugation();
+        m.square();
+        m.plus(originRe, originIm);
     }
 }

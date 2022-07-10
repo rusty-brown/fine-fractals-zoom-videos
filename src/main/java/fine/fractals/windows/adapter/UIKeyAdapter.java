@@ -13,7 +13,11 @@ import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.TargetImpl.Target;
 import static fine.fractals.windows.MandelbrotWindow.showInfo;
-import static java.awt.event.KeyEvent.*;
+import static java.awt.event.KeyEvent.VK_C;
+import static java.awt.event.KeyEvent.VK_I;
+import static java.awt.event.KeyEvent.VK_MINUS;
+import static java.awt.event.KeyEvent.VK_PLUS;
+import static java.awt.event.KeyEvent.VK_R;
 
 public class UIKeyAdapter extends KeyAdapter {
 

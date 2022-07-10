@@ -25,100 +25,98 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class MandelbrotWindow extends UIWindow {
 
-	private static final Logger log = LogManager.getLogger(MandelbrotWindow.class);
+    private static final Logger log = LogManager.getLogger(MandelbrotWindow.class);
+    public static boolean showInfo = true;
+    public final JFrame frame;
+    private int lineHeight;
 
-	public final JFrame frame;
-	private int lineHeight;
+    public MandelbrotWindow(UIMouseListener uiMouseListener,
+                            UIMouseWheelListener uiMouseWheelListener,
+                            UIKeyDispatcher uiKeyDispatcher) {
+        log.debug("initialize");
+        super.name = NAME + " - " + APP_NAME;
 
-	public static boolean showInfo = true;
+        this.frame = new JFrame(name);
+        this.frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.frame.getContentPane().add(this);
+        this.frame.pack();
+        this.frame.setLocationByPlatform(true);
+        this.frame.setVisible(true);
 
-	public MandelbrotWindow(UIMouseListener uiMouseListener,
-							UIMouseWheelListener uiMouseWheelListener,
-							UIKeyDispatcher uiKeyDispatcher) {
-		log.debug("initialize");
-		super.name = NAME + " - " + APP_NAME;
+        log.debug("actions");
+        final JLayeredPane layeredPane = this.frame.getRootPane().getLayeredPane();
+        layeredPane.addMouseListener(uiMouseListener);
+        super.hideDefaultCursor(frame);
 
-		this.frame = new JFrame(name);
-		this.frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.frame.getContentPane().add(this);
-		this.frame.pack();
-		this.frame.setLocationByPlatform(true);
-		this.frame.setVisible(true);
+        log.debug("adapter");
+        this.motionAdapter = new UIMouseMotionAdapter(this);
+        layeredPane.addMouseMotionListener(this.motionAdapter);
+        layeredPane.addMouseWheelListener(uiMouseWheelListener);
 
-		log.debug("actions");
-		final JLayeredPane layeredPane = this.frame.getRootPane().getLayeredPane();
-		layeredPane.addMouseListener(uiMouseListener);
-		super.hideDefaultCursor(frame);
+        log.debug("listener");
+        this.frame.addKeyListener(new UIKeyAdapter());
 
-		log.debug("adapter");
-		this.motionAdapter = new UIMouseMotionAdapter(this);
-		layeredPane.addMouseMotionListener(this.motionAdapter);
-		layeredPane.addMouseWheelListener(uiMouseWheelListener);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(uiKeyDispatcher);
+    }
 
-		log.debug("listener");
-		this.frame.addKeyListener(new UIKeyAdapter());
+    @Override
+    public void paintComponent(Graphics g) {
+        log.debug("paintComponent()");
+        super.paintComponent(g);
+        final Graphics2D g2d = (Graphics2D) g.create();
+        this.frame.setTitle(this.name);
 
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(uiKeyDispatcher);
-	}
+        log.debug("drawImage");
+        /* image size fit to window size */
+        g2d.drawImage(MandelbrotMaskImage, 0, 0, getWidth(), getHeight(), null);
 
-	@Override
-	public void paintComponent(Graphics g) {
-		log.debug("paintComponent()");
-		super.paintComponent(g);
-		final Graphics2D g2d = (Graphics2D) g.create();
-		this.frame.setTitle(this.name);
+        log.debug("drawMouseCursor");
+        super.drawMouseCursor(g2d);
 
-		log.debug("drawImage");
-		/* image size fit to window size */
-		g2d.drawImage(MandelbrotMaskImage, 0, 0, getWidth(), getHeight(), null);
+        if (showInfo) {
+            g2d.setColor(BLACK);
+            this.lineHeight = g2d.getFontMetrics().getHeight();
+            int line = 0;
 
-		log.debug("drawMouseCursor");
-		super.drawMouseCursor(g2d);
+            /* Target coordinates PX */
+            g2d.drawString("Target px: ", col(0), row(line));
+            g2d.drawString(Target.getScreenFromCornerY() + ", " + Target.getScreenFromCornerX(), col(1), row(line));
+            g2d.drawString(Target.getScreenFromCenterX() + ", " + Target.getScreenFromCenterY(), col(2), row(line));
+            line++;
 
-		if (showInfo) {
-			g2d.setColor(BLACK);
-			this.lineHeight = g2d.getFontMetrics().getHeight();
-			int line = 0;
+            /* Target coordinates domain */
+            g2d.drawString("Target: ", col(0), row(line));
+            g2d.drawString(Target.getTextRe(), col(1), row(line));
+            g2d.drawString(Target.getTextIm(), col(2), row(line));
+            line++;
 
-			/* Target coordinates PX */
-			g2d.drawString("Target px: ", col(0), row(line));
-			g2d.drawString(Target.getScreenFromCornerY() + ", " + Target.getScreenFromCornerX(), col(1), row(line));
-			g2d.drawString(Target.getScreenFromCenterX() + ", " + Target.getScreenFromCenterY(), col(2), row(line));
-			line++;
+            /* Area size Mandelbrot */
+            g2d.drawString("Domain h/w: ", col(0), row(line));
+            g2d.drawString(AreaMandelbrot.sizeImString(), col(1), row(line));
+            g2d.drawString(AreaMandelbrot.sizeReString(), col(2), row(line));
+            line++;
 
-			/* Target coordinates domain */
-			g2d.drawString("Target: ", col(0), row(line));
-			g2d.drawString(Target.getTextRe(), col(1), row(line));
-			g2d.drawString(Target.getTextIm(), col(2), row(line));
-			line++;
+            /* Area size Finebrot */
+            g2d.drawString("Domain h/w: ", col(0), row(line));
+            g2d.drawString(AreaFinebrot.sizeImString(), col(1), row(line));
+            g2d.drawString(AreaFinebrot.sizeReString(), col(2), row(line));
+        }
+    }
 
-			/* Area size Mandelbrot */
-			g2d.drawString("Domain h/w: ", col(0), row(line));
-			g2d.drawString(AreaMandelbrot.sizeImString(), col(1), row(line));
-			g2d.drawString(AreaMandelbrot.sizeReString(), col(2), row(line));
-			line++;
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
+    }
 
-			/* Area size Finebrot */
-			g2d.drawString("Domain h/w: ", col(0), row(line));
-			g2d.drawString(AreaFinebrot.sizeImString(), col(1), row(line));
-			g2d.drawString(AreaFinebrot.sizeReString(), col(2), row(line));
-		}
-	}
+    private int col(int col) {
+        return 20 + col * 180;
+    }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
-	}
+    private int row(int line) {
+        return 20 + line * lineHeight;
+    }
 
-	private int col(int col) {
-		return 20 + col * 180;
-	}
-
-	private int row(int line) {
-		return 20 + line * lineHeight;
-	}
-
-	public void setFinebrotWindow(FinebrotWindow otherFinebrotWindow) {
-		this.motionAdapter.setFinebrotWindow(otherFinebrotWindow);
-	}
+    public void setFinebrotWindow(FinebrotWindow otherFinebrotWindow) {
+        this.motionAdapter.setFinebrotWindow(otherFinebrotWindow);
+    }
 }

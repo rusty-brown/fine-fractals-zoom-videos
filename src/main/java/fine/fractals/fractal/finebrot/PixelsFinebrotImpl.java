@@ -8,9 +8,8 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTIO
 
 public class PixelsFinebrotImpl {
 
-    private final int[][] elementsStaticFinebrot;
-
     private static final Logger log = LogManager.getLogger(PixelsFinebrotImpl.class);
+    private final int[][] elementsStaticFinebrot;
 
     public PixelsFinebrotImpl() {
         log.debug("constructor");

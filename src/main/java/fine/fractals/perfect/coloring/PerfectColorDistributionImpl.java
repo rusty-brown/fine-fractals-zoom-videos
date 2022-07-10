@@ -16,12 +16,11 @@ import static fine.fractals.images.FractalImage.FinebrotImage;
 
 public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
 
-    private final static Logger log = LogManager.getLogger(PerfectColorDistributionImpl.class);
-
     /**
      * Finebrot pixels, order by value
      */
     static final List<FinebrotPixel> pixels = new ArrayList<>();
+    private final static Logger log = LogManager.getLogger(PerfectColorDistributionImpl.class);
 
     public PerfectColorDistributionImpl() {
         log.debug("constructor");

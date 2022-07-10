@@ -13,12 +13,12 @@ import static fine.fractals.color.common.PaletteEulerImpl.PaletteEuler3;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.finebrot.euler.FractalEuler.PixelsEulerFinebrot;
-import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.*;
+import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.blue;
+import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.green;
+import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.red;
 import static fine.fractals.images.FractalImage.FinebrotImage;
 
 public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
-
-    private final static Logger log = LogManager.getLogger(EulerPerfectColorDistributionImpl.class);
 
     /**
      * Finebrot pixels, order by value
@@ -26,6 +26,7 @@ public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionA
     static final List<FinebrotPixel> pixelsRed = new ArrayList<>();
     static final List<FinebrotPixel> pixelsGreen = new ArrayList<>();
     static final List<FinebrotPixel> pixelsBlue = new ArrayList<>();
+    private final static Logger log = LogManager.getLogger(EulerPerfectColorDistributionImpl.class);
 
     public EulerPerfectColorDistributionImpl() {
         log.debug("constructor");

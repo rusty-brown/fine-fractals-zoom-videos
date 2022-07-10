@@ -13,34 +13,34 @@ import static fine.fractals.machine.TargetImpl.Target;
 
 public class UIMouseMotionAdapter extends MouseMotionAdapter {
 
-	private static final Logger log = LogManager.getLogger(MouseMotionAdapter.class);
+    private static final Logger log = LogManager.getLogger(MouseMotionAdapter.class);
 
-	private final UIWindow meWindow;
-	private MandelbrotWindow mandelbrotWindow = null;
-	private FinebrotWindow finebrotWindow = null;
+    private final UIWindow meWindow;
+    private MandelbrotWindow mandelbrotWindow = null;
+    private FinebrotWindow finebrotWindow = null;
 
-	public UIMouseMotionAdapter(UIWindow meWindow) {
-		log.debug("constructor");
-		this.meWindow = meWindow;
-	}
+    public UIMouseMotionAdapter(UIWindow meWindow) {
+        log.debug("constructor");
+        this.meWindow = meWindow;
+    }
 
-	public void setMandelbrotWindow(MandelbrotWindow mandelbrotWindow) {
-		this.mandelbrotWindow = mandelbrotWindow;
-	}
+    public void setMandelbrotWindow(MandelbrotWindow mandelbrotWindow) {
+        this.mandelbrotWindow = mandelbrotWindow;
+    }
 
-	public void setFinebrotWindow(FinebrotWindow finebrotWindow) {
-		this.finebrotWindow = finebrotWindow;
-	}
+    public void setFinebrotWindow(FinebrotWindow finebrotWindow) {
+        this.finebrotWindow = finebrotWindow;
+    }
 
-	@Override
-	public void mouseMoved(MouseEvent me) {
-		Target.update(me.getX(), me.getY());
-		this.meWindow.activate();
-		if (this.mandelbrotWindow != null) {
-			this.mandelbrotWindow.deactivate();
-		}
-		if (this.finebrotWindow != null) {
-			this.finebrotWindow.deactivate();
-		}
-	}
+    @Override
+    public void mouseMoved(MouseEvent me) {
+        Target.update(me.getX(), me.getY());
+        this.meWindow.activate();
+        if (this.mandelbrotWindow != null) {
+            this.mandelbrotWindow.deactivate();
+        }
+        if (this.finebrotWindow != null) {
+            this.finebrotWindow.deactivate();
+        }
+    }
 }

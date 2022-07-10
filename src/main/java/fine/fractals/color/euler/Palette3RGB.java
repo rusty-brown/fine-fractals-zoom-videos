@@ -6,7 +6,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.color.utils.ColorUtils.Function.circleUp;
-import static java.awt.Color.*;
+import static java.awt.Color.BLUE;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.RED;
+import static java.awt.Color.black;
 
 public class Palette3RGB extends PaletteEulerImpl {
 

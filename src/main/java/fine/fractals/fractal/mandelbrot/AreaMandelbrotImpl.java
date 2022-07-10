@@ -5,15 +5,30 @@ import fine.fractals.formatter.Formatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.*;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.INIT_MANDELBROT_AREA_SIZE;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.INIT_MANDELBROT_TARGET_im;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.INIT_MANDELBROT_TARGET_re;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.machine.ApplicationImpl.ZOOM;
 import static fine.fractals.machine.TargetImpl.Target;
 
 public class AreaMandelbrotImpl {
 
+    public static final AreaMandelbrotImpl AreaMandelbrot;
     private static final Logger log = LogManager.getLogger(AreaMandelbrotImpl.class);
+
+    static {
+        log.info("init");
+        AreaMandelbrot = new AreaMandelbrotImpl();
+        log.info("initiate");
+        AreaMandelbrot.initiate();
+    }
+
     private final double[] numbersRe;
     private final double[] numbersIm;
+    private final int resolutionHalfRe;
+    private final int resolutionHalfIm;
     /* position of the centre of domain area */
     public double centerRe;
     public double centerIm;
@@ -25,17 +40,6 @@ public class AreaMandelbrotImpl {
     private double borderHighRe;
     private double borderHighIm;
     private double plank;
-    private final int resolutionHalfRe;
-    private final int resolutionHalfIm;
-
-    public static final AreaMandelbrotImpl AreaMandelbrot;
-
-    static {
-        log.info("init");
-        AreaMandelbrot = new AreaMandelbrotImpl();
-        log.info("initiate");
-        AreaMandelbrot.initiate();
-    }
 
     private AreaMandelbrotImpl() {
         log.debug("constructor");

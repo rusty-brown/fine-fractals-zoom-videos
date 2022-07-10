@@ -19,9 +19,8 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class MandelbrotImpl {
 
-    private static final Logger log = LogManager.getLogger(MandelbrotImpl.class);
-
     public static final MandelbrotImpl Mandelbrot = new MandelbrotImpl();
+    private static final Logger log = LogManager.getLogger(MandelbrotImpl.class);
 
     private MandelbrotImpl() {
         log.debug("constructor");

@@ -3,7 +3,11 @@ package fine.fractals.tools.video;
 import fine.fractals.data.annotation.EditMe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bytedeco.javacv.*;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FFmpegFrameRecorder;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.Java2DFrameConverter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -32,14 +36,11 @@ public class ListOfImagesToVideoWithAudio {
     private static final String AUDIO_FILE = "/home/lukas/Downloads/Arcadia.mp3";
     @EditMe
     private static final String FINEBROT_IMAGE_LOCATION = "/home/lukas/Fractals/";
-
+    private static final ListOfImagesToVideoWithAudio VideoMaker = new ListOfImagesToVideoWithAudio();
     private final List<URL> urls = new ArrayList<>();
-
     private FFmpegFrameRecorder recorder;
     private Java2DFrameConverter converter;
     private FrameGrabber audioGrabber;
-
-    private static final ListOfImagesToVideoWithAudio VideoMaker = new ListOfImagesToVideoWithAudio();
 
     private ListOfImagesToVideoWithAudio() {
     }

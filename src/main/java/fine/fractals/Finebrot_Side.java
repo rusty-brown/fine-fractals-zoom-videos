@@ -26,11 +26,6 @@ public class Finebrot_Side extends FractalFinite {
         INIT_FINEBROT_TARGET_im = INIT_MANDELBROT_TARGET_im;
     }
 
-    public void math(Mem m, double originRe, double originIm) {
-        m.square();
-        m.plus(originRe, originIm);
-    }
-
     public static void main(String[] args) {
 
         RESOLUTION_WIDTH = 1920;
@@ -43,5 +38,10 @@ public class Finebrot_Side extends FractalFinite {
         Palette = new PaletteBlueToWhite();
 
         Application.execute();
+    }
+
+    public void math(Mem m, double originRe, double originIm) {
+        m.square();
+        m.plus(originRe, originIm);
     }
 }

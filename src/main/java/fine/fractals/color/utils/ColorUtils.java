@@ -7,7 +7,11 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.*;
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.ACTIVE_NEW;
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_SUCCESS;
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_TOO_LONG;
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_TOO_SHORT;
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.HIBERNATED_DEEP_BLACK;
 
 public abstract class ColorUtils {
 
@@ -32,10 +36,6 @@ public abstract class ColorUtils {
             }
             default -> throw new RuntimeException("Unknown MandelbrotElement state");
         }
-    }
-
-    public enum Function {
-        linear1, linear3, linear7, quadratic, q3, q4, q5, exp, exp2, circleDown, circleUp
     }
 
     public static void toPaletteLinearSpectrum(ArrayList<Color> SPECTRUM, Color... colors) {
@@ -208,7 +208,6 @@ public abstract class ColorUtils {
         return Math.abs(v);
     }
 
-
     /**
      * 0 <= d <= 1
      */
@@ -226,5 +225,10 @@ public abstract class ColorUtils {
             case circleDown -> Math.sqrt(1 - (d * d));
             case circleUp -> 1 - Math.sqrt(1 - (d * d));
         };
+    }
+
+
+    public enum Function {
+        linear1, linear3, linear7, quadratic, q3, q4, q5, exp, exp2, circleDown, circleUp
     }
 }

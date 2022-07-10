@@ -8,13 +8,10 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTIO
 
 public class PixelsEulerFinebrotImpl {
 
-    public enum Spectra {red, green, blue}
-
+    private static final Logger log = LogManager.getLogger(PixelsEulerFinebrotImpl.class);
     private final int[][] elementsStaticScreenRed;
     private final int[][] elementsStaticScreenGreen;
     private final int[][] elementsStaticScreenBlue;
-
-    private static final Logger log = LogManager.getLogger(PixelsEulerFinebrotImpl.class);
 
     public PixelsEulerFinebrotImpl() {
         log.debug("constructor");
@@ -65,4 +62,6 @@ public class PixelsEulerFinebrotImpl {
             case blue -> elementsStaticScreenBlue[x][y] = colorValue;
         }
     }
+
+    public enum Spectra {red, green, blue}
 }

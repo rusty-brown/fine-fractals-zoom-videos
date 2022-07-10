@@ -9,18 +9,17 @@ import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
 
 public class FractalEngineImpl {
 
-    private static final Logger log = LogManager.getLogger(FractalEngineImpl.class);
-
     public static final FractalEngineImpl FractalEngine;
-
+    private static final Logger log = LogManager.getLogger(FractalEngineImpl.class);
     public static boolean calculationInProgress;
-    private boolean updateDomain = false;
-    private boolean first = true;
 
     static {
         log.info("init");
         FractalEngine = new FractalEngineImpl();
     }
+
+    private boolean updateDomain = false;
+    private boolean first = true;
 
     private FractalEngineImpl() {
         log.debug("constructor");

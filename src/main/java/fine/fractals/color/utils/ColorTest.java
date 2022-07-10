@@ -16,18 +16,12 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class ColorTest extends JComponent {
 
+    private static final Logger log = LogManager.getLogger(ColorTest.class);
     private final JFrame frame;
     private final Integer resolution;
     private final BufferedImage testImage;
     private final int height = 100;
-
     private boolean painted = false;
-
-    private static final Logger log = LogManager.getLogger(ColorTest.class);
-
-    public static void execute() {
-        new ColorTest();
-    }
 
     private ColorTest() {
         log.debug("constructor");
@@ -49,6 +43,10 @@ public class ColorTest extends JComponent {
                 }
             }
         });
+    }
+
+    public static void execute() {
+        new ColorTest();
     }
 
     @Override

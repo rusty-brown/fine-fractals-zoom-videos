@@ -12,20 +12,16 @@ import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
 
 public class TargetImpl {
 
+    public static final TargetImpl Target = new TargetImpl();
     private static final Logger log = LogManager.getLogger(TargetImpl.class);
-
     private String cTextRe = "";
     private String cTextIm = "";
-
     /* Coordinates counted from top left corner */
     private int scrRe;
     private int scrIm;
     private int scrCornerRe;
     private int scrCornerIm;
-
     private MandelbrotElement mandelbrotElement = null;
-
-    public static final TargetImpl Target = new TargetImpl();
 
     private TargetImpl() {
         log.debug("constructor");

@@ -30,33 +30,19 @@ public class ApplicationImpl {
 
     @EditMe
     public static final boolean IGNORE_DEBUG_FILES = false;
-
-    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
-
     /**
      * How many pixels round specific element will be investigated for optimization.
      * If there is nothing interesting going on around specific pixel, the pixel will be ignored.
      */
     public static final int neighbours = 4;
-
     public static final double ZOOM = 0.98;
-
-    public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
-
     public static final String APP_NAME = "_" + Formatter.now();
-
+    public static final ApplicationImpl Application;
+    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
+    public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
     public static boolean REPEAT = true;
-
     /* Increase this only in CalculationThread */
     public static int iteration = 0;
-
-    private boolean paintingMandelbrotBusy = false;
-    private boolean paintingFinebrotBusy = false;
-
-    private MandelbrotWindow mandelbrotWindow;
-    private FinebrotWindow finebrotWindow;
-
-    public static final ApplicationImpl Application;
 
     static {
         log.info("init");
@@ -67,6 +53,11 @@ public class ApplicationImpl {
         }
         log.info("cores: " + COREs);
     }
+
+    private boolean paintingMandelbrotBusy = false;
+    private boolean paintingFinebrotBusy = false;
+    private MandelbrotWindow mandelbrotWindow;
+    private FinebrotWindow finebrotWindow;
 
     private ApplicationImpl() {
         log.debug("constructor");

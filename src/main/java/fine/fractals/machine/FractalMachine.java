@@ -24,43 +24,43 @@ import static javax.imageio.ImageWriteParam.MODE_EXPLICIT;
 
 public abstract class FractalMachine {
 
-	private static final Logger log = LogManager.getLogger(FractalMachine.class);
+    private static final Logger log = LogManager.getLogger(FractalMachine.class);
 
-	public static void saveImages() {
-		log.debug("saveImages()");
-		try {
-			final String finebrotName = FILE_PATH + NAME + APP_NAME + iteration() + ".jpg";
-			log.info("Finebrot image: " + finebrotName);
-			saveImage(finebrotName, FinebrotImage);
+    public static void saveImages() {
+        log.debug("saveImages()");
+        try {
+            final String finebrotName = FILE_PATH + NAME + APP_NAME + iteration() + ".jpg";
+            log.info("Finebrot image: " + finebrotName);
+            saveImage(finebrotName, FinebrotImage);
 
-			if (!IGNORE_DEBUG_FILES) {
-				final String mandelbrotName = DEBUG_PATH + NAME + APP_NAME + iteration() + "_mandelbrot.jpg";
-				log.info("Mandelbrot image: " + mandelbrotName);
-				saveImage(mandelbrotName, MandelbrotMaskImage);
-			}
+            if (!IGNORE_DEBUG_FILES) {
+                final String mandelbrotName = DEBUG_PATH + NAME + APP_NAME + iteration() + "_mandelbrot.jpg";
+                log.info("Mandelbrot image: " + mandelbrotName);
+                saveImage(mandelbrotName, MandelbrotMaskImage);
+            }
 
-			log.info("saved.");
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
-		}
-	}
+            log.info("saved.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
-	private static void saveImage(String fractalName, BufferedImage fractalImage) throws IOException {
-		final JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
-		jpegParams.setCompressionMode(MODE_EXPLICIT);
-		jpegParams.setCompressionQuality(0.98f);
+    private static void saveImage(String fractalName, BufferedImage fractalImage) throws IOException {
+        final JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
+        jpegParams.setCompressionMode(MODE_EXPLICIT);
+        jpegParams.setCompressionQuality(0.98f);
 
-		final ImageWriter iw = ImageIO.getImageWritersByFormatName("jpg").next();
-		try (FileImageOutputStream fis = new FileImageOutputStream(new File(fractalName))) {
-			iw.setOutput(fis);
-			iw.write(null, new IIOImage(fractalImage, null, null), jpegParams);
-			fis.flush();
-			iw.dispose();
-		}
-	}
+        final ImageWriter iw = ImageIO.getImageWritersByFormatName("jpg").next();
+        try (FileImageOutputStream fis = new FileImageOutputStream(new File(fractalName))) {
+            iw.setOutput(fis);
+            iw.write(null, new IIOImage(fractalImage, null, null), jpegParams);
+            fis.flush();
+            iw.dispose();
+        }
+    }
 
-	private static String iteration() {
-		return "_" + String.format("%06d", iteration);
-	}
+    private static String iteration() {
+        return "_" + String.format("%06d", iteration);
+    }
 }

@@ -11,7 +11,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
-import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.*;
+import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.blue;
+import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.green;
+import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.red;
 import static fine.fractals.math.MathematicianImpl.Mathematician;
 
 public abstract class FractalEuler extends FinebrotAbstractImpl {
@@ -25,6 +27,18 @@ public abstract class FractalEuler extends FinebrotAbstractImpl {
         PixelsEulerFinebrot = new PixelsEulerFinebrotImpl();
         PerfectColorDistribution = new EulerPerfectColorDistributionImpl();
         PathsFinebrot = new PathsEulerFinebrotImpl();
+    }
+
+    public static void colorsFor(MemEuler m, int elementIndex, int pathLength) {
+        if (Mathematician.isPrime(elementIndex)) {
+            m.spectra = red;
+            return;
+        }
+        if (Mathematician.isPrime(pathLength)) {
+            m.spectra = green;
+            return;
+        }
+        m.spectra = blue;
     }
 
     public abstract void math(MemEuler m, double re, double im);
@@ -48,17 +62,5 @@ public abstract class FractalEuler extends FinebrotAbstractImpl {
         el.setValue(iterator);
         el.setHibernatedState(iterator);
         return iterator < ITERATION_MAX;
-    }
-
-    public static void colorsFor(MemEuler m, int elementIndex, int pathLength) {
-        if (Mathematician.isPrime(elementIndex)) {
-            m.spectra = red;
-            return;
-        }
-        if (Mathematician.isPrime(pathLength)) {
-            m.spectra = green;
-            return;
-        }
-        m.spectra = blue;
     }
 }
