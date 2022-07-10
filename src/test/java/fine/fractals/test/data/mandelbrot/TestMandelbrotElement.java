@@ -1,5 +1,6 @@
-package fine.fractals.data.mandelbrot;
+package fine.fractals.test.data.mandelbrot;
 
+import fine.fractals.data.mandelbrot.MandelbrotElement;
 import org.junit.Test;
 
 import static fine.fractals.data.mandelbrot.MandelbrotElementFactory.activeNew;

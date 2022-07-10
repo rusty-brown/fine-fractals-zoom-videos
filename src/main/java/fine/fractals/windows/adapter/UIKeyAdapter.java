@@ -45,7 +45,7 @@ public class UIKeyAdapter extends KeyAdapter {
             case VK_I -> showInfo = !showInfo;
             case VK_R -> {
                 Application.repaintMandelbrotWindow();
-                Application.repaintFinebrotWindows();
+                Application.repaintFinebrotWindow();
             }
             case VK_MINUS -> {
                 ITERATION_MAX *= 0.95;

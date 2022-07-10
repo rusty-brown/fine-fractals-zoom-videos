@@ -37,7 +37,7 @@ public abstract class FractalFinite extends FinebrotCommonImpl {
             }
             iterator++;
         }
-        el.setHibernatedState(iterator);
+        el.setFinishedState(iterator);
         return iterator < ITERATION_MAX;
     }
 }

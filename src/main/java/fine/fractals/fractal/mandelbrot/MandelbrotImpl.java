@@ -70,9 +70,9 @@ public class MandelbrotImpl {
             System.exit(1);
         }
 
-        Application.repaintMandelbrotWindow();
         PathsFinebrot.domainToScreenGrid();
         FinebrotFractal.update();
+
         Application.repaintMandelbrotWindow();
     }
 
@@ -93,8 +93,8 @@ public class MandelbrotImpl {
         }
     }
 
-    public void domainForThisZoom() {
-        PixelsMandelbrot.domainForThisZoom();
+    public void recalculatePixelsPositionsForThisZoom() {
+        PixelsMandelbrot.recalculatePixelsPositionsForThisZoom();
     }
 
     public void initializeDomainElements() {

@@ -13,12 +13,16 @@ import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_SUCCES
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_TOO_LONG;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.FINISHED_TOO_SHORT;
 import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.HIBERNATED_DEEP_BLACK;
+import static fine.fractals.data.mandelbrot.MandelbrotMaskColors.NULL;
 
 public abstract class ColorUtils {
 
     private static final Logger log = LogManager.getLogger(ColorUtils.class);
 
     public static Color colorForState(MandelbrotElement element) {
+        if (element == null) {
+            return NULL;
+        }
         switch (element.state()) {
             /* most of the elements are going to be */
             case FinishedSuccessPast -> {

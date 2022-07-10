@@ -8,6 +8,7 @@ import static java.awt.Color.GREEN;
 import static java.awt.Color.LIGHT_GRAY;
 import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
+import static java.awt.Color.YELLOW;
 
 public class MandelbrotMaskColors {
 
@@ -17,5 +18,10 @@ public class MandelbrotMaskColors {
     public static final Color FINISHED_TOO_SHORT = WHITE;
     public static final Color FINISHED_SUCCESS = RED;
     public static final Color FINISHED_SUCCESS_PAST = LIGHT_GRAY;
+
+    /**
+     * For refresh during Mandelbrot pixels recalculation.
+     */
+    public static final Color NULL = YELLOW;
 
 }

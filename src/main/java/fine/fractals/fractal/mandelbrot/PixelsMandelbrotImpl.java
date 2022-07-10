@@ -16,11 +16,12 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTIO
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_MULTIPLIER;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
+import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
 import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
 import static fine.fractals.machine.ApplicationImpl.neighbours;
 import static org.junit.Assert.assertEquals;
 
-class PixelsMandelbrotImpl {
+public class PixelsMandelbrotImpl {
 
     private static final Logger log = LogManager.getLogger(PixelsMandelbrotImpl.class);
 
@@ -167,7 +168,7 @@ class PixelsMandelbrotImpl {
     /*
      * This is called already after zoom
      */
-    public void domainForThisZoom() {
+    public void recalculatePixelsPositionsForThisZoom() {
         /*
          * Scan Mandelbrot elements - old positions from previous calculation
          * They will be moved to new positions - remembered elements
@@ -230,6 +231,11 @@ class PixelsMandelbrotImpl {
         }
 
         /*
+         * Repaint with only moved elements
+         */
+        Mandelbrot.createMaskAndRepaint();
+
+        /*
          * Create new elements on positions where nothing was moved to
          */
         MandelbrotElement el;
@@ -267,7 +273,7 @@ class PixelsMandelbrotImpl {
                 int yy = y + b;
                 if (checkDomain(xx, yy)) {
                     el = elementsStaticMandelbrot[xx][yy];
-                    if (el != null && (el.isFinishedSuccess() || el.isFinishedTooShort())) {
+                    if (el != null && (el.isFinishedSuccessAny() || el.isFinishedTooShort())) {
                         return false;
                     }
                 }

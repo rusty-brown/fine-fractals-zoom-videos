@@ -1,6 +1,5 @@
 package fine.fractals.windows.listener;
 
-import fine.fractals.machine.EngineThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,6 +11,7 @@ import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.ApplicationImpl.REPEAT;
+import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
 import static fine.fractals.machine.FractalEngineImpl.calculationInProgress;
 
 public class UIMouseListener implements MouseListener {
@@ -32,7 +32,7 @@ public class UIMouseListener implements MouseListener {
                     AreaMandelbrot.moveToCoordinates();
                     AreaFinebrot.moveToCoordinates();
                     Application.zoomIn();
-                    EngineThread.calculate();
+                    FractalEngine.start();
                 }
             } else {
                 log.info("Left click");

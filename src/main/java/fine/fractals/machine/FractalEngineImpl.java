@@ -3,61 +3,66 @@ package fine.fractals.machine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PerfectColorDistribution;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.SAVE_IMAGES;
+import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
+import static fine.fractals.machine.ApplicationImpl.Application;
+import static fine.fractals.machine.ApplicationImpl.REPEAT;
+import static fine.fractals.machine.ApplicationImpl.iteration;
 
-public class FractalEngineImpl {
+public class FractalEngineImpl extends Thread {
 
     private static final Logger log = LogManager.getLogger(FractalEngineImpl.class);
 
     /**
      * Singleton instance
      */
-    public static final FractalEngineImpl FractalEngine;
+    public static final FractalEngineImpl FractalEngine = new FractalEngineImpl();
     public static boolean calculationInProgress;
 
-    static {
-        log.info("init");
-        FractalEngine = new FractalEngineImpl();
-    }
-
-    private boolean updateDomain = false;
     private boolean first = true;
 
     private FractalEngineImpl() {
         log.debug("constructor");
     }
 
-    public void calculate() {
-        log.info("calculate()");
-        calculationInProgress = true;
+    @Override
+    public void run() {
+        do {
+            log.info("Iteration: " + iteration++);
 
-        if (first) {
-            first = false;
-            Mandelbrot.initializeDomainElements();
-        }
+            calculationInProgress = true;
 
-        if (updateDomain) {
-            Mandelbrot.domainForThisZoom();
-            updateDomain = false;
-        }
-        Mandelbrot.createMaskAndRepaint();
+            if (first) {
+                first = false;
+                Mandelbrot.initializeDomainElements();
+            } else {
+                Mandelbrot.recalculatePixelsPositionsForThisZoom();
+                Mandelbrot.createMaskAndRepaint();
+            }
 
-        /*
-         * Mandelbrot calculation creates Finebrot data
-         */
-        Mandelbrot.calculate();
+            /*
+             * Mandelbrot calculation creates Finebrot data
+             */
+            Mandelbrot.calculate();
 
-        PerfectColorDistribution.perfectlyColorFinebrotValues();
+            PerfectColorDistribution.perfectlyColorFinebrotValues();
+            Application.repaintFinebrotWindow();
 
-        if (SAVE_IMAGES) {
-            FractalMachine.saveImages();
-        }
-        calculationInProgress = false;
-    }
+            if (SAVE_IMAGES) {
+                FractalMachine.saveImages();
+            }
+            calculationInProgress = false;
+            if (REPEAT) {
+                Application.zoomIn();
+            }
 
-    public void updateDomain() {
-        this.updateDomain = true;
+            if (iteration == 1) {
+                AreaMandelbrot.moveToInitialCoordinates();
+                AreaFinebrot.moveToInitialCoordinates();
+            }
+        } while (REPEAT);
     }
 }

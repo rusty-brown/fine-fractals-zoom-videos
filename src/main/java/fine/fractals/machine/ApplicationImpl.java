@@ -36,7 +36,7 @@ public class ApplicationImpl {
      * How many pixels round specific element will be investigated for optimization.
      * If there is nothing interesting going on around specific pixel, the pixel will be ignored.
      */
-    public static final int neighbours = 4;
+    public static final int neighbours = 3;
     public static final double ZOOM = 0.98;
     public static final String APP_NAME = "_" + Formatter.now();
 
@@ -59,8 +59,6 @@ public class ApplicationImpl {
         log.info("cores: " + COREs);
     }
 
-    private boolean paintingMandelbrotBusy = false;
-    private boolean paintingFinebrotBusy = false;
     private MandelbrotWindow mandelbrotWindow;
     private FinebrotWindow finebrotWindow;
 
@@ -100,31 +98,22 @@ public class ApplicationImpl {
     public void execute() {
         log.debug("execute()");
         initUIWindows();
-        EngineThread.calculate();
+        FractalEngine.start();
     }
 
-    public void repaintFinebrotWindows() {
-        log.info("repaintFinebrotWindows()");
-        if (!paintingFinebrotBusy) {
-            paintingFinebrotBusy = true;
-            finebrotWindow.frame.repaint();
-        }
-        paintingFinebrotBusy = false;
+    public void repaintFinebrotWindow() {
+        log.info("repaintFinebrotWindow()");
+        finebrotWindow.frame.repaint();
     }
 
     public void repaintMandelbrotWindow() {
         log.debug("repaintMandelbrotWindow()");
-        if (!paintingMandelbrotBusy) {
-            paintingMandelbrotBusy = true;
-            mandelbrotWindow.frame.repaint();
-        }
-        paintingMandelbrotBusy = false;
+        mandelbrotWindow.frame.repaint();
     }
 
     public void zoomIn() {
         log.info("zoomIn()");
         AreaMandelbrot.zoomIn();
         AreaFinebrot.zoomIn();
-        FractalEngine.updateDomain();
     }
 }

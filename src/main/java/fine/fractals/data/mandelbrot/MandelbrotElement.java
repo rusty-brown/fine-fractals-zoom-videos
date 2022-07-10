@@ -29,11 +29,11 @@ public class MandelbrotElement implements Comparable<MandelbrotElement> {
         return state == FinishedTooShort;
     }
 
-    public boolean isFinishedSuccess() {
-        return state == FinishedSuccess;
+    public boolean isFinishedSuccessAny() {
+        return state == FinishedSuccessPast || state == FinishedSuccess;
     }
 
-    public void setHibernatedState(int iterator) {
+    public void setFinishedState(int iterator) {
         if (iterator < ITERATION_MIN) {
             state = FinishedTooShort;
             return;

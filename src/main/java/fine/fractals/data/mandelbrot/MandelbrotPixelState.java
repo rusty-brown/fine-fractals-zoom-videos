@@ -4,16 +4,19 @@ public enum MandelbrotPixelState {
 
     /**
      * 1.
+     * Finished success, but updated state from previous calculation iteration.
+     * If there was a conflict when moving pixels to new location after zoomIn(), use this state, there won't be any difference in data, only color.
+     * color = {@link MandelbrotMaskColors#FINISHED_SUCCESS_PAST}
+     */
+    FinishedSuccessPast,
+
+    /**
+     * 2.
      * Path length more than ITERATION_MIN, this element produced good data.
      * color = {@link MandelbrotMaskColors#FINISHED_SUCCESS}
      */
     FinishedSuccess,
 
-    /**
-     * Finished success, but updated state from previous calculation iteration.
-     * color = {@link MandelbrotMaskColors#FINISHED_SUCCESS_PAST}
-     */
-    FinishedSuccessPast,
 
     /**
      * 3.

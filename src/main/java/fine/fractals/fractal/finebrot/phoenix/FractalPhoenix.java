@@ -39,7 +39,7 @@ public abstract class FractalPhoenix extends FinebrotCommonImpl {
             }
             iterator++;
         }
-        el.setHibernatedState(iterator);
+        el.setFinishedState(iterator);
         return iterator < ITERATION_MAX;
     }
 }
