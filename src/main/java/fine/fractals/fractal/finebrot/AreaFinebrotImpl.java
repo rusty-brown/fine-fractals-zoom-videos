@@ -23,9 +23,9 @@ public class AreaFinebrotImpl {
     public static final AreaFinebrotImpl AreaFinebrot;
 
     static {
-        log.info("init");
+        log.debug("init");
         AreaFinebrot = new AreaFinebrotImpl();
-        log.info("initiate");
+        log.debug("initiate");
         AreaFinebrot.initiate();
     }
 
@@ -57,7 +57,7 @@ public class AreaFinebrotImpl {
         this.centerRe = INIT_FINEBROT_TARGET_re;
         this.centerIm = INIT_FINEBROT_TARGET_im;
         this.plank = INIT_FINEBROT_AREA_SIZE / RESOLUTION_WIDTH;
-        log.info("plank: " + plank);
+        log.debug("plank: " + plank);
 
         this.numbersRe = new double[RESOLUTION_WIDTH];
         this.numbersIm = new double[RESOLUTION_HEIGHT];
@@ -127,7 +127,7 @@ public class AreaFinebrotImpl {
     public void moveToCoordinates() {
         this.centerRe = screenToDomainCreateRe(Target.getScreenFromCornerX());
         this.centerIm = screenToDomainCreateIm(Target.getScreenFromCornerY());
-        log.info("Move to: " + this.centerRe + "," + this.centerIm);
+        log.debug("Move to: " + this.centerRe + "," + this.centerIm);
     }
 
     /* Generate domain elements */

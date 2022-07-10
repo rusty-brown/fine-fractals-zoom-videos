@@ -34,7 +34,7 @@ public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionA
     }
 
     public void perfectlyColorFinebrotValues() {
-        log.info("perfectlyColorScreenValues()");
+        log.debug("perfectlyColorScreenValues()");
 
         int zeroValueElementsRed = 0;
         int zeroValueElementsGreen = 0;

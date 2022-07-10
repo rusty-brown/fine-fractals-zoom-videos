@@ -89,5 +89,6 @@ public abstract class FinebrotAbstractImpl {
             ITERATION_MAX = 300_000_000;
         }
         log.info("ITERATION_MAX = " + ITERATION_MAX);
+        log.info("ITERATION_MIN = " + ITERATION_MIN);
     }
 }

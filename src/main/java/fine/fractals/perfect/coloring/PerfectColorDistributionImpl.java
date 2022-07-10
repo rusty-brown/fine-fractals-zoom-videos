@@ -28,7 +28,7 @@ public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstra
     }
 
     public void perfectlyColorFinebrotValues() {
-        log.info("perfectlyColorScreenValues()");
+        log.debug("perfectlyColorScreenValues()");
 
         int zeroValueElements = 0;
 

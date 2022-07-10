@@ -25,7 +25,7 @@ public class MathematicianImpl {
     private static HashSet<Integer> SQUARE;
 
     static {
-        log.info("init");
+        log.debug("init");
         Mathematician = new MathematicianImpl();
     }
 
@@ -58,7 +58,7 @@ public class MathematicianImpl {
     }
 
     public void initPrimes() {
-        log.info("initPrimes()");
+        log.debug("initPrimes()");
         PRIMES = new HashSet<>();
         for (int i = 0; i < ITERATION_MAX; i++) {
             if (isPrimeInit(i)) {
@@ -68,7 +68,7 @@ public class MathematicianImpl {
     }
 
     public void initFibonacci() {
-        log.info("initFibonacci()");
+        log.debug("initFibonacci()");
         FIBONACCI = new HashSet<>();
         int a = 0;
         int b = 1;
@@ -82,7 +82,7 @@ public class MathematicianImpl {
     }
 
     public void initPerfectNumbers() {
-        log.info("initPerfectNumbers()");
+        log.debug("initPerfectNumbers()");
         PERFECT = new HashSet<>();
         for (int i = 0; i <= ITERATION_MAX; i++) {
             if (isPerfectInit(i)) {
@@ -92,7 +92,7 @@ public class MathematicianImpl {
     }
 
     public void initSquares() {
-        log.info("initSquares()");
+        log.debug("initSquares()");
         SQUARE = new HashSet<>();
         int sq;
         for (int i = 0; i * i <= ITERATION_MAX; i++) {

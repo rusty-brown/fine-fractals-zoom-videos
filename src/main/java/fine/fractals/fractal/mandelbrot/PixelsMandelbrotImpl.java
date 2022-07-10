@@ -59,7 +59,7 @@ public class PixelsMandelbrotImpl {
         }
     }
 
-    public ArrayList<ArrayList<MandelbrotElement>> fetchDomainWrappedParts() {
+    public ArrayList<ArrayList<MandelbrotElement>> fullDomainAsWrappedParts() {
         log.debug("fetchDomainWrappedParts()");
 
         int chunkSizeX = RESOLUTION_WIDTH / chunkAmount;
@@ -67,7 +67,10 @@ public class PixelsMandelbrotImpl {
 
         final ArrayList<ArrayList<MandelbrotElement>> domainFull = new ArrayList<>();
 
-        /* All the pixel (domain) will be split to 40 chunks */
+        wrapped = 0;
+        notWrapped = 0;
+
+        /* All the pixel (domain) will be split to multiple chunks */
         for (int x = 0; x < chunkAmount; x++) {
             for (int y = 0; y < chunkAmount; y++) {
 
@@ -87,8 +90,15 @@ public class PixelsMandelbrotImpl {
         /* Switch wrapping the next time */
         odd = !odd;
 
+        log.info("wrapped " + wrapped);
+        log.info("notWrapped " + notWrapped);
+        log.info("domain chunks " + domainFull.size());
+
         return domainFull;
     }
+
+    int wrapped = 0;
+    int notWrapped = 0;
 
     /**
      * Makes small square domain part
@@ -102,9 +112,18 @@ public class PixelsMandelbrotImpl {
                 if (elementZero.isActiveNew()) {
                     chunk.add(elementZero);
                     if (!firstDomainExecution) {
-                        /* Do not add any neighboring elements here, that was resolved by optimization */
                         if (RESOLUTION_MULTIPLIER != none) {
-                            wrap(chunk, elementZero);
+                            /*
+                             * All new elements are Active new.
+                             * Wrap only those elements which have some hibernated active neighbours.
+                             * Most new elements are far away from interesting Mandelbrot set horizon
+                             */
+                            if (someNeighborFinishedActivePast(x, y)) {
+                                wrapped++;
+                                wrap(chunk, elementZero);
+                            } else {
+                                notWrapped++;
+                            }
                         }
                     }
                 }
@@ -157,15 +176,6 @@ public class PixelsMandelbrotImpl {
         }
     }
 
-    @SuppressWarnings(value = "unused")
-    public void maskUpdate(int xFrom, int xTo, int yFrom, int yTo) {
-        for (int x = xFrom; x < xTo; x++) {
-            for (int y = yFrom; y < yTo; y++) {
-                MandelbrotMaskImage.setRGB(x, y, colorForState(elementsStaticMandelbrot[x][y]).getRGB());
-            }
-        }
-    }
-
     /*
      * This is called already after zoom
      */
@@ -189,7 +199,7 @@ public class PixelsMandelbrotImpl {
 
         /*
          * Delete all elements assigned to Mandelbrot coordinates.
-         * Some are remembered and will be moved.
+         * Some are remembered and will be moved to new coordinates.
          */
         for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
             for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
@@ -282,5 +292,26 @@ public class PixelsMandelbrotImpl {
             }
         }
         return true;
+    }
+
+    /*
+     * All new elements are Active New
+     * For wrapping, search only elements, which have some past finished neighbors
+     */
+    public boolean someNeighborFinishedActivePast(int x, int y) {
+        MandelbrotElement el;
+        for (int a = -neighbours; a < neighbours; a++) {
+            for (int b = -neighbours; b < neighbours; b++) {
+                int xx = x + a;
+                int yy = y + b;
+                if (checkDomain(xx, yy)) {
+                    el = elementsStaticMandelbrot[xx][yy];
+                    if (el != null && (el.isFinishedSuccessPast())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

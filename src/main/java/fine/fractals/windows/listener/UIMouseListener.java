@@ -27,7 +27,7 @@ public class UIMouseListener implements MouseListener {
         log.debug("mouseClicked()");
         if (!REPEAT) {
             if (SwingUtilities.isRightMouseButton(me)) {
-                log.info("Right click");
+                log.debug("Right click");
                 if (!calculationInProgress) {
                     AreaMandelbrot.moveToCoordinates();
                     AreaFinebrot.moveToCoordinates();
@@ -35,10 +35,10 @@ public class UIMouseListener implements MouseListener {
                     FractalEngine.start();
                 }
             } else {
-                log.info("Left click");
+                log.debug("Left click");
             }
         } else {
-            log.info("click skipped");
+            log.debug("click skipped");
         }
     }
 

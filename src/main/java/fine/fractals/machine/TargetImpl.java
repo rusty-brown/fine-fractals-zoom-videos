@@ -50,7 +50,7 @@ public class TargetImpl {
                 this.cTextRe = tmp[0];
                 this.cTextIm = tmp[1];
             } catch (Exception e) {
-                log.info("OneTarget.update(" + mousePositionX + ", " + mousePositionY + "): " + e.getMessage());
+                log.debug("OneTarget.update(" + mousePositionX + ", " + mousePositionY + "): " + e.getMessage());
                 this.cTextRe = "-";
                 this.cTextIm = "-";
             }

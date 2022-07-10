@@ -26,7 +26,8 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
     }
 
     public void domainToScreenGrid() {
-        log.info("domainToScreenGrid()");
+        log.debug("domainToScreenGrid()");
+        log.info("paths: " + paths.size());
 
         int added = 0;
 

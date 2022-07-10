@@ -33,16 +33,16 @@ public abstract class FractalMachine {
         log.debug("saveImages()");
         try {
             final String finebrotName = FILE_PATH + NAME + APP_NAME + iteration() + ".jpg";
-            log.info("Finebrot image: " + finebrotName);
+            log.debug("Finebrot image: " + finebrotName);
             saveImage(finebrotName, FinebrotImage);
 
             if (!IGNORE_DEBUG_FILES) {
                 final String mandelbrotName = DEBUG_PATH + NAME + APP_NAME + iteration() + "_mandelbrot.jpg";
-                log.info("Mandelbrot image: " + mandelbrotName);
+                log.debug("Mandelbrot image: " + mandelbrotName);
                 saveImage(mandelbrotName, MandelbrotMaskImage);
             }
 
-            log.info("saved.");
+            log.debug("saved.");
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());

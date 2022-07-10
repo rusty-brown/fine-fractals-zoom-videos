@@ -54,7 +54,7 @@ public class ListOfImagesToVideoWithAudio {
     }
 
     private void makeListOfFinebrotImages() throws IOException {
-        log.info("makeListOfFinebrotImages()");
+        log.debug("makeListOfFinebrotImages()");
         try (Stream<Path> paths = Files.walk(Paths.get(FINEBROT_IMAGE_LOCATION))) {
             paths.sorted().filter(Files::isRegularFile)
                     .forEach(path -> {

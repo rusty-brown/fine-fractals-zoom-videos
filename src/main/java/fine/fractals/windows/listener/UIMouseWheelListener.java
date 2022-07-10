@@ -19,17 +19,17 @@ public class UIMouseWheelListener implements MouseWheelListener {
     public void mouseWheelMoved(MouseWheelEvent mwe) {
 
         if (UIKeyDispatcher.isCtrl()) {
-            log.info("ctrl");
+            log.debug("ctrl");
         } else if (UIKeyDispatcher.isAlt()) {
-            log.info("alt");
+            log.debug("alt");
         }
 
         if (mwe.getWheelRotation() < 0) {
             /* Mouse wheel moved UP */
-            log.info("up");
+            log.debug("up");
         } else {
             /* Mouse wheel moved DOWN */
-            log.info("down");
+            log.debug("down");
         }
     }
 }

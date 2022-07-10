@@ -10,10 +10,7 @@ import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.FinebrotFractal;
-import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PathsFinebrot;
 import static fine.fractals.fractal.mandelbrot.PixelsMandelbrotImpl.PixelsMandelbrot;
-import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.ApplicationImpl.COREs;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -34,9 +31,9 @@ public class MandelbrotImpl {
      * Calculate Domain Values
      */
     public void calculate() {
-        log.info("calculate()");
+        log.debug("calculate()");
 
-        final ArrayList<ArrayList<MandelbrotElement>> domainFullChunkedAndWrapped = PixelsMandelbrot.fetchDomainWrappedParts();
+        final ArrayList<ArrayList<MandelbrotElement>> domainFullChunkedAndWrapped = PixelsMandelbrot.fullDomainAsWrappedParts();
         Collections.shuffle(domainFullChunkedAndWrapped);
 
         final ExecutorService executor = Executors.newFixedThreadPool(COREs);

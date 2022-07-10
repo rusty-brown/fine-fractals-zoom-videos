@@ -23,9 +23,9 @@ public class AreaMandelbrotImpl {
     public static final AreaMandelbrotImpl AreaMandelbrot;
 
     static {
-        log.info("init");
+        log.debug("init");
         AreaMandelbrot = new AreaMandelbrotImpl();
-        log.info("initiate");
+        log.debug("initiate");
         AreaMandelbrot.initiate();
     }
 
@@ -58,7 +58,7 @@ public class AreaMandelbrotImpl {
         this.centerRe = INIT_MANDELBROT_TARGET_re;
         this.centerIm = INIT_MANDELBROT_TARGET_im;
         this.plank = size / RESOLUTION_WIDTH;
-        log.info("plank: " + plank);
+        log.debug("plank: " + plank);
 
         this.numbersRe = new double[RESOLUTION_WIDTH];
         this.numbersIm = new double[RESOLUTION_HEIGHT];
@@ -140,7 +140,7 @@ public class AreaMandelbrotImpl {
     public void moveToCoordinates() {
         this.centerRe = screenToDomainRe(Target.getScreenFromCornerX());
         this.centerIm = screenToDomainIm(Target.getScreenFromCornerY());
-        log.info("Move to: " + this.centerRe + "," + this.centerIm);
+        log.debug("Move to: " + this.centerRe + "," + this.centerIm);
     }
 
     /* Generate domain elements */

@@ -31,7 +31,7 @@ public class ApplicationImpl {
     public static final String DEBUG_PATH = USER_HOME + "/Fractals-debug/";
 
     @EditMe
-    public static final boolean IGNORE_DEBUG_FILES = false;
+    public static final boolean IGNORE_DEBUG_FILES = true;
     /**
      * How many pixels round specific element will be investigated for optimization.
      * If there is nothing interesting going on around specific pixel, the pixel will be ignored.
@@ -50,7 +50,7 @@ public class ApplicationImpl {
     public static int iteration = 0;
 
     static {
-        log.info("init");
+        log.debug("init");
         Application = new ApplicationImpl();
 
         if (COREs < 1) {
@@ -102,7 +102,7 @@ public class ApplicationImpl {
     }
 
     public void repaintFinebrotWindow() {
-        log.info("repaintFinebrotWindow()");
+        log.debug("repaintFinebrotWindow()");
         finebrotWindow.frame.repaint();
     }
 
@@ -112,7 +112,7 @@ public class ApplicationImpl {
     }
 
     public void zoomIn() {
-        log.info("zoomIn()");
+        log.debug("zoomIn()");
         AreaMandelbrot.zoomIn();
         AreaFinebrot.zoomIn();
     }

@@ -17,7 +17,7 @@ public class PalettePurpleToWhite extends PaletteImpl {
     public PalettePurpleToWhite() {
         log.debug("constructor");
         ColorUtils.toPalette(spectrum, circleUp,
-                new Color(24, 3, 40),
+                new Color(20, 3, 30),
                 new Color(255, 255, 255)
         );
     }
