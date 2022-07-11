@@ -12,7 +12,8 @@ import static fine.fractals.color.common.PaletteImpl.Palette;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
-import static fine.fractals.images.FractalImage.FinebrotImage;
+import static fine.fractals.images.FractalImages.FinebrotImage;
+import static fine.fractals.machine.ApplicationImpl.coloringThreshold;
 
 public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
 
@@ -32,14 +33,11 @@ public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstra
 
         int zeroValueElements = 0;
 
-        /* identify zero and low-value elements as zero or noise */
-        final int threshold = 4;
-
         /* read screen values */
         for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
             for (int x = 0; x < RESOLUTION_WIDTH; x++) {
                 int v = PixelsFinebrot.valueAt(x, y);
-                if (v <= threshold) {
+                if (v <= coloringThreshold) {
                     zeroValueElements++;
                 }
                 pixels.add(new FinebrotPixel(v, x, y));
@@ -82,7 +80,7 @@ public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstra
             for (int ci = 0; ci < singleColorUse; ci++) {
                 /* color all these pixels with same color */
                 sp = pixels.get(pi++);
-                if (sp.pixelValue() <= threshold) {
+                if (sp.pixelValue() <= coloringThreshold) {
                     /* color zero-value elements and low-value-noise with the darkest color */
                     FinebrotImage.setRGB(sp.px(), sp.py(), Palette.getSpectrumValue(0).getRGB());
                 } else {

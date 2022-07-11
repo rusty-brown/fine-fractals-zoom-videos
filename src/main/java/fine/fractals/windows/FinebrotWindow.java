@@ -15,7 +15,7 @@ import java.awt.*;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.NAME;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
-import static fine.fractals.images.FractalImage.FinebrotImage;
+import static fine.fractals.images.FractalImages.FinebrotImage;
 import static fine.fractals.machine.ApplicationImpl.APP_NAME;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 

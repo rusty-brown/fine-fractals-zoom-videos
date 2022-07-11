@@ -82,7 +82,7 @@ Color the resulting values by **decent colors**.
 
 ## CPUs consumption
 
-All calculation happen in PathCalculationThread.
+All calculation happen in `CalculationPathThread` which computes calculation paths for each `MandelbrotElement`
 
 ExecutorService uses N-1 CPU cores.
 
@@ -153,7 +153,9 @@ Which contain relevant Mandelbrot pixel states. These states are then important 
 
 `fine.fractals.machine.`
 
-`PathCalculationThread` - Performs the actual calculations for `MandelbrotElements` and
+`FractalEngine` - Fractal engine sequentially triggers the calculation and organizes relevant steps before and after the calculation.
+
+`CalculationPathThread` - Performs the actual calculations for `MandelbrotElements` and
 puts good results (calculation paths) in `PathsFinebrot`
 
 `TargetImpl` - represents point `re,im` at the center of displayed `AreaFinebrot` and `AreaMandelbrot`Towards this point

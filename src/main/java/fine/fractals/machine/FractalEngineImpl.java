@@ -1,5 +1,6 @@
 package fine.fractals.machine;
 
+import fine.fractals.images.FractalImages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +34,7 @@ public class FractalEngineImpl extends Thread {
     @Override
     public void run() {
         do {
-            log.info("------------------------------- " + (iteration++) + " ---");
+            log.info("------------------------------- " + (++iteration) + " ---");
             calculationInProgress = true;
 
             /*
@@ -69,7 +70,7 @@ public class FractalEngineImpl extends Thread {
             Application.repaintFinebrotWindow();
 
             if (SAVE_IMAGES) {
-                FractalMachine.saveImages();
+                FractalImages.saveImages();
             }
             calculationInProgress = false;
             if (REPEAT) {

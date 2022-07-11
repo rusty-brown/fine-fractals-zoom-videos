@@ -1,4 +1,4 @@
-package fine.fractals.machine;
+package fine.fractals.images;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,22 +12,24 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.NAME;
-import static fine.fractals.images.FractalImage.FinebrotImage;
-import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.NAME;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
+import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.machine.ApplicationImpl.APP_NAME;
 import static fine.fractals.machine.ApplicationImpl.DEBUG_PATH;
 import static fine.fractals.machine.ApplicationImpl.FILE_PATH;
 import static fine.fractals.machine.ApplicationImpl.IGNORE_DEBUG_FILES;
 import static fine.fractals.machine.ApplicationImpl.iteration;
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static javax.imageio.ImageWriteParam.MODE_EXPLICIT;
 
-/**
- * FractalMachine is a multipurpose class. It used to do many things, like save files with Finebrot paths data.
- */
-public abstract class FractalMachine {
+public class FractalImages {
 
-    private static final Logger log = LogManager.getLogger(FractalMachine.class);
+    private static final Logger log = LogManager.getLogger(FractalImages.class);
+
+    public static final BufferedImage FinebrotImage = new BufferedImage(RESOLUTION_WIDTH, RESOLUTION_HEIGHT, TYPE_INT_RGB);
+
+    public static final BufferedImage MandelbrotMaskImage = new BufferedImage(RESOLUTION_WIDTH, RESOLUTION_HEIGHT, TYPE_INT_RGB);
 
     public static void saveImages() {
         log.debug("saveImages()");

@@ -16,7 +16,6 @@ public abstract class PathsFinebrotCommonImpl {
      * double[2] is better than 2x Double
      */
     protected final ArrayList<ArrayList<double[]>> paths = new ArrayList<>();
-    private int counter = 0;
 
     public abstract void addEscapePathLong(ArrayList<double[]> path);
 
@@ -24,17 +23,11 @@ public abstract class PathsFinebrotCommonImpl {
 
 
     protected void removeElementsOutside() {
-        counter++;
-        int removed = 0;
-        if (counter % 5 == 0) {
-            log.debug("Remove elements which zoomed out");
-            for (ArrayList<double[]> path : paths) {
-                if (path.removeIf(el -> AreaFinebrot.isOutside(el[0], el[1]))) {
-                    removed++;
-                }
+        log.debug("Remove elements which zoomed out");
+        for (ArrayList<double[]> path : paths) {
+            if (path.removeIf(el -> AreaFinebrot.isOutside(el[0], el[1]))) {
             }
-            paths.removeIf(ArrayList::isEmpty);
         }
-        log.debug("* Removed: " + removed);
+        paths.removeIf(l -> l.size() < 7);
     }
 }

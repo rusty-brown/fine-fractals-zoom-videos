@@ -28,12 +28,12 @@ public class Finebrot_Side extends FractalFinite {
 
     public static void main(String[] args) {
 
-        RESOLUTION_WIDTH = 1920;
-        RESOLUTION_HEIGHT = 1080;
+        RESOLUTION_WIDTH = 1280;
+        RESOLUTION_HEIGHT = 720;
         RESOLUTION_MULTIPLIER = square_alter;
 
         REPEAT = true;
-        SAVE_IMAGES = false;
+        SAVE_IMAGES = true;
         FinebrotFractal = new Finebrot_Side();
         Palette = new PaletteBlueToWhite();
 

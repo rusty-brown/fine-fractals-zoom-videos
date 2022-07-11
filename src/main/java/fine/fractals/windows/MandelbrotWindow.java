@@ -17,7 +17,7 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.NAME;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.images.FractalImage.MandelbrotMaskImage;
+import static fine.fractals.images.FractalImages.MandelbrotMaskImage;
 import static fine.fractals.machine.ApplicationImpl.APP_NAME;
 import static fine.fractals.machine.TargetImpl.Target;
 import static java.awt.Color.BLACK;

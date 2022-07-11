@@ -16,7 +16,7 @@ import static fine.fractals.fractal.finebrot.euler.FractalEuler.PixelsEulerFineb
 import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.blue;
 import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.green;
 import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.red;
-import static fine.fractals.images.FractalImage.FinebrotImage;
+import static fine.fractals.images.FractalImages.FinebrotImage;
 
 public class EulerPerfectColorDistributionImpl extends PerfectColorDistributionAbstract {
 

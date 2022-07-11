@@ -40,6 +40,7 @@ public class ApplicationImpl {
     public static final int neighbours = 3;
     public static final double ZOOM = 0.98;
     public static final String APP_NAME = "_" + Formatter.now();
+    public static final int coloringThreshold = 2;
 
     /**
      * Singleton instance
@@ -47,8 +48,9 @@ public class ApplicationImpl {
     public static final ApplicationImpl Application;
     public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
     public static boolean REPEAT = true;
-    /* Increase this only in CalculationThread */
+    /* Increase this only in FractalEngine */
     public static int iteration = 0;
+    /* identify zero and low-value elements as zero or noise */
 
     static {
         log.debug("init");
