@@ -58,7 +58,6 @@ public class FractalEngineImpl extends Thread {
              * Mirror calculation paths to Finebrot pixels
              */
             PathsFinebrot.domainToScreenGrid();
-            FinebrotFractal.update();
 
             Mandelbrot.maskFullUpdate();
             Application.repaintMandelbrotWindow();
@@ -74,6 +73,12 @@ public class FractalEngineImpl extends Thread {
             }
             calculationInProgress = false;
             if (REPEAT) {
+
+                /*
+                 * Update relevant variables to decide if ITERATION_MAX & min should be changed
+                 */
+                FinebrotFractal.update();
+
                 Application.zoomIn();
             }
 

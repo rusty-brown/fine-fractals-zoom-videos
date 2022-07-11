@@ -15,7 +15,7 @@ public class InfiniteFinebrot_Top extends FractalFinite {
         NAME = "InfiniteFinebrot_Top";
 
         ITERATION_MAX = 180_000;
-        ITERATION_MIN = 3000;
+        ITERATION_min = 3000;
 
         INIT_MANDELBROT_AREA_SIZE = 2.5;
         INIT_MANDELBROT_TARGET_re = -0.5;

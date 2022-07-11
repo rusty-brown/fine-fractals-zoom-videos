@@ -16,7 +16,7 @@ public final class Euler extends FractalEuler {
         NAME = "Euler";
 
         ITERATION_MAX = 80000;
-        ITERATION_MIN = 42;
+        ITERATION_min = 42;
 
         INIT_MANDELBROT_AREA_SIZE = 4.0;
         INIT_MANDELBROT_TARGET_re = 0.0;

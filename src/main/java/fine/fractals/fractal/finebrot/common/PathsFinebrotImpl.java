@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
 import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
 
 public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
@@ -27,9 +28,9 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
 
     public void domainToScreenGrid() {
         log.debug("domainToScreenGrid()");
-        log.info("paths: " + paths.size());
 
-        int added = 0;
+        int pixelsTotal = 0;
+        int pathsAmount = paths.size();
 
         final Mem m = new Mem();
         double[] tmp;
@@ -39,7 +40,7 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
                     tmp = path.get(i);
                     AreaFinebrot.domainToScreenCarry(m, tmp[0], tmp[1]);
                     if (m.px != Mem.NOT && m.py != Mem.NOT) {
-                        added++;
+                        pixelsTotal++;
                         PixelsFinebrot.add(m.px, m.py);
                     }
                 }
@@ -47,7 +48,9 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
                 log.error("path can't be null");
             }
         }
-        log.debug("* Added:   " + added);
+        log.debug("pixelsTotal:   " + pixelsTotal);
+        log.debug("paths: " + pathsAmount);
+        FinebrotFractal.paths(pathsAmount, pixelsTotal);
 
         /* remove elements which moved our fo zoomed area */
         removeElementsOutside();

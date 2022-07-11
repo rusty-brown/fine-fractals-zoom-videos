@@ -15,7 +15,7 @@ public class FatStarZoomArm extends FractalInfinite {
         NAME = "FatStar";
 
         ITERATION_MAX = 81_000;
-        ITERATION_MIN = 8;
+        ITERATION_min = 8;
 
         INIT_MANDELBROT_AREA_SIZE = 3.5;
         INIT_MANDELBROT_TARGET_re = 0.0;

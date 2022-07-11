@@ -18,7 +18,7 @@ public class GloriousHead extends FractalPhoenix {
         p = -0.25;
 
         ITERATION_MAX = 2500;
-        ITERATION_MIN = 8;
+        ITERATION_min = 8;
 
         INIT_MANDELBROT_AREA_SIZE = 2.5;
         INIT_MANDELBROT_TARGET_re = -0.25;

@@ -12,6 +12,7 @@ import static fine.fractals.data.mandelbrot.MandelbrotElementFactory.activeNew;
 import static fine.fractals.data.mandelbrot.MandelbrotElementFactory.hibernatedDeepBlack;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.square_alter;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_MULTIPLIER;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
@@ -28,7 +29,7 @@ public class PixelsMandelbrotImpl {
     /**
      * Singleton instance
      */
-    static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
+    public static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
 
     /**
      * Don't do any wrapping the first time
@@ -38,6 +39,8 @@ public class PixelsMandelbrotImpl {
     final MandelbrotElement[][] elementsStaticMandelbrot = new MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
     private final ArrayList<MandelbrotElement> elementsToRemember = new ArrayList<>();
     private final int chunkAmount = 20;
+    public int wrapped = 0;
+    int notWrapped = 0;
     private boolean odd = true;
 
     public PixelsMandelbrotImpl() {
@@ -90,15 +93,12 @@ public class PixelsMandelbrotImpl {
         /* Switch wrapping the next time */
         odd = !odd;
 
-        log.info("wrapped " + wrapped);
-        log.info("notWrapped " + notWrapped);
-        log.info("domain chunks " + domainFull.size());
+        log.debug("wrapped " + wrapped);
+        log.debug("notWrapped " + notWrapped);
+        log.debug("domain chunks " + domainFull.size());
 
         return domainFull;
     }
-
-    int wrapped = 0;
-    int notWrapped = 0;
 
     /**
      * Makes small square domain part
@@ -180,6 +180,8 @@ public class PixelsMandelbrotImpl {
      * This is called already after zoom
      */
     public void recalculatePixelsPositionsForThisZoom() {
+        int finishedLong = 0;
+
         /*
          * Scan Mandelbrot elements - old positions from previous calculation
          * They will be moved to new positions - remembered elements
@@ -189,6 +191,9 @@ public class PixelsMandelbrotImpl {
         for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
             for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
                 element = elementsStaticMandelbrot[xx][yy];
+                if (element.isFinishedSuccessNow()) {
+                    finishedLong++;
+                }
                 /* There was already zoom in, the new area si smaller */
                 if (AreaMandelbrot.contains(element.originRe, element.originIm)) {
                     /* Move elements to new coordinates */
@@ -196,6 +201,8 @@ public class PixelsMandelbrotImpl {
                 }
             }
         }
+
+        FinebrotFractal.elements(finishedLong);
 
         /*
          * Delete all elements assigned to Mandelbrot coordinates.

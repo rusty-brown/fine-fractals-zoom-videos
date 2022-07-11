@@ -15,6 +15,7 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTIO
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
+import static java.awt.Frame.ICONIFIED;
 
 public class ApplicationImpl {
 
@@ -80,18 +81,23 @@ public class ApplicationImpl {
         finebrotWindow.setMandelbrotWindow(mandelbrotWindow);
         mandelbrotWindow.setFinebrotWindow(finebrotWindow);
 
-        /* set window positions*/
-        int scrWidth = 1920;
-        int scrHeight = 1080;
+        /* screen resolution */
+        final int scrWidth = 2560;
+        final int scrHeight = 1440;
+        /* set window positions */
+        int panel = 50;
+        int borders = 2;
         if (RESOLUTION_HEIGHT < scrHeight && RESOLUTION_WIDTH < scrWidth) {
-            int panel = 50;
-            int borders = 2;
             int top = scrHeight - panel - RESOLUTION_HEIGHT;
             if (top < 0) {
                 top = 0;
             }
             finebrotWindow.frame.setLocation(scrWidth - (RESOLUTION_WIDTH + borders), top);
             mandelbrotWindow.frame.setLocation(scrWidth - (2 * (RESOLUTION_WIDTH + borders)), top);
+        }
+        if (2 * RESOLUTION_WIDTH > scrWidth) {
+            finebrotWindow.frame.setState(ICONIFIED);
+            mandelbrotWindow.frame.setLocation((scrWidth - (RESOLUTION_WIDTH + borders)) / 2, 0);
         }
     }
 
