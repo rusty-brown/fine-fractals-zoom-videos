@@ -1,5 +1,6 @@
 package fine.fractals.fractal.finebrot.common;
 
+import fine.fractals.data.Stats;
 import fine.fractals.data.mem.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
-import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
 import static fine.fractals.fractal.finebrot.finite.FractalFinite.PixelsFinebrot;
 
 public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
@@ -30,7 +30,6 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
         log.debug("domainToScreenGrid()");
 
         int pixelsTotal = 0;
-        int pathsAmount = paths.size();
 
         final Mem m = new Mem();
         double[] tmp;
@@ -49,10 +48,11 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
             }
         }
         log.debug("pixelsTotal:   " + pixelsTotal);
-        log.debug("paths: " + pathsAmount);
-        FinebrotFractal.paths(pathsAmount, pixelsTotal);
 
         /* remove elements which moved our fo zoomed area */
         removeElementsOutside();
+
+        Stats.pathsTotalAmount = paths.size();
+        Stats.pixelsValueTotal = pixelsTotal;
     }
 }

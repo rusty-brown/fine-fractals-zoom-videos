@@ -12,7 +12,6 @@ import static fine.fractals.data.mandelbrot.MandelbrotElementFactory.activeNew;
 import static fine.fractals.data.mandelbrot.MandelbrotElementFactory.hibernatedDeepBlack;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.square_alter;
-import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_MULTIPLIER;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
@@ -20,7 +19,6 @@ import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot
 import static fine.fractals.images.FractalImages.MandelbrotMaskImage;
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.ApplicationImpl.neighbours;
-import static org.junit.Assert.assertEquals;
 
 public class PixelsMandelbrotImpl {
 
@@ -38,14 +36,18 @@ public class PixelsMandelbrotImpl {
     private static boolean firstDomainExecution = true;
     final MandelbrotElement[][] elementsStaticMandelbrot = new MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT];
     private final ArrayList<MandelbrotElement> elementsToRemember = new ArrayList<>();
-    private final int chunkAmount = 20;
     public int wrapped = 0;
     int notWrapped = 0;
     private boolean odd = true;
 
+    private final int chunkAmount;
+    private final int chunkSizeX;
+    private final int chunkSizeY;
+
     public PixelsMandelbrotImpl() {
-        assertEquals("RESOLUTION_WIDTH " + RESOLUTION_WIDTH + " must be divisible by chunkAmount = " + chunkAmount, 0, RESOLUTION_WIDTH % chunkAmount);
-        assertEquals("RESOLUTION_HEIGHT " + RESOLUTION_HEIGHT + " must be divisible by chunkAmount = " + chunkAmount, 0, RESOLUTION_HEIGHT % chunkAmount);
+        chunkAmount = chunk();
+        chunkSizeX = RESOLUTION_WIDTH / chunkAmount;
+        chunkSizeY = RESOLUTION_HEIGHT / chunkAmount;
     }
 
     public static boolean checkDomain(int x, int y) {
@@ -64,9 +66,6 @@ public class PixelsMandelbrotImpl {
 
     public ArrayList<ArrayList<MandelbrotElement>> fullDomainAsWrappedParts() {
         log.debug("fetchDomainWrappedParts()");
-
-        int chunkSizeX = RESOLUTION_WIDTH / chunkAmount;
-        int chunkSizeY = RESOLUTION_HEIGHT / chunkAmount;
 
         final ArrayList<ArrayList<MandelbrotElement>> domainFull = new ArrayList<>();
 
@@ -98,6 +97,15 @@ public class PixelsMandelbrotImpl {
         log.debug("domain chunks " + domainFull.size());
 
         return domainFull;
+    }
+
+    private int chunk() {
+        int c = 40;
+        while (RESOLUTION_HEIGHT % c != 0 || RESOLUTION_WIDTH % c != 0) {
+            c /= 2;
+        }
+        log.info("chunk: " + c);
+        return c;
     }
 
     /**
@@ -180,8 +188,6 @@ public class PixelsMandelbrotImpl {
      * This is called already after zoom
      */
     public void recalculatePixelsPositionsForThisZoom() {
-        int finishedLong = 0;
-
         /*
          * Scan Mandelbrot elements - old positions from previous calculation
          * They will be moved to new positions - remembered elements
@@ -191,9 +197,6 @@ public class PixelsMandelbrotImpl {
         for (int yy = 0; yy < RESOLUTION_HEIGHT; yy++) {
             for (int xx = 0; xx < RESOLUTION_WIDTH; xx++) {
                 element = elementsStaticMandelbrot[xx][yy];
-                if (element.isFinishedSuccessNow()) {
-                    finishedLong++;
-                }
                 /* There was already zoom in, the new area si smaller */
                 if (AreaMandelbrot.contains(element.originRe, element.originIm)) {
                     /* Move elements to new coordinates */
@@ -201,8 +204,6 @@ public class PixelsMandelbrotImpl {
                 }
             }
         }
-
-        FinebrotFractal.elements(finishedLong);
 
         /*
          * Delete all elements assigned to Mandelbrot coordinates.

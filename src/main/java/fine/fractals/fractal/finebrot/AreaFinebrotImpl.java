@@ -39,10 +39,10 @@ public class AreaFinebrotImpl {
     /* size of image area */
     public double sizeRe;
     public double sizeIm;
-    private double borderLowRe;
-    private double borderLowIm;
-    private double borderHighRe;
-    private double borderHighIm;
+    public double borderLowRe;
+    public double borderLowIm;
+    public double borderHighRe;
+    public double borderHighIm;
     private double plank;
 
     private AreaFinebrotImpl() {

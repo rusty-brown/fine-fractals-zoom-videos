@@ -1,5 +1,6 @@
 package fine.fractals.fractal.finebrot.common;
 
+import fine.fractals.data.Stats;
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mandelbrot.ResolutionMultiplier;
@@ -33,7 +34,6 @@ public abstract class FinebrotAbstractImpl {
      * 1080 1920 full HD high
      * 1920 1080 full HD
      * 2560 1440 quad HD
-     * Resolution should be divisible by PixelsMandelbrotImpl.chunkAmount
      */
     public static int RESOLUTION_WIDTH;
     public static int RESOLUTION_HEIGHT;
@@ -65,19 +65,6 @@ public abstract class FinebrotAbstractImpl {
     public static double INIT_MANDELBROT_TARGET_re;
     public static double INIT_MANDELBROT_TARGET_im;
 
-    private int pathsAmount;
-    private int pathsAmount_measure;
-    private int pathsAmount_tolerance;
-    private int pointsTotal;
-    private int pointsTotal_measure;
-    private int pointsTotal_tolerance;
-    private int elementLong;
-    private int elementLong_measure;
-    private int elementLong_tolerance;
-
-    private int pathsLength_measure;
-    private int pathsLength_tolerance;
-
     public FinebrotAbstractImpl() {
         log.debug("constructor");
         log.info(this.getClass().getSimpleName());
@@ -92,92 +79,22 @@ public abstract class FinebrotAbstractImpl {
         ITERATION_MAX += 100;
 
         final int it = ApplicationImpl.iteration;
-        final int takeMeasuresAtFrame = 42;
 
-        if (it == takeMeasuresAtFrame) {
+        Stats.frame(it);
+        Stats.update(it);
 
-            elementLong_measure = elementLong;
-            pointsTotal_measure = pointsTotal;
-            pathsAmount_measure = pathsAmount;
-            pathsLength_measure = (int) ((double) pointsTotal / (double) pathsAmount);
-
-            elementLong_tolerance = (int) (elementLong_measure * 0.7);
-            pointsTotal_tolerance = (int) (pointsTotal_measure * 0.7);
-            pathsAmount_tolerance = (int) (pathsAmount_measure * 0.7);
-            pathsLength_tolerance = (int) (pathsLength_measure * 0.7);
-
-            log.info("* elementLong_measure = " + elementLong_measure);
-            log.info("* pointsTotal_measure = " + pointsTotal_measure);
-            log.info("* pathsAmount_measure = " + pathsAmount_measure);
-            log.info("* pathsLength_measure = " + pathsLength_measure);
-
-        } else if (it < takeMeasuresAtFrame) {
-
-            log.info("man. elements: " + elementLong);
-            log.info("fin. points:   " + pointsTotal);
-            log.info("path amount:   " + pathsAmount);
-            int pathsLength = (int) ((double) pointsTotal / (double) pathsAmount);
-            log.info("path lengths:  " + pathsLength);
-
+        if (Stats.notEnoughPixelsTotalValue) {
+            log.info("increase ITERATION_MAX, not enough Points (2)");
+            ITERATION_MAX += 100_000;
         }
-        if (it > takeMeasuresAtFrame) {
-
-            /* elementLong, pointsTotal, pathsAmount were updated by paths() and elements() */
-
-            int pathsLength = (int) ((double) pointsTotal / (double) pathsAmount);
-
-            log.info("man. elements: " + elementLong + "\t\t<-> m:" + elementLong_measure + "\t\t... " + (elementLong - elementLong_measure) + "\t< " + elementLong_tolerance);
-            log.info("fin. points:   " + pointsTotal + "\t<-> m:" + pointsTotal_measure + "\t... " + (pointsTotal - pointsTotal_measure) + "\t< " + pointsTotal_tolerance);
-            log.info("path amount:   " + pathsAmount + "\t\t<-> m:" + pathsAmount_measure + "\t\t... " + (pathsAmount - pathsAmount_measure) + "\t< " + pathsAmount_tolerance);
-            log.info("path lengths:  " + pathsLength + "\t\t<-> m:" + pathsLength_measure + "\t\t... " + (pathsLength - pathsLength_measure) + "\t< " + pathsLength_tolerance);
-
-            boolean tooManyLongElements = false;
-            if (elementLong > elementLong_measure) {
-                tooManyLongElements = elementLong - elementLong_measure > elementLong_tolerance;
-            }
-            boolean notEnoughPoints = false;
-            if (pointsTotal < pointsTotal_measure) {
-                notEnoughPoints = pointsTotal_measure - pointsTotal > pointsTotal_tolerance;
-            }
-            boolean tooManyPoints = false;
-            if (pointsTotal > pointsTotal_measure) {
-                tooManyPoints = pointsTotal - pointsTotal_measure > pointsTotal_tolerance;
-            }
-            boolean tooManyPaths = false;
-            if (pathsAmount > pathsAmount_measure) {
-                tooManyPaths = pathsAmount - pathsAmount_measure > pathsAmount_tolerance;
-            }
-            boolean pathsToShort = false;
-            if (pathsLength < pathsLength_measure) {
-                pathsToShort = pathsLength_measure - pathsLength > pathsLength_tolerance;
-            }
-
-            log.info("");
-            log.info(tooManyLongElements + " - " + notEnoughPoints + " - " + tooManyPoints + " - " + tooManyPaths + " - " + pathsToShort);
-            log.info(elementLong + " - " + pointsTotal + " - " + pointsTotal + " - " + pathsAmount + " - " + pathsLength);
-            log.info(elementLong_measure + " - " + pointsTotal_measure + " - " + pointsTotal_measure + " - " + pathsAmount_measure + " - " + pathsLength_measure);
-            log.info(elementLong_tolerance + " - " + pointsTotal_tolerance + " - " + pointsTotal_tolerance + " - " + pathsAmount_tolerance + " - " + pathsLength_tolerance);
-
-            if (notEnoughPoints) {
-                log.info("increase ITERATION_MAX, not enough Points (2)");
-                ITERATION_MAX += 100000;
-            }
-            if (pointsTotal < pointsTotal_measure) {
-                ITERATION_MAX += 10000;
-                log.info("increase ITERATION_MAX, bit less Points (+)");
-            }
+        if (Stats.lessPixelsTotalValue) {
+            ITERATION_MAX += 10_000;
+            log.info("increase ITERATION_MAX, bit less Points (+)");
         }
+
+        Stats.clean();
 
         log.info("ITERATION_MAX = " + ITERATION_MAX);
         log.info("ITERATION_min = " + ITERATION_min);
-    }
-
-    public void paths(int pathsAmount, int pointsTotal) {
-        this.pathsAmount = pathsAmount;
-        this.pointsTotal = pointsTotal;
-    }
-
-    public void elements(int elementsFinishedLong) {
-        this.elementLong = elementsFinishedLong;
     }
 }
