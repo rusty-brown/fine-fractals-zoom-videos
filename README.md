@@ -45,11 +45,11 @@ Start calculation below, and repeat it, for at most `ITERATION_MAX` times, or un
 `re` and `im` varies as calculation progresses.
 For specific pixel, `originRe`, and `originIm` are constant.
 
-In deliberately confusing terminology if complex numbers, that would be
+In deliberately confusing terminology of complex numbers
 
 > z -> z<sup>2</sup> + c
 
-Where c is a constant, which differs for every single point, and z<sub>0</sub> = c<sub>0</sub>
+Where c is a constant different for each calculation origin, and z<sub>0</sub> = c<sub>0</sub>
 
 ### To make a classic image of Mandelbrot set
 
