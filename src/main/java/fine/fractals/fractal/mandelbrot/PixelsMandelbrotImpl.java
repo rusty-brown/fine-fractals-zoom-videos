@@ -118,7 +118,7 @@ public class PixelsMandelbrotImpl {
                              * Wrap only those elements which have some hibernated active neighbours.
                              * Most new elements are far away from interesting Mandelbrot set horizon
                              */
-                            if (someNeighborFinishedActivePast(x, y)) {
+                            if (isOnMandelbrotHorizon(x, y)) {
                                 wrapped++;
                                 wrap(chunk, elementZero);
                             } else {
@@ -305,7 +305,9 @@ public class PixelsMandelbrotImpl {
      * All new elements are Active New
      * For wrapping, search only elements, which have some past finished neighbors
      */
-    public boolean someNeighborFinishedActivePast(int x, int y) {
+    public boolean isOnMandelbrotHorizon(int x, int y) {
+        boolean red = false;
+        boolean black = false;
         MandelbrotElement el;
         for (int a = -neighbours; a < neighbours; a++) {
             for (int b = -neighbours; b < neighbours; b++) {
@@ -313,8 +315,16 @@ public class PixelsMandelbrotImpl {
                 int yy = y + b;
                 if (checkDomain(xx, yy)) {
                     el = elementsStaticMandelbrot[xx][yy];
-                    if (el != null && (el.isFinishedSuccessPast())) {
-                        return true;
+                    if (el != null) {
+                        if (el.isFinishedSuccessPast()) {
+                            red = true;
+                        }
+                        if (el.isHibernated()) {
+                            black = true;
+                        }
+                        if (red && black) {
+                            return true;
+                        }
                     }
                 }
             }

@@ -25,9 +25,8 @@ public abstract class PathsFinebrotCommonImpl {
     protected void removeElementsOutside() {
         log.debug("Remove elements which zoomed out");
         for (ArrayList<double[]> path : paths) {
-            if (path.removeIf(el -> AreaFinebrot.isOutside(el[0], el[1]))) {
-            }
+            path.removeIf(el -> AreaFinebrot.isOutside(el[0], el[1]));
         }
-        paths.removeIf(l -> l.size() < 7);
+        paths.removeIf(path -> path.size() < 7);
     }
 }

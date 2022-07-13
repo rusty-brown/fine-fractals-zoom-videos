@@ -5,6 +5,7 @@ import static fine.fractals.data.mandelbrot.MandelbrotPixelState.FinishedSuccess
 import static fine.fractals.data.mandelbrot.MandelbrotPixelState.FinishedSuccessPast;
 import static fine.fractals.data.mandelbrot.MandelbrotPixelState.FinishedTooLong;
 import static fine.fractals.data.mandelbrot.MandelbrotPixelState.FinishedTooShort;
+import static fine.fractals.data.mandelbrot.MandelbrotPixelState.HibernatedDeepBlack;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_MAX;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_min;
 
@@ -27,6 +28,9 @@ public class MandelbrotElement implements Comparable<MandelbrotElement> {
 
     public boolean isFinishedTooShort() {
         return state == FinishedTooShort;
+    }
+    public boolean isHibernated() {
+        return state == FinishedTooShort || state == HibernatedDeepBlack;
     }
 
     public boolean isFinishedSuccessAny() {

@@ -8,6 +8,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_min;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.ITERATION_MAX;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.machine.ApplicationImpl.Application;
@@ -15,7 +16,9 @@ import static fine.fractals.machine.TargetImpl.Target;
 import static fine.fractals.windows.MandelbrotWindow.showInfo;
 import static java.awt.event.KeyEvent.VK_C;
 import static java.awt.event.KeyEvent.VK_I;
+import static java.awt.event.KeyEvent.VK_M;
 import static java.awt.event.KeyEvent.VK_MINUS;
+import static java.awt.event.KeyEvent.VK_N;
 import static java.awt.event.KeyEvent.VK_PLUS;
 import static java.awt.event.KeyEvent.VK_R;
 
@@ -47,13 +50,21 @@ public class UIKeyAdapter extends KeyAdapter {
                 Application.repaintMandelbrotWindow();
                 Application.repaintFinebrotWindow();
             }
-            case VK_MINUS -> {
-                ITERATION_MAX *= 0.95;
-                log.info("ITERATION_MAX  = " + ITERATION_MAX);
-            }
             case VK_PLUS -> {
                 ITERATION_MAX *= 1.05;
-                log.info("ITERATION_MAX  = " + ITERATION_MAX);
+                log.info("increase ITERATION_MAX  = " + ITERATION_MAX);
+            }
+            case VK_MINUS -> {
+                ITERATION_MAX *= 0.95;
+                log.info("decrease ITERATION_MAX  = " + ITERATION_MAX);
+            }
+            case VK_M -> {
+                ITERATION_min *= 1.05;
+                log.info("increase ITERATION_min  = " + ITERATION_min);
+            }
+            case VK_N -> {
+                ITERATION_min *= 0.95;
+                log.info("decrease ITERATION_min  = " + ITERATION_min);
             }
         }
     }

@@ -93,36 +93,44 @@ public abstract class FinebrotAbstractImpl {
         ITERATION_MAX += 10;
 
         final int it = ApplicationImpl.iteration;
-        final int frameTakeMeasuresAtFrame = 42;
+        final int takeMeasuresAtFrame = 42;
 
-        if (it == frameTakeMeasuresAtFrame) {
+        if (it == takeMeasuresAtFrame) {
 
             elementLong_measure = elementLong;
             pointsTotal_measure = pointsTotal;
             pathsAmount_measure = pathsAmount;
             pathsLength_measure = (int) ((double) pointsTotal / (double) pathsAmount);
 
-            elementLong_tolerance = (int) (elementLong_measure * 5.0);
-            pointsTotal_tolerance = (int) (pointsTotal_measure * 3.0);
-            pathsAmount_tolerance = (int) (pathsAmount_measure * 3.0);
-            pathsLength_tolerance = (int) (pathsLength_measure * 1.0);
+            elementLong_tolerance = (int) (elementLong_measure * 0.9);
+            pointsTotal_tolerance = (int) (pointsTotal_measure * 0.5);
+            pathsAmount_tolerance = (int) (pathsAmount_measure * 0.5);
+            pathsLength_tolerance = (int) (pathsLength_measure * 0.5);
 
             log.info("* elementLong_measure = " + elementLong_measure);
             log.info("* pointsTotal_measure = " + pointsTotal_measure);
             log.info("* pathsAmount_measure = " + pathsAmount_measure);
             log.info("* pathsLength_measure = " + pathsLength_measure);
 
+        } else if (it < takeMeasuresAtFrame) {
+
+            log.info("man. elements: " + elementLong);
+            log.info("fin. points:   " + pointsTotal);
+            log.info("path amount:   " + pathsAmount);
+            int pathsLength = (int) ((double) pointsTotal / (double) pathsAmount);
+            log.info("path lengths:  " + pathsLength);
+
         }
-        if (it > frameTakeMeasuresAtFrame) {
+        if (it > takeMeasuresAtFrame) {
 
             /* elementLong, pointsTotal, pathsAmount were updated by paths() and elements() */
 
             int pathsLength = (int) ((double) pointsTotal / (double) pathsAmount);
 
-            log.debug("man. elements: " + elementLong + "\t<-> m:" + elementLong_measure + "\t... " + (elementLong - elementLong_measure) + "\t< " + elementLong_tolerance);
-            log.debug("fin. points:   " + pointsTotal + "\t<-> m:" + pointsTotal_measure + "\t... " + (pointsTotal - pointsTotal_measure) + "\t< " + pointsTotal_tolerance);
-            log.debug("path amount:   " + pathsAmount + "\t<-> m:" + pathsAmount_measure + "\t... " + (pathsAmount - pathsAmount_measure) + "\t< " + pathsAmount_tolerance);
-            log.debug("path lengths:  " + pathsLength + "\t<-> m:" + pathsLength_measure + "\t... " + (pathsLength - pathsLength_measure) + "\t< " + pathsLength_tolerance);
+            log.info("man. elements: " + elementLong + "\t\t<-> m:" + elementLong_measure + "\t\t... " + (elementLong - elementLong_measure) + "\t< " + elementLong_tolerance);
+            log.info("fin. points:   " + pointsTotal + "\t<-> m:" + pointsTotal_measure + "\t... " + (pointsTotal - pointsTotal_measure) + "\t< " + pointsTotal_tolerance);
+            log.info("path amount:   " + pathsAmount + "\t\t<-> m:" + pathsAmount_measure + "\t\t... " + (pathsAmount - pathsAmount_measure) + "\t< " + pathsAmount_tolerance);
+            log.info("path lengths:  " + pathsLength + "\t\t<-> m:" + pathsLength_measure + "\t\t... " + (pathsLength - pathsLength_measure) + "\t< " + pathsLength_tolerance);
 
             boolean tooManyLongElements = false;
             if (elementLong > elementLong_measure) {
@@ -146,23 +154,18 @@ public abstract class FinebrotAbstractImpl {
             }
 
             log.info("");
-            log.info(tooManyLongElements + "-" + notEnoughPoints + "-" + tooManyPoints + "-" + tooManyPaths + "-" + pathsToShort);
+            log.info(tooManyLongElements + " - " + notEnoughPoints + " - " + tooManyPoints + " - " + tooManyPaths + " - " + pathsToShort);
+            log.info(elementLong + " - " + pointsTotal + " - " + pointsTotal + " - " + pathsAmount + " - " + pathsLength);
+            log.info(elementLong_measure + " - " + pointsTotal_measure + " - " + pointsTotal_measure + " - " + pathsAmount_measure + " - " + pathsLength_measure);
+            log.info(elementLong_tolerance + " - " + pointsTotal_tolerance + " - " + pointsTotal_tolerance + " - " + pathsAmount_tolerance + " - " + pathsLength_tolerance);
 
-            if (tooManyLongElements) {
-                log.info("increase ITERATION_min, too many long Element (1)");
-                ITERATION_min *= 1.01;
-            }
             if (notEnoughPoints) {
                 log.info("increase ITERATION_MAX, not enough Points (2)");
-                ITERATION_MAX *= 1.02;
+                ITERATION_MAX *= 1.03;
             }
             if (tooManyPoints) {
                 log.info("increase ITERATION_min, too many Points (3)");
-                ITERATION_min *= 1.02;
-            }
-            if (tooManyPaths) {
-                log.info("increase ITERATION_min, too many Paths (4)");
-                ITERATION_min *= 1.001;
+                ITERATION_min *= 1.01;
             }
         }
 
