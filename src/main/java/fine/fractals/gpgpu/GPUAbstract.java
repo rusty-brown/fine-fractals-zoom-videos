@@ -23,8 +23,8 @@ class GPUAbstract {
 	protected cl_context context;
 	protected cl_command_queue commandQueue;
 
-	protected cl_program program;
-	protected cl_kernel kernel;
+	protected cl_program PROGRAM;
+	protected cl_kernel KERNEL;
 	protected cl_device_id device;
 
 	protected void init() {
@@ -63,16 +63,9 @@ class GPUAbstract {
 			log.debug("Device " + (i + 1) + " of " + numDevices + ": " + deviceName);
 		}
 
-		// Create a context for the selected device
-		context = CL.clCreateContext(
-				contextProperties, 1, new cl_device_id[]{device},
-				null, null, null);
+		context = CL.clCreateContext(contextProperties, 1, new cl_device_id[]{device}, null, null, null);
 
-		// Create a command-queue for the selected device
-		// TODO add error code
 		commandQueue = CL.clCreateCommandQueueWithProperties(context, device, null, null);
-		// cl_queue_properties properties = new cl_queue_properties();
-		// commandQueue = CL.clCreateCommandQueueWithProperties(context, device, properties, null);
 
 		 /*
 		 GIGABYTE GTX 960 MINI Gaming 2GB
@@ -137,12 +130,12 @@ class GPUAbstract {
 						+ "}\n";
 
 		log.debug("1");
-		program = CL.clCreateProgramWithSource(context, 1, new String[]{PROGRAM_SOURCE_CODE}, null, null);
+		PROGRAM = CL.clCreateProgramWithSource(context, 1, new String[]{PROGRAM_SOURCE_CODE}, null, null);
 		log.debug("2");
-		CL.clBuildProgram(program, 0, null, null, null, null);
+		CL.clBuildProgram(PROGRAM, 0, null, null, null, null);
 		// int[] errorKernel = new int[100];
 		log.debug("3");
-		kernel = CL.clCreateKernel(program, "calculateFractalValues", null);
+		KERNEL = CL.clCreateKernel(PROGRAM, "calculateFractalValues", null);
 		log.debug("4");
 	}
 
