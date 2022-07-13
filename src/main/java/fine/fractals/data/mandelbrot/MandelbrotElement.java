@@ -45,16 +45,16 @@ public class MandelbrotElement implements Comparable<MandelbrotElement> {
         return state == FinishedSuccessPast;
     }
 
-    public void setFinishedState(int iterator) {
-        if (iterator < ITERATION_min) {
+    public void setFinishedState(int iterator, int pathLength) {
+        if (iterator == ITERATION_MAX) {
+            state = FinishedTooLong;
+            return;
+        }
+        if (pathLength < ITERATION_min) {
             state = FinishedTooShort;
             return;
         }
-        if (iterator < ITERATION_MAX) {
-            state = FinishedSuccess;
-        } else {
-            state = FinishedTooLong;
-        }
+        state = FinishedSuccess;
     }
 
     public MandelbrotPixelState state() {

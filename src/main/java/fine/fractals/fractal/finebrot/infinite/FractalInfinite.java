@@ -37,7 +37,7 @@ public abstract class FractalInfinite extends FinebrotCommonImpl {
             }
             iterator++;
         }
-        el.setFinishedState(iterator);
+        el.setFinishedState(iterator, path.size());
 
         /*
          * Infinite fractal

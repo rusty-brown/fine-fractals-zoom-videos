@@ -89,8 +89,7 @@ public abstract class FinebrotAbstractImpl {
     public void update() {
         log.debug("update()");
 
-        ITERATION_min += 3;
-        ITERATION_MAX += 10;
+        ITERATION_MAX += 100;
 
         final int it = ApplicationImpl.iteration;
         final int takeMeasuresAtFrame = 42;
@@ -102,10 +101,10 @@ public abstract class FinebrotAbstractImpl {
             pathsAmount_measure = pathsAmount;
             pathsLength_measure = (int) ((double) pointsTotal / (double) pathsAmount);
 
-            elementLong_tolerance = (int) (elementLong_measure * 0.9);
-            pointsTotal_tolerance = (int) (pointsTotal_measure * 0.5);
-            pathsAmount_tolerance = (int) (pathsAmount_measure * 0.5);
-            pathsLength_tolerance = (int) (pathsLength_measure * 0.5);
+            elementLong_tolerance = (int) (elementLong_measure * 0.7);
+            pointsTotal_tolerance = (int) (pointsTotal_measure * 0.7);
+            pathsAmount_tolerance = (int) (pathsAmount_measure * 0.7);
+            pathsLength_tolerance = (int) (pathsLength_measure * 0.7);
 
             log.info("* elementLong_measure = " + elementLong_measure);
             log.info("* pointsTotal_measure = " + pointsTotal_measure);
@@ -161,11 +160,11 @@ public abstract class FinebrotAbstractImpl {
 
             if (notEnoughPoints) {
                 log.info("increase ITERATION_MAX, not enough Points (2)");
-                ITERATION_MAX *= 1.03;
+                ITERATION_MAX += 100000;
             }
-            if (tooManyPoints) {
-                log.info("increase ITERATION_min, too many Points (3)");
-                ITERATION_min *= 1.01;
+            if (pointsTotal < pointsTotal_measure) {
+                ITERATION_MAX += 10000;
+                log.info("increase ITERATION_MAX, bit less Points (+)");
             }
         }
 

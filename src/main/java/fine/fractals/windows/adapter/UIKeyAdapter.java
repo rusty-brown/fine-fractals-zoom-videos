@@ -33,7 +33,7 @@ public class UIKeyAdapter extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent ke) {
         final int code = ke.getKeyCode();
-        log.info(KeyEvent.getKeyText(code) + " | " + code + " | " + ke.getKeyChar());
+        log.info(code + " | " + ke.getKeyChar());
         switch (code) {
             case VK_C -> {
                 final String targetString

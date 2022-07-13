@@ -12,7 +12,7 @@ public enum MandelbrotPixelState {
 
     /**
      * 2.
-     * Path length more than ITERATION_MIN, this element produced good data.
+     * Path length more than ITERATION_min, this element produced good data.
      * color = {@link MandelbrotMaskColors#FINISHED_SUCCESS}
      */
     FinishedSuccess,
@@ -27,7 +27,7 @@ public enum MandelbrotPixelState {
 
     /**
      * 4.
-     * Path length was less than ITERATION_MIN.
+     * Path length was less than ITERATION_min.
      * color = {@link MandelbrotMaskColors#FINISHED_TOO_SHORT}
      */
     FinishedTooShort,
