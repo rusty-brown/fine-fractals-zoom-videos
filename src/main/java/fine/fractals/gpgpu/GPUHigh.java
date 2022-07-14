@@ -8,15 +8,22 @@ import org.jocl.cl_mem;
 
 import java.util.ArrayList;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_MAX;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_min;
 import static org.jocl.CL.CL_MEM_COPY_HOST_PTR;
 import static org.jocl.CL.CL_MEM_READ_ONLY;
 import static org.jocl.CL.CL_MEM_READ_WRITE;
 import static org.jocl.CL.CL_TRUE;
+import static org.jocl.CL.clCreateBuffer;
+import static org.jocl.CL.clEnqueueNDRangeKernel;
+import static org.jocl.CL.clEnqueueReadBuffer;
+import static org.jocl.CL.clSetKernelArg;
+import static org.jocl.Pointer.to;
+import static org.jocl.Sizeof.cl_double;
+import static org.jocl.Sizeof.cl_int;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class GPUHigh extends GPULow {
-
 
     public void compute(ArrayList<ArrayList<MandelbrotElement>> chunks, ArrayList<ArrayList<double[]>> paths) {
 
@@ -32,12 +39,16 @@ public class GPUHigh extends GPULow {
 
             final double[] originRe = new double[calculationSize];
             final double[] originIm = new double[calculationSize];
-            final Pointer pointerOriginRe = Pointer.to(originRe);
-            final Pointer pointerOriginIm = Pointer.to(originIm);
+            final Pointer pointerOriginRe = to(originRe);
+            final Pointer pointerOriginIm = to(originIm);
 
-            final int memOriginsSize = Sizeof.cl_double * calculationSize;
-            final cl_mem memOriginRe = CL.clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, memOriginsSize, pointerOriginRe, null);
-            final cl_mem memOriginIm = CL.clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, memOriginsSize, pointerOriginIm, null);
+            final int memOriginsSize = cl_double * calculationSize;
+            final cl_mem memOriginRe = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, memOriginsSize, pointerOriginRe, null);
+            final cl_mem memOriginIm = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, memOriginsSize, pointerOriginIm, null);
+
+            /*
+             * initiate input data
+             */
 
             int gid = 0;
             for (MandelbrotElement el : chunk) {
@@ -47,63 +58,59 @@ public class GPUHigh extends GPULow {
             }
 
             int kid = 0;
-            CL.clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, Pointer.to(memOriginRe));
-            CL.clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, Pointer.to(memOriginIm));
+            clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memOriginRe));
+            clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memOriginIm));
 
             final long[] global_work_size = new long[]{calculationSize};
-
-            /*
-             * Kernel program
-             */
-
-            CL.clEnqueueNDRangeKernel(commandQueue, KERNEL, 1, null, global_work_size, null, 0, null, null);
 
             /*
              * Output data
              */
 
-            final int[] iterator = new int[calculationSize];
-            final int[] length = new int[calculationSize];
-            /* these paths have to be double, because they will be remembered and their elements moved across the pixels with zoom */
-            final ArrayList<double[]> pathsRe = new ArrayList<>();
-            final ArrayList<double[]> pathsIm = new ArrayList<>();
-            final ArrayList<cl_mem> memPathsRe = new ArrayList<>();
-            final ArrayList<cl_mem> memPathsIm = new ArrayList<>();
 
-            final int memPathsSize = Sizeof.cl_double * calculationSize;
-            final int memStateSize = Sizeof.cl_int * calculationSize;
-            final int memLengthSize = Sizeof.cl_int * calculationSize;
+            final int[] iterator = new int[calculationSize]; /* amount of iteration before path diverged */
+            final int[] length = new int[calculationSize];   /* calculation path length, only elements which hit Area Finebrot */
+            final int[] from = new int[calculationSize];     /* path index from */
+            final int[] to = new int[calculationSize];       /* path index to */
 
-            final Pointer pointerIterator = Pointer.to(iterator);
-            final Pointer pointerLength = Pointer.to(length);
-            final cl_mem memIterator = CL.clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memStateSize, pointerIterator, null);
-            final cl_mem memLength = CL.clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memLengthSize, pointerLength, null);
+            /*
+             * There was at most 9.48 x more elements in paths then total new elements calculated
+             * Even for High ITERATION_MAX only few points hits Finebrot Area.
+             * (That is why ITERATION_MAX was increased in the first place)
+             */
+            final int expectedCombinedPathsLength = calculationSize * 11;
+            final double[] pathRe = new double[expectedCombinedPathsLength];
+            final double[] pathIm = new double[expectedCombinedPathsLength];
 
-            CL.clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, Pointer.to(memIterator));
-            CL.clEnqueueReadBuffer(commandQueue, memIterator, CL_TRUE, 0, memStateSize, pointerIterator, 0, null, null);
-            CL.clEnqueueReadBuffer(commandQueue, memLength, CL_TRUE, 0, memLengthSize, pointerLength, 0, null, null);
+            final int memIndexSize = cl_int * calculationSize;
+            final int memPathsSize = cl_double * expectedCombinedPathsLength;
 
-            for (int i = 0; i < calculationSize; i++) {
-                final double[] pathRe = new double[ITERATION_MAX];
-                final double[] pathIm = new double[ITERATION_MAX];
+            final Pointer pointerIterator = to(iterator);
+            final Pointer pointerLength = to(length);
+            final Pointer pointerFrom = to(from);
+            final Pointer pointerTo = to(to);
+            final Pointer pointerPathRe = to(pathRe);
+            final Pointer pointerPathIm = to(pathIm);
 
-                final Pointer pointerPathRe = Pointer.to(pathRe);
-                final Pointer pointerPathIm = Pointer.to(pathIm);
+            final cl_mem memIterator = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memIndexSize, pointerIterator, null);
+            final cl_mem memLength = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memIndexSize, pointerLength, null);
+            final cl_mem memFrom = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memIndexSize, pointerFrom, null);
+            final cl_mem memTo = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memIndexSize, pointerTo, null);
+            final cl_mem memPathRe = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memPathsSize, pointerPathRe, null);
+            final cl_mem memPathIm = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memPathsSize, pointerPathIm, null);
 
-                final cl_mem memPathRe = CL.clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memPathsSize, pointerPathRe, null);
-                final cl_mem memPathIm = CL.clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memPathsSize, pointerPathIm, null);
+            clEnqueueNDRangeKernel(commandQueue, KERNEL, 1, null, global_work_size, null, 0, null, null);
 
-                pathsRe.add(pathRe);
-                pathsIm.add(pathIm);
+            clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memIterator));
+            clEnqueueReadBuffer(commandQueue, memIterator, CL_TRUE, 0, memIndexSize, pointerIterator, 0, null, null);
+            clEnqueueReadBuffer(commandQueue, memLength, CL_TRUE, 0, memIndexSize, pointerLength, 0, null, null);
+            clEnqueueReadBuffer(commandQueue, memFrom, CL_TRUE, 0, memIndexSize, pointerFrom, 0, null, null);
+            clEnqueueReadBuffer(commandQueue, memTo, CL_TRUE, 0, memIndexSize, pointerTo, 0, null, null);
 
-                memPathsRe.add(memPathRe);
-                memPathsIm.add(memPathIm);
-
-                CL.clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, Pointer.to(memPathRe));
-                CL.clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, Pointer.to(memPathIm));
-                CL.clEnqueueReadBuffer(commandQueue, memPathRe, CL_TRUE, 0, memPathsSize, pointerPathRe, 0, null, null);
-                CL.clEnqueueReadBuffer(commandQueue, memPathIm, CL_TRUE, 0, memPathsSize, pointerPathIm, 0, null, null);
-            }
+            clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memPathRe));
+            clSetKernelArg(KERNEL, kid, Sizeof.cl_mem, to(memPathIm));
+            clEnqueueReadBuffer(commandQueue, memPathRe, CL_TRUE, 0, memPathsSize, pointerPathRe, 0, null, null);
+            clEnqueueReadBuffer(commandQueue, memPathIm, CL_TRUE, 0, memPathsSize, pointerPathIm, 0, null, null);
 
             /*
              * Read calculation result data
@@ -119,14 +126,15 @@ public class GPUHigh extends GPULow {
                  * read calculation path
                  */
                 if (l >= ITERATION_min) {
-                    final double[] pathRe = pathsRe.get(gid);
-                    final double[] pathIm = pathsIm.get(gid);
+                    int f = from[gid];
+                    int t = to[gid];
+                    assertNotEquals(0, t);
+                    assertNotEquals(0, f);
+                    assertEquals(t - f, l);
                     final ArrayList<double[]> path = new ArrayList<>();
 
-                    for (int i = 0; i < l; i++) {
-                        double re = pathRe[i];
-                        double im = pathIm[i];
-                        path.add(new double[]{re, im});
+                    for (int i = f; i <= t; i++) {
+                        path.add(new double[]{pathRe[i], pathIm[i]});
                     }
                     paths.add(path);
                 }
@@ -134,22 +142,26 @@ public class GPUHigh extends GPULow {
                 gid++;
             }
 
-            // Release memory objects
+            /*
+             * Release memory objects
+             */
             CL.clReleaseMemObject(memOriginRe);
             CL.clReleaseMemObject(memOriginIm);
-            for (cl_mem memPathRe : memPathsRe) {
-                CL.clReleaseMemObject(memPathRe);
-            }
-            for (cl_mem memPathIm : memPathsIm) {
-                CL.clReleaseMemObject(memPathIm);
-            }
-
-            /* TODO Don't release these if GPU use is repeated */
-            CL.clReleaseKernel(KERNEL);
-            CL.clReleaseProgram(PROGRAM);
-            CL.clReleaseCommandQueue(commandQueue);
-            CL.clReleaseContext(context);
-            CL.clReleaseDevice(device);
+            CL.clReleaseMemObject(memIterator);
+            CL.clReleaseMemObject(memLength);
+            CL.clReleaseMemObject(memFrom);
+            CL.clReleaseMemObject(memTo);
+            CL.clReleaseMemObject(memPathRe);
+            CL.clReleaseMemObject(memPathIm);
         }
+
+        /*
+         * Release kernel objects
+         */
+        CL.clReleaseKernel(KERNEL);
+        CL.clReleaseProgram(PROGRAM);
+        CL.clReleaseCommandQueue(commandQueue);
+        CL.clReleaseContext(context);
+        CL.clReleaseDevice(device);
     }
 }
