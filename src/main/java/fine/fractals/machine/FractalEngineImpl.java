@@ -34,7 +34,7 @@ public class FractalEngineImpl extends Thread {
     @Override
     public void run() {
         do {
-            log.info("------------------------------- " + (++iteration) + " ---");
+            log.info("   " + (++iteration));
             calculationInProgress = true;
 
             /*

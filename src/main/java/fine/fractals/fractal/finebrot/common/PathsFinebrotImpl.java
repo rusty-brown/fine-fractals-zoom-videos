@@ -23,6 +23,7 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
      * Because they are filtered like that during calculation
      */
     public void addEscapePathLong(ArrayList<double[]> path) {
+        Stats.pathsNewPointsAmount += path.size();
         paths.add(path);
     }
 

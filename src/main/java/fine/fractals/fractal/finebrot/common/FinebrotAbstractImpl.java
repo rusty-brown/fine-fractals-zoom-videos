@@ -4,12 +4,13 @@ import fine.fractals.data.Stats;
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mandelbrot.ResolutionMultiplier;
-import fine.fractals.machine.ApplicationImpl;
 import fine.fractals.perfect.coloring.common.PerfectColorDistributionAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+
+import static fine.fractals.machine.ApplicationImpl.iteration;
 
 /**
  * Top level Fine Fractal Implementation
@@ -76,19 +77,17 @@ public abstract class FinebrotAbstractImpl {
     public void update() {
         log.debug("update()");
 
-        ITERATION_MAX += 100;
+        ITERATION_min += 1;
+        ITERATION_MAX += 250;
 
-        final int it = ApplicationImpl.iteration;
-
-        Stats.frame(it);
-        Stats.update(it);
+        Stats.update(iteration);
 
         if (Stats.notEnoughPixelsTotalValue) {
             log.info("increase ITERATION_MAX, not enough Points (2)");
-            ITERATION_MAX += 100_000;
+            ITERATION_MAX += 1_000;
         }
         if (Stats.lessPixelsTotalValue) {
-            ITERATION_MAX += 10_000;
+            ITERATION_MAX += 1_000;
             log.info("increase ITERATION_MAX, bit less Points (+)");
         }
 
