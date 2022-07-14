@@ -3,8 +3,6 @@ package fine.fractals.data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_MAX;
-
 public class Stats {
 
     private static final Logger log = LogManager.getLogger(Stats.class);
@@ -103,13 +101,11 @@ public class Stats {
             final int averagePathLength = (int) ((double) pathsTotalAmount / (double) pixelsValueTotal);
             final int newElementsAll = newElementsLong + newElementsTooShort + newElementsTooLong;
             final double domainElementsToNewCalculationPathPoints = ((double) pathsNewPointsAmount) / ((double) newElementsAll);
-            final double domainElementsToNewCalculationPathPointsIM = ((double) pathsNewPointsAmount) / ((double) newElementsAll) / (double) ITERATION_MAX;
 
             log.info(String.format("- newElementsAll:           %s \t(%s)", averagePathLength, averagePathLength_measure));
-            log.info(String.format("- averagePathLength:           %s \t(%s)", averagePathLength, averagePathLength_measure));
+            log.info(String.format("- averagePathLength:        %s \t(%s)", averagePathLength, averagePathLength_measure));
 
             log.info("domainElementsToNewCalculationPathPoints:   " + domainElementsToNewCalculationPathPoints);
-            log.info("domainElementsToNewCalculationPathPointsIM: " + domainElementsToNewCalculationPathPointsIM + " <--");
         }
     }
 

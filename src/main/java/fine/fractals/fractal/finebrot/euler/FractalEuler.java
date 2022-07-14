@@ -4,6 +4,7 @@ import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mem.MemEuler;
 import fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl;
+import fine.fractals.fractal.mandelbrot.MandelbrotImpl;
 import fine.fractals.perfect.coloring.EulerPerfectColorDistributionImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +28,7 @@ public abstract class FractalEuler extends FinebrotAbstractImpl {
         PixelsEulerFinebrot = new PixelsEulerFinebrotImpl();
         PerfectColorDistribution = new EulerPerfectColorDistributionImpl();
         PathsFinebrot = new PathsEulerFinebrotImpl();
+        Mandelbrot = new MandelbrotImpl();
     }
 
     public static void colorsFor(MemEuler m, int elementIndex, int pathLength) {

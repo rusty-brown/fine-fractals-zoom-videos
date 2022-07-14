@@ -4,6 +4,7 @@ import fine.fractals.data.Stats;
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mandelbrot.ResolutionMultiplier;
+import fine.fractals.fractal.mandelbrot.MandelbrotCommonImpl;
 import fine.fractals.perfect.coloring.common.PerfectColorDistributionAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,15 +45,18 @@ public abstract class FinebrotAbstractImpl {
      * Instantiated by fractal type
      */
     public static PerfectColorDistributionAbstract PerfectColorDistribution;
+
     /**
      * Instantiated by specific fractal
      * A specific fractal which is going to be calculated
      */
     public static FinebrotAbstractImpl FinebrotFractal;
+
     /**
      * Instantiated by fractal type
      */
     public static PathsFinebrotCommonImpl PathsFinebrot;
+    public static MandelbrotCommonImpl Mandelbrot;
     public static String NAME;
 
     public static int ITERATION_MAX;
@@ -77,18 +81,20 @@ public abstract class FinebrotAbstractImpl {
     public void update() {
         log.debug("update()");
 
-        ITERATION_min += 1;
-        ITERATION_MAX += 250;
+        ITERATION_MAX += 150;
 
         Stats.update(iteration);
 
         if (Stats.notEnoughPixelsTotalValue) {
             log.info("increase ITERATION_MAX, not enough Points (2)");
-            ITERATION_MAX += 1_000;
+            ITERATION_MAX += 10_000;
         }
         if (Stats.lessPixelsTotalValue) {
-            ITERATION_MAX += 1_000;
+            ITERATION_MAX += 2_000;
             log.info("increase ITERATION_MAX, bit less Points (+)");
+        }
+        if (Stats.tooManyPathsTotal) {
+            ITERATION_min += 1;
         }
 
         Stats.clean();

@@ -40,14 +40,7 @@ public class PixelsMandelbrotImpl {
     int notWrapped = 0;
     private boolean odd = true;
 
-    private final int chunkAmount;
-    private final int chunkSizeX;
-    private final int chunkSizeY;
-
     public PixelsMandelbrotImpl() {
-        chunkAmount = chunk();
-        chunkSizeX = RESOLUTION_WIDTH / chunkAmount;
-        chunkSizeY = RESOLUTION_HEIGHT / chunkAmount;
     }
 
     public static boolean checkDomain(int x, int y) {
@@ -72,9 +65,11 @@ public class PixelsMandelbrotImpl {
         wrapped = 0;
         notWrapped = 0;
 
+        final int chunkSizeX = RESOLUTION_WIDTH / 20;
+        final int chunkSizeY = RESOLUTION_HEIGHT / 20;
         /* All the pixel (domain) will be split to multiple chunks */
-        for (int x = 0; x < chunkAmount; x++) {
-            for (int y = 0; y < chunkAmount; y++) {
+        for (int x = 0; x < 20; x++) {
+            for (int y = 0; y < 20; y++) {
 
                 final ArrayList<MandelbrotElement> chunkOfElements = makeChunk(
                         x * chunkSizeX, (x + 1) * chunkSizeX,
@@ -97,15 +92,6 @@ public class PixelsMandelbrotImpl {
         log.debug("domain chunks " + domainFull.size());
 
         return domainFull;
-    }
-
-    private int chunk() {
-        int c = 40;
-        while (RESOLUTION_HEIGHT % c != 0 || RESOLUTION_WIDTH % c != 0) {
-            c /= 2;
-        }
-        log.info("chunk: " + c);
-        return c;
     }
 
     /**

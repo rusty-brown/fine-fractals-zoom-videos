@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.FinebrotFractal;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.ITERATION_min;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PathsFinebrot;
 import static fine.fractals.fractal.mandelbrot.MandelbrotImpl.Mandelbrot;
