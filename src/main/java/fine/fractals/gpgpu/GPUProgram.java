@@ -51,8 +51,8 @@ public class GPUProgram {
             + "     int len = 0;\n"
             //@Formatter:off
             + "     while (" + GPUMath.quadrance + " < " + CALCULATION_BOUNDARY + " && iterator < + " + ITERATION_MAX + ") {\n"
-            + 					GPUMath.square
-            + 					GPUMath.plusOrigin
+            + 				   GPUMath.square
+            + 				   GPUMath.plusOrigin
             //@Formatter:on
             + "         if (contains(re, im)) {\n"
             + "             pRe[len] = re;\n"

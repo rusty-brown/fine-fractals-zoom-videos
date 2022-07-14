@@ -14,22 +14,18 @@ import static fine.fractals.fractal.mandelbrot.PixelsMandelbrotImpl.PixelsMandel
 import static fine.fractals.machine.ApplicationImpl.COREs;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
-public class MandelbrotImpl {
+public class MandelbrotImpl extends MandelbrotCommonImpl {
 
     private static final Logger log = LogManager.getLogger(MandelbrotImpl.class);
 
-    /**
-     * Singleton instance
-     */
-    public static final MandelbrotImpl Mandelbrot = new MandelbrotImpl();
-
-    private MandelbrotImpl() {
+    public MandelbrotImpl() {
         log.debug("constructor");
     }
 
     /*
      * Calculate Domain Values
      */
+    @Override
     public void calculate() {
         log.debug("calculate()");
 
@@ -66,27 +62,5 @@ public class MandelbrotImpl {
             log.error("Executor waiting interrupted.");
             System.exit(1);
         }
-    }
-
-    /* Used for OneTarget */
-    public MandelbrotElement getElementAt(int x, int y) {
-        try {
-            return PixelsMandelbrot.elementsStaticMandelbrot[x][y];
-        } catch (Exception e) {
-            log.fatal("getElementAt()", e);
-            return null;
-        }
-    }
-
-    public void recalculatePixelsPositionsForThisZoom() {
-        PixelsMandelbrot.recalculatePixelsPositionsForThisZoom();
-    }
-
-    public void initializeDomainElements() {
-        PixelsMandelbrot.initializeDomainElements();
-    }
-
-    public void maskFullUpdate() {
-        PixelsMandelbrot.maskFullUpdate();
     }
 }
