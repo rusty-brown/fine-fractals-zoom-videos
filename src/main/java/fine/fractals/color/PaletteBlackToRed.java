@@ -1,0 +1,29 @@
+package fine.fractals.color;
+
+import fine.fractals.color.common.PaletteImpl;
+import fine.fractals.color.utils.ColorTest;
+import fine.fractals.color.utils.ColorUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.awt.*;
+
+import static fine.fractals.color.utils.ColorUtils.Function.circleUp;
+
+public class PaletteBlackToRed extends PaletteImpl {
+
+    private static final Logger log = LogManager.getLogger(PaletteBlackToRed.class);
+
+    public PaletteBlackToRed() {
+        log.debug("constructor");
+        ColorUtils.toPalette(spectrum, circleUp,
+                new Color(7, 5, 16),
+                new Color(255, 11, 10)
+        );
+    }
+
+    public static void main(String[] args) {
+        Palette = new PaletteBlackToRed();
+        ColorTest.execute();
+    }
+}
