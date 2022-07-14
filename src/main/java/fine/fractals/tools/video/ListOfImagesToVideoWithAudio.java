@@ -35,9 +35,9 @@ public class ListOfImagesToVideoWithAudio {
     @EditMe
     private static final String FINEBROT_IMAGE_LOCATION = "/home/lukas/Fractals/";
     @EditMe
-    private static final int RESOLUTION_WIDTH = 1920;
+    private static final int RESOLUTION_WIDTH = 1280;
     @EditMe
-    private static final int RESOLUTION_HEIGHT = 1080;
+    private static final int RESOLUTION_HEIGHT = 720;
 
     private static final ListOfImagesToVideoWithAudio VideoMaker = new ListOfImagesToVideoWithAudio();
     private final List<URL> urls = new ArrayList<>();
@@ -80,6 +80,7 @@ public class ListOfImagesToVideoWithAudio {
             recorder.setVideoCodec(AV_CODEC_ID_MPEG4);
             recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
             recorder.setFrameRate(25);
+            recorder.setVideoQuality(9.8);
             recorder.setSampleRate(audioGrabber.getSampleRate());
             recorder.setFormat("mp4");
             recorder.start();
@@ -95,18 +96,15 @@ public class ListOfImagesToVideoWithAudio {
 
             log.info("wait");
             final BufferedImage last = ImageIO.read(urls.get(urls.size() - 1));
-            renderImage(last, 75);
+            renderImage(last, 3 * 25);
 
             log.info("zoom out");
             Collections.reverse(urls);
             renderListOfImages();
 
-            log.info("wait");
-            final BufferedImage first = ImageIO.read(urls.get(urls.size() - 1));
-            renderImage(first, 100);
-
             log.info("video end");
-            renderImage(first, 11 * 25);
+            final BufferedImage first = ImageIO.read(urls.get(urls.size() - 1));
+            renderImage(first, 3 * 25);
 
             log.info("Add soundtrack");
             Frame audioFrame;
