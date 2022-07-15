@@ -1,7 +1,6 @@
 package fine.fractals.gpgpu;//package com.pieceofinfinity.fractal.engine;
 
 import fine.fractals.data.mandelbrot.MandelbrotElement;
-import org.jocl.CL;
 import org.jocl.Pointer;
 import org.jocl.Sizeof;
 import org.jocl.cl_mem;
@@ -17,6 +16,12 @@ import static org.jocl.CL.CL_TRUE;
 import static org.jocl.CL.clCreateBuffer;
 import static org.jocl.CL.clEnqueueNDRangeKernel;
 import static org.jocl.CL.clEnqueueReadBuffer;
+import static org.jocl.CL.clReleaseCommandQueue;
+import static org.jocl.CL.clReleaseContext;
+import static org.jocl.CL.clReleaseDevice;
+import static org.jocl.CL.clReleaseKernel;
+import static org.jocl.CL.clReleaseMemObject;
+import static org.jocl.CL.clReleaseProgram;
 import static org.jocl.CL.clSetKernelArg;
 import static org.jocl.Pointer.to;
 import static org.jocl.Sizeof.cl_double;
@@ -33,12 +38,11 @@ public class GPUHigh extends GPULow {
 
         init();
 
-        final int calculationSize = chunk.size();
-
         /*
          * Input data
          */
 
+        final int calculationSize = chunk.size();
         final double[] originRe = new double[calculationSize];
         final double[] originIm = new double[calculationSize];
         final Pointer pointerOriginRe = to(originRe);
@@ -62,8 +66,6 @@ public class GPUHigh extends GPULow {
         int kid = 0;
         clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memOriginRe));
         clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memOriginIm));
-
-        final long[] global_work_size = new long[]{calculationSize};
 
         /*
          * Output data
@@ -100,7 +102,7 @@ public class GPUHigh extends GPULow {
         final cl_mem memPathRe = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memPathsSize, pointerPathRe, null);
         final cl_mem memPathIm = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memPathsSize, pointerPathIm, null);
 
-        clEnqueueNDRangeKernel(commandQueue, KERNEL, 1, null, global_work_size, null, 0, null, null);
+        clEnqueueNDRangeKernel(commandQueue, KERNEL, 1, null, new long[]{calculationSize}, null, 0, null, null);
 
         clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memIterator));
         clEnqueueReadBuffer(commandQueue, memIterator, CL_TRUE, 0, memIndexSize, pointerIterator, 0, null, null);
@@ -148,23 +150,23 @@ public class GPUHigh extends GPULow {
          * Release memory objects
          */
 
-        CL.clReleaseMemObject(memOriginRe);
-        CL.clReleaseMemObject(memOriginIm);
-        CL.clReleaseMemObject(memIterator);
-        CL.clReleaseMemObject(memLength);
-        CL.clReleaseMemObject(memFrom);
-        CL.clReleaseMemObject(memTo);
-        CL.clReleaseMemObject(memPathRe);
-        CL.clReleaseMemObject(memPathIm);
+        clReleaseMemObject(memOriginRe);
+        clReleaseMemObject(memOriginIm);
+        clReleaseMemObject(memIterator);
+        clReleaseMemObject(memLength);
+        clReleaseMemObject(memFrom);
+        clReleaseMemObject(memTo);
+        clReleaseMemObject(memPathRe);
+        clReleaseMemObject(memPathIm);
 
         /*
          * Release kernel objects
          */
 
-        CL.clReleaseKernel(KERNEL);
-        CL.clReleaseProgram(PROGRAM);
-        CL.clReleaseCommandQueue(commandQueue);
-        CL.clReleaseContext(context);
-        CL.clReleaseDevice(device);
+        clReleaseKernel(KERNEL);
+        clReleaseProgram(PROGRAM);
+        clReleaseCommandQueue(commandQueue);
+        clReleaseContext(context);
+        clReleaseDevice(device);
     }
 }

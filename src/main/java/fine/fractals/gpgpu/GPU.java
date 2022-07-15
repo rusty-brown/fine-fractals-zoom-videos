@@ -7,5 +7,4 @@ public class GPU {
     public static GPUHigh rebuild() {
         return new GPUHigh();
     }
-
 }
