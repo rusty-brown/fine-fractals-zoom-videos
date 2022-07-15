@@ -6,11 +6,11 @@ import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.Mandelbrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.PathsFinebrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PerfectColorDistribution;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.SAVE_IMAGES;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.fractal.mandelbrot.MandelbrotCommonImpl.Mandelbrot;
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.ApplicationImpl.REPEAT;
 import static fine.fractals.machine.ApplicationImpl.iteration;

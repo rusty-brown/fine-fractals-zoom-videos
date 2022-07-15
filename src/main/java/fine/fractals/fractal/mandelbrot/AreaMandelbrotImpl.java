@@ -79,7 +79,6 @@ public class AreaMandelbrotImpl {
         return numbersIm[y];
     }
 
-    /* It will be carried by Calculation */
     public void screenToDomainCarry(Mem m, int x, int y) {
         try {
             m.re = numbersRe[x];

@@ -10,8 +10,6 @@ public abstract class MandelbrotCommonImpl {
 
     private static final Logger log = LogManager.getLogger(MandelbrotCommonImpl.class);
 
-    public static MandelbrotCommonImpl Mandelbrot;
-
     /*
      * Calculate Domain Values
      */
