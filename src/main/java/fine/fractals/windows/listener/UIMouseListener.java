@@ -3,16 +3,13 @@ package fine.fractals.windows.listener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
-import static fine.fractals.machine.ApplicationImpl.Application;
-import static fine.fractals.machine.ApplicationImpl.REPEAT;
-import static fine.fractals.machine.FractalEngineImpl.FractalEngine;
-import static fine.fractals.machine.FractalEngineImpl.calculationInProgress;
+import static fine.fractals.machine.TargetImpl.Target;
+import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class UIMouseListener implements MouseListener {
 
@@ -25,20 +22,13 @@ public class UIMouseListener implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent me) {
         log.debug("mouseClicked()");
-        if (!REPEAT) {
-            if (SwingUtilities.isRightMouseButton(me)) {
-                log.debug("Right click");
-                if (!calculationInProgress) {
-                    AreaMandelbrot.moveToCoordinates();
-                    AreaFinebrot.moveToCoordinates();
-                    Application.zoomIn();
-                    FractalEngine.start();
-                }
-            } else {
-                log.debug("Left click");
-            }
+        if (isRightMouseButton(me)) {
+            log.info("move to new coordinates");
+            log.info(Target.getTextRe() + " = " + Target.getTextIm());
+            AreaMandelbrot.moveToCoordinates();
+            AreaFinebrot.moveToCoordinates();
         } else {
-            log.debug("click skipped");
+            log.debug("Left click");
         }
     }
 

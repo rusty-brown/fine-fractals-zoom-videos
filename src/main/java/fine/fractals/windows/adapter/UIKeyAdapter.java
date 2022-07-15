@@ -16,10 +16,10 @@ import static fine.fractals.machine.TargetImpl.Target;
 import static fine.fractals.windows.MandelbrotWindow.showInfo;
 import static java.awt.event.KeyEvent.VK_C;
 import static java.awt.event.KeyEvent.VK_I;
+import static java.awt.event.KeyEvent.VK_K;
+import static java.awt.event.KeyEvent.VK_L;
 import static java.awt.event.KeyEvent.VK_M;
-import static java.awt.event.KeyEvent.VK_MINUS;
 import static java.awt.event.KeyEvent.VK_N;
-import static java.awt.event.KeyEvent.VK_PLUS;
 import static java.awt.event.KeyEvent.VK_R;
 
 public class UIKeyAdapter extends KeyAdapter {
@@ -50,11 +50,11 @@ public class UIKeyAdapter extends KeyAdapter {
                 Application.repaintMandelbrotWindow();
                 Application.repaintFinebrotWindow();
             }
-            case VK_PLUS -> {
+            case VK_K -> {
                 ITERATION_MAX *= 1.05;
                 log.info("increase ITERATION_MAX  = " + ITERATION_MAX);
             }
-            case VK_MINUS -> {
+            case VK_L -> {
                 ITERATION_MAX *= 0.95;
                 log.info("decrease ITERATION_MAX  = " + ITERATION_MAX);
             }
