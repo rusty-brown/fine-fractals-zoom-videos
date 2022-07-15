@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_MPEG4;
+import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_H264;
 import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_YUV420P;
 
 public class ListOfImagesToVideoWithAudio {
@@ -77,10 +77,10 @@ public class ListOfImagesToVideoWithAudio {
 
             log.info("recorder");
             recorder = new FFmpegFrameRecorder(VIDEO_NAME, RESOLUTION_WIDTH, RESOLUTION_HEIGHT, audioGrabber.getAudioChannels());
-            recorder.setVideoCodec(AV_CODEC_ID_MPEG4);
+            recorder.setVideoCodec(AV_CODEC_ID_H264);
             recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
             recorder.setFrameRate(25);
-            recorder.setVideoQuality(9.8);
+            recorder.setVideoQuality(9.9);
             recorder.setSampleRate(audioGrabber.getSampleRate());
             recorder.setFormat("mp4");
             recorder.start();
