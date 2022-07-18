@@ -50,7 +50,7 @@ Start calculation below, and repeat it, for at most `ITERATION_MAX` times, or un
 > re -> (re * re) - (im * im) + originRe  
 > im -> 2 * re * im + originIm
 
-For each specific pixel `re` and `im` jumps around in spirals as calculation progresses,  
+Durring the repeated calculation process, point `re, im` jumps around in spirals,  
 `originRe`, and `originIm` are constant.
 
 In deliberately confusing terminology of complex numbers
