@@ -102,8 +102,8 @@ public class Stats {
             final int newElementsAll = newElementsLong + newElementsTooShort + newElementsTooLong;
             final double domainElementsToNewCalculationPathPoints = ((double) pathsNewPointsAmount) / ((double) newElementsAll);
 
-            log.info(String.format("- newElementsAll:           %s \t(%s)", averagePathLength, averagePathLength_measure));
-            log.info(String.format("- averagePathLength:        %s \t(%s)", averagePathLength, averagePathLength_measure));
+            log.info(String.format("newElementsAll:    %s \t(%s)", averagePathLength, averagePathLength_measure));
+            log.info(String.format("averagePathLength: %s \t(%s)", averagePathLength, averagePathLength_measure));
 
             log.info("domainElementsToNewCalculationPathPoints:   " + domainElementsToNewCalculationPathPoints);
         }

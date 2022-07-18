@@ -81,7 +81,7 @@ public class ListOfImagesToVideoWithAudio {
             recorder.setVideoCodec(AV_CODEC_ID_H264);
             recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
             recorder.setFrameRate(25);
-            recorder.setVideoQuality(9.9);
+            recorder.setVideoQuality(9.5);
             recorder.setSampleRate(audioGrabber.getSampleRate());
             recorder.setFormat("mp4");
             recorder.start();
