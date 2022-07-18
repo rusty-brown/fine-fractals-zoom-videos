@@ -11,8 +11,8 @@ This app computes at least one calculation path for each pixel of Mandelbrot dom
 
 All these **calculation paths together** are what makes the **Finebrot fractal**.
 
-![Infinite Finebrot](src/main/resources/images/Finebrot.jpg)
-![Infinite Finebrot](src/main/resources/images/Fat-Star.jpg)
+![Finebrot](src/main/resources/images/Finebrot.jpg)
+![Fat Star](src/main/resources/images/Fat-Star.jpg)
 
 A mathematician might call generated Finebrot an **orbital density map**
 
@@ -31,6 +31,14 @@ In Mandelbrot window, they are shown in `red` color.
 `re`, `im` - numbers represent `double` x,y coordinates (point), located in the center of a pixel
 
 `m` - carrier object for effective calculation
+
+## Java made video with audio from list of generated images
+
+Click to watch on YouTube
+
+[![Finebrot zoom video](src/main/resources/images/Finebrot_Top_824.jpg)](https://youtu.be/7SpfYgG9m6M)
+
+https://youtu.be/7SpfYgG9m6M
 
 ## Mandelbrot calculation
 
@@ -104,7 +112,7 @@ For **full HD** video it is **recommended** to have at least **16GB RAM**.
 
 To save memory set `RESOLUTION_MULTIPLIER = none`.
 
-![Infinite Finebrot](src/main/resources/images/Euler.jpg)
+![Euler](src/main/resources/images/Euler.jpg)
 
 ## How to make Video from images with sound
 
