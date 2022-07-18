@@ -10,6 +10,7 @@ import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -138,5 +139,18 @@ public class ListOfImagesToVideoWithAudio {
         for (int i = 0; i < frames; i++) {
             recorder.record(converter.getFrame(image));
         }
+    }
+
+    @SuppressWarnings(value = "unused")
+    public static BufferedImage rotateClockwise(BufferedImage src) {
+        final int w = src.getWidth();
+        final int h = src.getHeight();
+        final BufferedImage dest = new BufferedImage(h, w, src.getType());
+        final Graphics2D graphics2D = dest.createGraphics();
+        /* sets new graphic origin */
+        graphics2D.translate((h - w) / 2, (h - w) / 2);
+        graphics2D.rotate(Math.PI / 2, h / 2.0, w / 2.0);
+        graphics2D.drawRenderedImage(src, null);
+        return dest;
     }
 }
