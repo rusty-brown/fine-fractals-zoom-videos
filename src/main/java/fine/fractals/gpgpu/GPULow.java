@@ -1,8 +1,7 @@
-package fine.fractals.gpgpu;//package com.pieceofinfinity.fractal.engine;
+package fine.fractals.gpgpu;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jocl.CL;
 import org.jocl.Pointer;
 import org.jocl.cl_command_queue;
 import org.jocl.cl_context;
@@ -23,6 +22,7 @@ import static org.jocl.CL.clCreateContext;
 import static org.jocl.CL.clCreateKernel;
 import static org.jocl.CL.clCreateProgramWithSource;
 import static org.jocl.CL.clGetDeviceIDs;
+import static org.jocl.CL.clGetDeviceInfo;
 import static org.jocl.CL.clGetPlatformIDs;
 import static org.jocl.CL.setExceptionsEnabled;
 
@@ -30,12 +30,11 @@ abstract sealed class GPULow permits GPUHigh {
 
 	private static final Logger log = LogManager.getLogger(GPULow.class);
 
-	protected cl_context context;
-	protected cl_command_queue commandQueue;
-
-	protected cl_program PROGRAM;
-	protected cl_kernel KERNEL;
-	protected cl_device_id device;
+	final protected cl_context context;
+	final protected cl_command_queue commandQueue;
+	final protected cl_program PROGRAM;
+	final protected cl_kernel KERNEL;
+	final protected cl_device_id device;
 
 	protected GPULow() {
 
@@ -71,7 +70,7 @@ abstract sealed class GPULow permits GPUHigh {
 		this.device = devices[deviceIndex];
 
 		for (int i = 0; i < numDevices; i++) {
-			log.debug("Device " + (i + 1) + " of " + numDevices + ": " + getString(devices[i], CL_DEVICE_NAME));
+			log.debug("Device " + (i + 1) + " of " + numDevices + ": " + getDeviceName(devices[i]));
 		}
 
 		context = clCreateContext(contextProperties, 1, new cl_device_id[]{device}, null, null, null);
@@ -81,22 +80,11 @@ abstract sealed class GPULow permits GPUHigh {
 		KERNEL = clCreateKernel(PROGRAM, "calculateFractalValues", null);
 	}
 
-	protected String kb(long bytes) {
-		return ((long) Math.floor(bytes / 1024)) + " Kb";
-	}
-
-	/**
-	 * Returns the value of the device info parameter with the given name
-	 *
-	 * @param device    The device
-	 * @param paramName The parameter name
-	 * @return The value
-	 */
-	private String getString(cl_device_id device, int paramName) {
+	private String getDeviceName(cl_device_id device) {
 		long[] size = new long[1];
-		CL.clGetDeviceInfo(device, paramName, 0, null, size);
+		clGetDeviceInfo(device, CL_DEVICE_NAME, 0, null, size);
 		byte[] buffer = new byte[(int) size[0]];
-		CL.clGetDeviceInfo(device, paramName, buffer.length, Pointer.to(buffer), null);
+		clGetDeviceInfo(device, CL_DEVICE_NAME, buffer.length, Pointer.to(buffer), null);
 		return new String(buffer, 0, buffer.length - 1);
 	}
 }

@@ -48,50 +48,6 @@ public abstract class ColorUtils {
         }
     }
 
-    public static void toPaletteLinearSpectrum(ArrayList<Color> SPECTRUM, Color... colors) {
-        log.debug("toPaletteLinearSpectrum()");
-        double step = 1;
-        Color colorA = colors[0];
-        Color colorB = colors[1];
-        toPaletteLinear(SPECTRUM, colorA, colorB, step);
-        for (int i = 1; i < colors.length; i++) {
-            colorA = colorB;
-            colorB = colors[i];
-            toPaletteLinear(SPECTRUM, colorA, colorB, step);
-        }
-    }
-
-    public static void toPaletteLinear(ArrayList<Color> SPECTRUM, Color from, Color to, double step) {
-        log.debug("toPaletteLinear()");
-        final int rf = from.getRed();
-        final int gf = from.getGreen();
-        final int bf = from.getBlue();
-        final int r = to.getRed() - rf;
-        final int g = to.getGreen() - gf;
-        final int b = to.getBlue() - bf;
-
-        final int m = max(r, g, b);
-
-        final double rr = ((double) r / (double) m);
-        final double gg = ((double) g / (double) m);
-        final double bb = ((double) b / (double) m);
-
-        if (m < 0) {
-            step *= (-1);
-        }
-        for (double i = 0; a(i) < a(m); i = i + step) {
-
-            /*
-             * Add colors to Palette
-             */
-            SPECTRUM.add(new Color(
-                    (int) (rf + (i * rr)),
-                    (int) (gf + (i * gg)),
-                    (int) (bf + (i * bb))
-            ));
-        }
-    }
-
     public static void toPalette(ArrayList<Color> SPECTRUM, Function function, Color from, Color to) {
         log.debug("toPalette()");
         final int rFrom = from.getRed();

@@ -1,11 +1,9 @@
 package fine.fractals.machine;
 
-import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mem.Mem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.Mandelbrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_HEIGHT;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTION_WIDTH;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
@@ -25,7 +23,6 @@ public class TargetImpl {
     private int scrIm;
     private int scrCornerRe;
     private int scrCornerIm;
-    private MandelbrotElement mandelbrotElement = null;
 
     private TargetImpl() {
         log.debug("constructor");
@@ -42,9 +39,7 @@ public class TargetImpl {
             String[] tmp = AreaMandelbrot.cToString(m, this.scrCornerRe, this.scrCornerIm);
             this.cTextRe = tmp[0];
             this.cTextIm = tmp[1];
-            mandelbrotElement = Mandelbrot.getElementAt(mousePositionX, mousePositionY);
         } else {
-            mandelbrotElement = null;
             try {
                 String[] tmp = AreaMandelbrot.cToString(m, this.scrCornerRe, this.scrCornerIm);
                 this.cTextRe = tmp[0];

@@ -1,4 +1,4 @@
-package fine.fractals.gpgpu;//package com.pieceofinfinity.fractal.engine;
+package fine.fractals.gpgpu;
 
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import org.jocl.Pointer;

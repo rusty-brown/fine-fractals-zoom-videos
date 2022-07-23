@@ -1,6 +1,5 @@
 package fine.fractals.fractal.mandelbrot;
 
-import fine.fractals.data.mandelbrot.MandelbrotElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,22 +7,13 @@ import static fine.fractals.fractal.mandelbrot.PixelsMandelbrotImpl.PixelsMandel
 
 public abstract class MandelbrotCommonImpl {
 
+    @SuppressWarnings(value = "unused")
     private static final Logger log = LogManager.getLogger(MandelbrotCommonImpl.class);
 
     /*
      * Calculate Domain Values
      */
     public abstract void calculate();
-
-    /* Used for OneTarget */
-    public MandelbrotElement getElementAt(int x, int y) {
-        try {
-            return PixelsMandelbrot.elementsStaticMandelbrot[x][y];
-        } catch (Exception e) {
-            log.fatal("getElementAt()", e);
-            return null;
-        }
-    }
 
     public void recalculatePixelsPositionsForThisZoom() {
         PixelsMandelbrot.recalculatePixelsPositionsForThisZoom();
