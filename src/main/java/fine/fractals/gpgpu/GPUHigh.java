@@ -29,14 +29,12 @@ import static org.jocl.Sizeof.cl_int;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class GPUHigh extends GPULow {
+public final class GPUHigh extends GPULow {
 
     GPUHigh() {
     }
 
     public void calculate(ArrayList<MandelbrotElement> chunk) {
-
-        init();
 
         /*
          * Input data
@@ -101,6 +99,10 @@ public class GPUHigh extends GPULow {
         final cl_mem memTo = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memIndexSize, pointerTo, null);
         final cl_mem memPathRe = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memPathsSize, pointerPathRe, null);
         final cl_mem memPathIm = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, memPathsSize, pointerPathIm, null);
+
+        /*
+         * Drop data on GPU
+         */
 
         clEnqueueNDRangeKernel(commandQueue, KERNEL, 1, null, new long[]{calculationSize}, null, 0, null, null);
 

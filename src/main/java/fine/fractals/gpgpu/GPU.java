@@ -1,6 +1,6 @@
 package fine.fractals.gpgpu;
 
-public class GPU {
+public abstract class GPU {
 
     static final int GPU_COUNT = 1;
 

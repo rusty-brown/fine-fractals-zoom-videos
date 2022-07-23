@@ -26,7 +26,7 @@ import static org.jocl.CL.clGetDeviceIDs;
 import static org.jocl.CL.clGetPlatformIDs;
 import static org.jocl.CL.setExceptionsEnabled;
 
-abstract class GPULow {
+abstract sealed class GPULow permits GPUHigh {
 
 	private static final Logger log = LogManager.getLogger(GPULow.class);
 
@@ -37,7 +37,7 @@ abstract class GPULow {
 	protected cl_kernel KERNEL;
 	protected cl_device_id device;
 
-	protected void init() {
+	protected GPULow() {
 
 		final int platformIndex = 0;
 		final int deviceIndex = 0;
@@ -48,11 +48,13 @@ abstract class GPULow {
 		int[] numPlatformsArray = new int[GPU_COUNT];
 		clGetPlatformIDs(0, null, numPlatformsArray);
 		int numPlatforms = numPlatformsArray[0];
+		log.info("numPlatforms " + numPlatforms);
 
 		// Obtain a platform ID
 		cl_platform_id[] platforms = new cl_platform_id[numPlatforms];
 		clGetPlatformIDs(platforms.length, platforms, null);
 		cl_platform_id platform = platforms[platformIndex];
+		log.info("platform " + platform);
 
 		// Initialize the context properties
 		cl_context_properties contextProperties = new cl_context_properties();
