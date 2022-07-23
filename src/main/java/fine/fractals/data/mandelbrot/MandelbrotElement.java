@@ -39,10 +39,6 @@ public class MandelbrotElement implements Comparable<MandelbrotElement> {
         return state == FinishedSuccessPast || state == FinishedSuccess;
     }
 
-    public boolean isFinishedSuccessNow() {
-        return state == FinishedSuccess;
-    }
-
     public boolean isFinishedSuccessPast() {
         return state == FinishedSuccessPast;
     }
