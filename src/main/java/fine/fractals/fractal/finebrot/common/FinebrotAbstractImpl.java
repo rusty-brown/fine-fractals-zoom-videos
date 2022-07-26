@@ -4,6 +4,7 @@ import fine.fractals.data.Stats;
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mandelbrot.ResolutionMultiplier;
+import fine.fractals.fractal.finebrot.PixelsFinebrotImpl;
 import fine.fractals.fractal.mandelbrot.MandelbrotCommonImpl;
 import fine.fractals.perfect.coloring.common.PerfectColorDistributionAbstract;
 import org.apache.logging.log4j.LogManager;
@@ -29,6 +30,7 @@ public abstract class FinebrotAbstractImpl {
      */
     public static final int CALCULATION_BOUNDARY = 4;
     private static final Logger log = LogManager.getLogger(FinebrotAbstractImpl.class);
+    public static PixelsFinebrotImpl PixelsFinebrot;
     /**
      * Image resolution height & width
      *  800  600

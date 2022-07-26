@@ -15,9 +15,6 @@ public abstract class FractalGPU extends FinebrotAbstractImpl {
 
     private static final Logger log = LogManager.getLogger(FractalGPU.class);
 
-    public static PixelsFinebrotImpl PixelsFinebrot;
-
-
     public FractalGPU() {
         log.debug("constructor");
         PixelsFinebrot = new PixelsFinebrotImpl();

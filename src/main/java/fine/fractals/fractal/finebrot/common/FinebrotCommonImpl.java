@@ -10,8 +10,6 @@ public abstract class FinebrotCommonImpl extends FinebrotAbstractImpl {
 
     private static final Logger log = LogManager.getLogger(FinebrotCommonImpl.class);
 
-    public static PixelsFinebrotImpl PixelsFinebrot;
-
     public FinebrotCommonImpl() {
         log.debug("constructor");
         PixelsFinebrot = new PixelsFinebrotImpl();
