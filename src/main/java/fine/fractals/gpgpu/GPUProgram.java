@@ -14,20 +14,7 @@ public class GPUProgram {
             + "         && im > " + AreaFinebrot.borderLowIm + "\n"
             + "         && im < " + AreaFinebrot.borderHighIm + ";\n"
             + "}\n"
-            + "\n"
-            + "__global int start = 0;\n"
-            + "inline int[] save("
-            + "         __private double *re,"
-            + "         __private double *im) {\n"
-            + "    int f = start;\n"
-            + "    start = start + re.length + 1;\n"
-            + "    int t = f + re.length;\n"
-            + "    for (int i = f; i < t; i++) {;\n"
-            + "         pathRe[i] = re;\n"
-            + "         pathIm[i] = im;\n"
-            + "    };\n"
-            + "    return int[]{f, t};\n"
-            + "}\n"
+            + "__global int start;"
             + "\n"
             + "__kernel void calculateFractalValues("
             + "         __global double *originRe,"
@@ -44,15 +31,15 @@ public class GPUProgram {
             + "     double ore = re;\n"
             + "     double oim = im;\n"
             + "     double temp;\n"
-            /* temp paths*/
-            + "     double[] pRe;\n"
-            + "     double[] pIm;\n"
+            /* temp paths */
+            + "     double *pRe;\n"
+            + "     double *pIm;\n"
             + "     int ite = 0;\n"
             + "     int len = 0;\n"
             //@Formatter:off
-            + "     while (" + GPUMath.quadrance + " < " + CALCULATION_BOUNDARY + " && iterator < + " + ITERATION_MAX + ") {\n"
-            + 				   GPUMath.square
-            + 				   GPUMath.plusOrigin
+            + "     while (" + GPUMath.quadrance + " < " + CALCULATION_BOUNDARY + " && ite < " + ITERATION_MAX + ") {\n"
+            +                  GPUMath.square
+            +                  GPUMath.plusOrigin
             //@Formatter:on
             + "         if (contains(re, im)) {\n"
             + "             pRe[len] = re;\n"
@@ -61,11 +48,19 @@ public class GPUProgram {
             + "         }\n"
             + "         ite++;\n"
             + "     }\n"
-            + "     if (ite < " + ITERATION_MAX + " {\n"
+            + "     if (ite < " + ITERATION_MAX + ") {\n"
             + "         length[gid] = len;\n"
-            + "         int[] fromTo = save(pRe, pIm);\n"
-            + "         from[gid] = fromTo[0];\n"
-            + "         to[gid] = fromTo[1];\n"
+
+            + "         int f = start;\n"
+            + "         start = start + len;\n"
+            + "         int t = f + len;\n"
+            + "         for (int i = f; i < t; i++) {\n"
+            + "             pathRe[i] = pRe[i];\n"
+            + "             pathIm[i] = pIm[i];\n"
+            + "         };\n"
+
+            + "         from[gid] = f;\n"
+            + "         to[gid] = t;\n"
             + "     } else {\n"
             + "         length[gid] = 0;\n"
             + "         from[gid] = 0;\n"

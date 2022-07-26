@@ -3,7 +3,7 @@ package fine.fractals.gpgpu;
 public abstract class GPUMath {
 
     public static final String quadrance = """
-            (re * re) + (im * im);
+            (re * re) + (im * im)
             """;
 
     public static final String square = """
