@@ -9,20 +9,7 @@ import java.util.ArrayList;
 
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_min;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.PathsFinebrot;
-import static org.jocl.CL.CL_MEM_COPY_HOST_PTR;
-import static org.jocl.CL.CL_MEM_READ_ONLY;
-import static org.jocl.CL.CL_MEM_READ_WRITE;
-import static org.jocl.CL.CL_TRUE;
-import static org.jocl.CL.clCreateBuffer;
-import static org.jocl.CL.clEnqueueNDRangeKernel;
-import static org.jocl.CL.clEnqueueReadBuffer;
-import static org.jocl.CL.clReleaseCommandQueue;
-import static org.jocl.CL.clReleaseContext;
-import static org.jocl.CL.clReleaseDevice;
-import static org.jocl.CL.clReleaseKernel;
-import static org.jocl.CL.clReleaseMemObject;
-import static org.jocl.CL.clReleaseProgram;
-import static org.jocl.CL.clSetKernelArg;
+import static org.jocl.CL.*;
 import static org.jocl.Pointer.to;
 import static org.jocl.Sizeof.cl_double;
 import static org.jocl.Sizeof.cl_int;
@@ -61,22 +48,18 @@ public final class GPUHigh extends GPULow {
             gid++;
         }
 
-        int kid = 0;
-        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memOriginRe));
-        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memOriginIm));
-
         /*
          * Output data
          */
 
         final int[] iterator = new int[calculationSize]; /* amount of iteration before path diverged */
-        final int[] length = new int[calculationSize];   /* calculation path length, only elements which hit Area Finebrot */
+        final int[] length = new int[calculationSize];   /* calculation path length, only elements contained in Area Finebrot */
         final int[] from = new int[calculationSize];     /* path index from */
         final int[] to = new int[calculationSize];       /* path index to */
 
         /*
          * There was at most 9.48 x more elements in paths then total new elements calculated
-         * Even for High ITERATION_MAX only few points hits Finebrot Area.
+         * Even for High ITERATION_MAX only few points hit Finebrot Area.
          * (That is why ITERATION_MAX was increased in the first place)
          */
         final int expectedCombinedPathsLength = calculationSize * 11;
@@ -104,16 +87,26 @@ public final class GPUHigh extends GPULow {
          * Drop data on GPU
          */
 
+        int kid = 0;
+        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memOriginRe));
+        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memOriginIm));
+        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memIterator));
+        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memLength));
+        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memFrom));
+        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memTo));
+        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memPathRe));
+        clSetKernelArg(KERNEL, kid, Sizeof.cl_mem, to(memPathIm));
+
         clEnqueueNDRangeKernel(commandQueue, KERNEL, 1, null, new long[]{calculationSize}, null, 0, null, null);
 
-        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memIterator));
+        /*
+         * Enqueue read buffers
+         */
+
         clEnqueueReadBuffer(commandQueue, memIterator, CL_TRUE, 0, memIndexSize, pointerIterator, 0, null, null);
         clEnqueueReadBuffer(commandQueue, memLength, CL_TRUE, 0, memIndexSize, pointerLength, 0, null, null);
         clEnqueueReadBuffer(commandQueue, memFrom, CL_TRUE, 0, memIndexSize, pointerFrom, 0, null, null);
         clEnqueueReadBuffer(commandQueue, memTo, CL_TRUE, 0, memIndexSize, pointerTo, 0, null, null);
-
-        clSetKernelArg(KERNEL, kid++, Sizeof.cl_mem, to(memPathRe));
-        clSetKernelArg(KERNEL, kid, Sizeof.cl_mem, to(memPathIm));
         clEnqueueReadBuffer(commandQueue, memPathRe, CL_TRUE, 0, memPathsSize, pointerPathRe, 0, null, null);
         clEnqueueReadBuffer(commandQueue, memPathIm, CL_TRUE, 0, memPathsSize, pointerPathIm, 0, null, null);
 

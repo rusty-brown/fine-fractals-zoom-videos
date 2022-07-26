@@ -2,34 +2,18 @@ package fine.fractals.gpgpu;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jocl.Pointer;
-import org.jocl.cl_command_queue;
-import org.jocl.cl_context;
-import org.jocl.cl_context_properties;
-import org.jocl.cl_device_id;
-import org.jocl.cl_kernel;
-import org.jocl.cl_platform_id;
-import org.jocl.cl_program;
+import org.jocl.*;
+
+import java.nio.ByteBuffer;
 
 import static fine.fractals.gpgpu.GPU.GPU_COUNT;
 import static fine.fractals.gpgpu.GPUProgram.PROGRAM_SOURCE_CODE;
-import static org.jocl.CL.CL_CONTEXT_PLATFORM;
-import static org.jocl.CL.CL_DEVICE_NAME;
-import static org.jocl.CL.CL_DEVICE_TYPE_ALL;
-import static org.jocl.CL.clBuildProgram;
-import static org.jocl.CL.clCreateCommandQueueWithProperties;
-import static org.jocl.CL.clCreateContext;
-import static org.jocl.CL.clCreateKernel;
-import static org.jocl.CL.clCreateProgramWithSource;
-import static org.jocl.CL.clGetDeviceIDs;
-import static org.jocl.CL.clGetDeviceInfo;
-import static org.jocl.CL.clGetPlatformIDs;
-import static org.jocl.CL.setExceptionsEnabled;
+import static org.jocl.CL.*;
 
 abstract sealed class GPULow permits GPUHigh {
 
     private static final Logger log = LogManager.getLogger(GPULow.class);
-
+    private static boolean first = true;
     final protected cl_context context;
     final protected cl_command_queue commandQueue;
     final protected cl_program PROGRAM;
@@ -69,8 +53,13 @@ abstract sealed class GPULow permits GPUHigh {
         clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, numDevices, devices, null);
         this.device = devices[deviceIndex];
 
-        for (int i = 0; i < numDevices; i++) {
-            log.debug("Device " + (i + 1) + " of " + numDevices + ": " + getDeviceName(devices[i]));
+        if (first) {
+            first = false;
+            for (int i = 0; i < numDevices; i++) {
+                log.info("Device " + (i + 1) + " of " + numDevices + ": " + getDeviceString(devices[i], CL_DEVICE_NAME));
+                log.info("DEVICE_VERSION: " + getDeviceString(devices[i], CL_DEVICE_VERSION));
+                log.info("MAX_CONSTANT_BUFFER_SIZE: " + kb(getDeviceLong(devices[i], CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE)));
+            }
         }
 
         context = clCreateContext(contextProperties, 1, new cl_device_id[]{device}, null, null, null);
@@ -80,11 +69,25 @@ abstract sealed class GPULow permits GPUHigh {
         KERNEL = clCreateKernel(PROGRAM, "calculateFractalValues", null);
     }
 
-    private String getDeviceName(cl_device_id device) {
+    private byte[] getDeviceInfo(cl_device_id device, int paramName) {
         long[] size = new long[1];
-        clGetDeviceInfo(device, CL_DEVICE_NAME, 0, null, size);
+        clGetDeviceInfo(device, paramName, 0, null, size);
         byte[] buffer = new byte[(int) size[0]];
-        clGetDeviceInfo(device, CL_DEVICE_NAME, buffer.length, Pointer.to(buffer), null);
+        clGetDeviceInfo(device, paramName, buffer.length, Pointer.to(buffer), null);
+        return buffer;
+    }
+
+    private String getDeviceString(cl_device_id device, int paramName) {
+        byte[] buffer = getDeviceInfo(device, paramName);
         return new String(buffer, 0, buffer.length - 1);
+    }
+
+    private long getDeviceLong(cl_device_id device, int paramName) {
+        byte[] buffer = getDeviceInfo(device, paramName);
+        return ByteBuffer.wrap(buffer, 0, buffer.length).getLong();
+    }
+
+    protected String kb(long bytes) {
+        return ((long) Math.floor(bytes / (double) 1024)) + " KB";
     }
 }

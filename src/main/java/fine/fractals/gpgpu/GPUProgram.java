@@ -6,15 +6,7 @@ import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATI
 
 public class GPUProgram {
 
-    public static final String PROGRAM_SOURCE_CODE = "inline int contains("
-            + "         __private double re,"
-            + "         __private double im) {\n"
-            + "     return re > " + AreaFinebrot.borderLowRe + "\n"
-            + "         && re < " + AreaFinebrot.borderHighRe + "\n"
-            + "         && im > " + AreaFinebrot.borderLowIm + "\n"
-            + "         && im < " + AreaFinebrot.borderHighIm + ";\n"
-            + "}\n"
-            + "__global int start;"
+    public static final String PROGRAM_SOURCE_CODE = "__global int start;"
             + "\n"
             + "__kernel void calculateFractalValues("
             + "         __global double *originRe,"
@@ -41,7 +33,11 @@ public class GPUProgram {
             +                  GPUMath.square
             +                  GPUMath.plusOrigin
             //@Formatter:on
-            + "         if (contains(re, im)) {\n"
+            + "         if (re > " + AreaFinebrot.borderLowRe + "\n"
+            + "             && re < " + AreaFinebrot.borderHighRe + "\n"
+            + "             && im > " + AreaFinebrot.borderLowIm + "\n"
+            + "             && im < " + AreaFinebrot.borderHighIm
+            + ") {\n"
             + "             pRe[len] = re;\n"
             + "             pIm[len] = im;\n"
             + "             len++;\n"
@@ -50,7 +46,6 @@ public class GPUProgram {
             + "     }\n"
             + "     if (ite < " + ITERATION_MAX + ") {\n"
             + "         length[gid] = len;\n"
-
             + "         int f = start;\n"
             + "         start = start + len;\n"
             + "         int t = f + len;\n"
@@ -58,7 +53,6 @@ public class GPUProgram {
             + "             pathRe[i] = pRe[i];\n"
             + "             pathIm[i] = pIm[i];\n"
             + "         };\n"
-
             + "         from[gid] = f;\n"
             + "         to[gid] = t;\n"
             + "     } else {\n"
