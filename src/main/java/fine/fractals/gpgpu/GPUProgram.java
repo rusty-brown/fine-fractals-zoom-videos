@@ -1,12 +1,11 @@
 package fine.fractals.gpgpu;
 
 import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
-import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.CALCULATION_BOUNDARY;
-import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_MAX;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.*;
 
 public class GPUProgram {
 
-    public static final String PROGRAM_SOURCE_CODE = "__global int start;"
+    public static final String PROGRAM_SOURCE_CODE = "__global int START;"
             + "\n"
             + "__kernel void calculateFractalValues("
             + "         __global double *originRe,"
@@ -23,43 +22,51 @@ public class GPUProgram {
             + "     double ore = re;\n"
             + "     double oim = im;\n"
             + "     double temp;\n"
-            /* temp paths */
-            + "     double *pRe;\n"
-            + "     double *pIm;\n"
             + "     int ite = 0;\n"
             + "     int len = 0;\n"
-            //@Formatter:off
             + "     while (" + GPUMath.quadrance + " < " + CALCULATION_BOUNDARY + " && ite < " + ITERATION_MAX + ") {\n"
-            +                  GPUMath.square
-            +                  GPUMath.plusOrigin
-            //@Formatter:on
-            + "         if (re > " + AreaFinebrot.borderLowRe + "\n"
-            + "             && re < " + AreaFinebrot.borderHighRe + "\n"
-            + "             && im > " + AreaFinebrot.borderLowIm + "\n"
-            + "             && im < " + AreaFinebrot.borderHighIm
-            + ") {\n"
-            + "             pRe[len] = re;\n"
-            + "             pIm[len] = im;\n"
+            + "         \n"
+            + GPUMath.square
+            + GPUMath.plusOrigin
+            + "         \n"
+            + "         if (re > " + AreaFinebrot.borderLowRe + " && re < " + AreaFinebrot.borderHighRe + " && im > " + AreaFinebrot.borderLowIm + " && im < " + AreaFinebrot.borderHighIm + ") {\n"
+            /*              Will calculate path again if it was a good path */
             + "             len++;\n"
             + "         }\n"
             + "         ite++;\n"
             + "     }\n"
-            + "     if (ite < " + ITERATION_MAX + ") {\n"
-            + "         length[gid] = len;\n"
-            + "         int f = start;\n"
-            + "         start = start + len;\n"
+            + "     \n"
+            + "     iterator[gid] = ite;\n"
+            + "     \n"
+            + "     if (ite < " + ITERATION_MAX + " && len >= " + ITERATION_min + ") {\n"
+            + "         int f = START;\n"
+            + "         START = START + len;\n"
             + "         int t = f + len;\n"
-            + "         for (int i = f; i < t; i++) {\n"
-            + "             pathRe[i] = pRe[i];\n"
-            + "             pathIm[i] = pIm[i];\n"
-            + "         };\n"
+            + "         \n"
+            + "         length[gid] = len;\n"
             + "         from[gid] = f;\n"
             + "         to[gid] = t;\n"
+            + "         \n"
+            + "         len = 0;\n"
+            + "         re = ore;\n"
+            + "         im = oim;\n"
+            + "         for (int i = 0; i < ite; i++) {\n"
+            + "             \n"
+            + GPUMath.square
+            + GPUMath.plusOrigin
+            + "             \n"
+            + "             if (re > " + AreaFinebrot.borderLowRe + " && re < " + AreaFinebrot.borderHighRe + " && im > " + AreaFinebrot.borderLowIm + " && im < " + AreaFinebrot.borderHighIm + ") {\n"
+            + "                 pathRe[f + len] = re;\n"
+            + "                 pathIm[f + len] = im;\n"
+            + "                 len++;\n"
+            + "             }\n"
+            + "         }\n"
             + "     } else {\n"
+            + "         \n"
             + "         length[gid] = 0;\n"
             + "         from[gid] = 0;\n"
             + "         to[gid] = 0;\n"
+            + "         \n"
             + "     }\n"
-            + "     iterator[gid] = ite;\n"
             + "}\n";
 }

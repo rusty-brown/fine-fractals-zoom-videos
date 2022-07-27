@@ -60,6 +60,7 @@ abstract sealed class GPULow permits GPUHigh {
                 log.info("DEVICE_VERSION: " + getDeviceString(devices[i], CL_DEVICE_VERSION));
                 log.info("MAX_CONSTANT_BUFFER_SIZE: " + kb(getDeviceLong(devices[i], CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE)));
             }
+            log.info(PROGRAM_SOURCE_CODE);
         }
 
         context = clCreateContext(contextProperties, 1, new cl_device_id[]{device}, null, null, null);
@@ -88,6 +89,6 @@ abstract sealed class GPULow permits GPUHigh {
     }
 
     protected String kb(long bytes) {
-        return ((long) Math.floor(bytes / (double) 1024)) + " KB";
+        return ((long) Math.floor(bytes / (double) (1024 * 1024))) + " MB";
     }
 }
