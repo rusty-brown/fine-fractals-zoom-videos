@@ -1,6 +1,8 @@
 package fine.fractals.gpgpu;
 
 import fine.fractals.data.mandelbrot.MandelbrotElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jocl.Pointer;
 import org.jocl.Sizeof;
 import org.jocl.cl_mem;
@@ -14,9 +16,11 @@ import static org.jocl.Pointer.to;
 import static org.jocl.Sizeof.cl_double;
 import static org.jocl.Sizeof.cl_int;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 public final class GPUHigh extends GPULow {
+
+    @SuppressWarnings(value = "unused")
+    private static final Logger log = LogManager.getLogger(GPUHigh.class);
 
     GPUHigh() {
     }
@@ -33,12 +37,9 @@ public final class GPUHigh extends GPULow {
         final Pointer pointerOriginRe = to(originRe);
         final Pointer pointerOriginIm = to(originIm);
 
-        final int memOriginsSize = cl_double * calculationSize;
-        final cl_mem memOriginRe = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, memOriginsSize, pointerOriginRe, null);
-        final cl_mem memOriginIm = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, memOriginsSize, pointerOriginIm, null);
-
         /*
          * Initiate input data
+         * It is necessary to initiate data before buffering memory
          */
 
         int gid = 0;
@@ -47,6 +48,10 @@ public final class GPUHigh extends GPULow {
             originIm[gid] = el.originIm;
             gid++;
         }
+
+        final int memOriginsSize = cl_double * calculationSize;
+        final cl_mem memOriginRe = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, memOriginsSize, pointerOriginRe, null);
+        final cl_mem memOriginIm = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, memOriginsSize, pointerOriginIm, null);
 
         /*
          * Output data
@@ -127,8 +132,6 @@ public final class GPUHigh extends GPULow {
                 int f = from[gid];
                 int t = to[gid];
 
-                assertNotEquals(0, t);
-                assertNotEquals(0, f);
                 assertEquals(t - f, l);
 
                 final ArrayList<double[]> path = new ArrayList<>();
@@ -137,7 +140,6 @@ public final class GPUHigh extends GPULow {
                 }
                 PathsFinebrot.addEscapePathLong(path);
             }
-
             gid++;
         }
 
