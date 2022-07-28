@@ -24,12 +24,12 @@ import static fine.fractals.machine.ApplicationImpl.iteration;
  */
 public abstract class FinebrotAbstractImpl {
 
+    private static final Logger log = LogManager.getLogger(FinebrotAbstractImpl.class);
     /**
      * 4 worked well for all fractals so far
      * 4 is distance from (0, 0)
      */
     public static final int CALCULATION_BOUNDARY = 4;
-    private static final Logger log = LogManager.getLogger(FinebrotAbstractImpl.class);
     public static PixelsFinebrotImpl PixelsFinebrot;
     /**
      * Image resolution height & width
@@ -100,6 +100,7 @@ public abstract class FinebrotAbstractImpl {
             ITERATION_min += 1;
         }
 
+        Stats.print();
         Stats.clean();
 
         log.info("ITERATION_MAX = " + ITERATION_MAX);

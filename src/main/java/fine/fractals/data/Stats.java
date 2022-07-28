@@ -117,4 +117,13 @@ public class Stats {
         pixelsValueTotal = 0;
         pathsNewPointsAmount = 0;
     }
+
+    public static void print() {
+        log.trace("newElementsTooLong    " + newElementsTooLong);
+        log.trace("newElementsTooShort   " + newElementsTooShort);
+        log.trace("newElementsLong       " + newElementsLong);
+        log.trace("pathsTotalAmount      " + pathsTotalAmount);
+        log.trace("pixelsValueTotal      " + pixelsValueTotal);
+        log.trace("pathsNewPointsAmount  " + pathsNewPointsAmount);
+    }
 }

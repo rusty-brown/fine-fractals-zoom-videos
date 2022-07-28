@@ -9,13 +9,26 @@ import org.jocl.cl_mem;
 
 import java.util.ArrayList;
 
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_MAX;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_min;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.PathsFinebrot;
-import static org.jocl.CL.*;
+import static org.jocl.CL.CL_MEM_COPY_HOST_PTR;
+import static org.jocl.CL.CL_MEM_READ_ONLY;
+import static org.jocl.CL.CL_MEM_READ_WRITE;
+import static org.jocl.CL.CL_TRUE;
+import static org.jocl.CL.clCreateBuffer;
+import static org.jocl.CL.clEnqueueNDRangeKernel;
+import static org.jocl.CL.clEnqueueReadBuffer;
+import static org.jocl.CL.clReleaseCommandQueue;
+import static org.jocl.CL.clReleaseContext;
+import static org.jocl.CL.clReleaseDevice;
+import static org.jocl.CL.clReleaseKernel;
+import static org.jocl.CL.clReleaseMemObject;
+import static org.jocl.CL.clReleaseProgram;
+import static org.jocl.CL.clSetKernelArg;
 import static org.jocl.Pointer.to;
 import static org.jocl.Sizeof.cl_double;
 import static org.jocl.Sizeof.cl_int;
-import static org.junit.Assert.assertEquals;
 
 public final class GPUHigh extends GPULow {
 
@@ -123,16 +136,19 @@ public final class GPUHigh extends GPULow {
         for (MandelbrotElement el : chunk) {
 
             int l = length[gid];
-            el.setFinishedState(iterator[gid], l);
+            int it = iterator[gid];
+            el.setFinishedState(it, l);
 
             /*
              * read calculation path
              */
-            if (l >= ITERATION_min) {
+            if (it < ITERATION_MAX && l > ITERATION_min) {
                 int f = from[gid];
                 int t = to[gid];
 
-                assertEquals(t - f, l);
+                if (t - f != l) {
+                    log.error("{} -> {} = {} -> {} - {} = {}", gid, ITERATION_MAX, it, t, f, l);
+                }
 
                 final ArrayList<double[]> path = new ArrayList<>();
                 for (int i = f; i <= t; i++) {
