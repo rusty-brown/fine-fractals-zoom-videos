@@ -14,6 +14,7 @@ import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.TargetImpl.Target;
 import static fine.fractals.windows.MandelbrotWindow.showInfo;
+import static java.awt.event.KeyEvent.VK_A;
 import static java.awt.event.KeyEvent.VK_C;
 import static java.awt.event.KeyEvent.VK_I;
 import static java.awt.event.KeyEvent.VK_K;
@@ -66,6 +67,7 @@ public class UIKeyAdapter extends KeyAdapter {
                 ITERATION_min *= 0.95;
                 log.info("decrease ITERATION_min  = " + ITERATION_min);
             }
+            case VK_A -> Application.alwaysOnTheTop();
         }
     }
 }

@@ -119,4 +119,8 @@ public class MandelbrotWindow extends UIWindow {
     public void setFinebrotWindow(FinebrotWindow otherFinebrotWindow) {
         this.motionAdapter.setFinebrotWindow(otherFinebrotWindow);
     }
+
+    public void alwaysOnTheTop(boolean top) {
+        frame.setAlwaysOnTop(top);
+    }
 }

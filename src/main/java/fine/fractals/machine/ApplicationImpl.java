@@ -19,18 +19,14 @@ import static java.awt.Frame.ICONIFIED;
 
 public class ApplicationImpl {
 
-    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
-
     public static final String USER_HOME = System.getProperty("user.home");
     /**
      * Create the folder in your home directory or change the path
      */
     @EditMe
     public static final String FILE_PATH = USER_HOME + "/Fractals/";
-
     @EditMe
     public static final String DEBUG_PATH = USER_HOME + "/Fractals-debug/";
-
     @EditMe
     public static final boolean IGNORE_DEBUG_FILES = true;
     /**
@@ -40,17 +36,17 @@ public class ApplicationImpl {
     public static final int neighbours = 3;
     public static final double ZOOM = 0.98;
     public static final String APP_NAME = "_" + Formatter.now();
+    /* identify zero and low-value elements as zero or noise */
     public static final int coloringThreshold = 2;
-
     /**
      * Singleton instance
      */
     public static final ApplicationImpl Application;
+    private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
     public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
     public static boolean REPEAT = true;
     /* Increase this only in FractalEngine */
     public static int iteration = 0;
-    /* identify zero and low-value elements as zero or noise */
 
     static {
         log.debug("init");
@@ -62,6 +58,7 @@ public class ApplicationImpl {
         log.info("cores: " + COREs);
     }
 
+    private boolean switchTop = true;
     private MandelbrotWindow mandelbrotWindow;
     private FinebrotWindow finebrotWindow;
 
@@ -123,5 +120,13 @@ public class ApplicationImpl {
         log.debug("zoomIn()");
         AreaMandelbrot.zoomIn();
         AreaFinebrot.zoomIn();
+    }
+
+    public void alwaysOnTheTop() {
+        log.debug("alwaysOnTheTop()");
+
+        mandelbrotWindow.alwaysOnTheTop(switchTop);
+        finebrotWindow.alwaysOnTheTop(switchTop);
+        switchTop = !switchTop;
     }
 }
