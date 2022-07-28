@@ -4,10 +4,10 @@
 
 ## Finebrot
 
-In fine fractals we are interested in all intermediate results for a specific calculation, for example z<sup>2</sup>  
+When calculating fine fractals we are interested in all intermediate calculation results.  
 All these intermediate results form a **calculation path**.
 
-This app computes at least one calculation path for each pixel of Mandelbrot domain.
+This program computes at least one calculation path for each pixel.
 
 All these **calculation paths together** are what makes the **Finebrot fractal**.
 
@@ -18,7 +18,7 @@ A mathematician might call generated Finebrot an **orbital density map**
 
 ## Mandelbrot
 
-Represents Mandelbrot fractal, it is used to maintain interesting points for fine fractal computation.
+Represents Mandelbrot fractal, it is used to maintain interesting points for fine fractal calculation.
 
 All the interesting points are at the horizon of Mandelbrot set.
 
@@ -44,13 +44,13 @@ https://youtu.be/7SpfYgG9m6M
 
 For each pixel `px`,`py`, take point in the center of that pixel `re`,`im`, call it **origin**.
 
-Start calculation below, and repeat it, for at most `ITERATION_MAX` times, or until the calculation result diverges.   
-(see `CALCULATION_BOUNDARY`)
+Start calculation shown below, and repeat it, for at most `ITERATION_MAX` times or until the calculation result
+diverges.
 
 > re -> (re * re) - (im * im) + originRe  
 > im -> 2 * re * im + originIm
 
-Durring the repeated calculation process, point `re, im` jumps around in spirals,  
+During the repeated calculation, point `re, im` jumps around in spirals,  
 `originRe`, and `originIm` are constant.
 
 In deliberately confusing terminology of complex numbers
@@ -58,6 +58,10 @@ In deliberately confusing terminology of complex numbers
 > z -> z<sup>2</sup> + c
 
 Where c is a constant, which is different for each calculation origin, and z<sub>0</sub> = c<sub>0</sub>
+
+Divergent calculation means that quadrance of values `re`, `im` is more then `CALCULATION_BOUNDARY = 4`,  
+If that happens, repeating calculation would only increase values `re`, `im` very fast and wouldn't add any points to
+desired image.
 
 ### To make a classic image of Mandelbrot set
 
@@ -77,7 +81,6 @@ Calculation is the same
 
 ![Infinite Finebrot](src/main/resources/images/Infinite-Finebrot.jpg)
 
-
 but we are interested in each point of the **calculation path**.
 
 That is calculation `path`, represented as `ArrayList<double[]> path`
@@ -88,7 +91,7 @@ For each path element [re<sub>i</sub>, im<sub>i</sub>] increase value of corresp
 
 Color the resulting values by **decent colors**.
 
-## CPUs consumption
+## CPUs utilization
 
 All mathematical calculations happen in `CalculationPathThread` which computes calculation paths for
 each `MandelbrotElement`
@@ -99,24 +102,31 @@ It takes only seconds to generate decent image or video frame on good CPU.
 
 Full zoom video or 10k resolution image may take 24h+
 
+## GPU utilization
+
+In `fine.fractals.gpgpu` is used JOCL library using OpenCL kernel code to compute calculation paths on GPU.  
+It is necessary to have OpenCL runtime installed.
+
+http://www.jocl.org
+
 ## Memory consumption
 
 Finebrot fractal is held in computer memory as individual calculation paths.
 
 All calculation paths are held in memory because as the zoom progresses,   
-path elements re<sub>i</sub>, im<sub>i</sub> move to new screen pixels xp,py.
+path elements re<sub>i</sub>, im<sub>i</sub> move to new screen pixels xp, py.
 
-Path elements re,im which move out of the screen boundary are removed. But there is still plenty of data in memory.
+Path elements `re`, `im` which move out of the screen boundary are removed.
 
-For **full HD** video it is **recommended** to have at least **16GB RAM**.
+It is recommended to have 16GB RAM or generate images in smaller resolution.
 
-To save memory set `RESOLUTION_MULTIPLIER = none`.
+To save memory use `RESOLUTION_MULTIPLIER = none`.
 
 ![Euler](src/main/resources/images/Euler.jpg)
 
 ## How to make Video from images with sound
 
-In package `.tools.video` is ready to use `ListOfImagesToVideoWithAudio`
+In package `fine.fractals.tools.video` is ready to use `ListOfImagesToVideoWithAudio`
 
 Which will combine generated list of images with audio file to make a video.
 
@@ -124,15 +134,16 @@ Edit constants annotated with `@EditMe` to point to your image directory and aud
 
 Library used to generate video with sound in Java is `org.bytedeco.ffmpeg`
 
+http://bytedeco.org/
+
 ## Application overview
 
 `fine.fractals`
 
-Root package contains Classes representing specific fractals.
+Root package contains classes representing specific fine fractals.
 
-These classes contain the relevant equation `math()` and all the relevant variables.
-
-Definitions of image resolution, color palette, etc.
+These classes contain the relevant equation `math()` and all the relevant variables. Definitions of image resolution,
+color palette, etc.
 
 `fine.fractals.color`
 
@@ -144,29 +155,28 @@ Area - defines which part of Finebrot is displayed and calculated
 
 Paths - holds all the calculation paths data `ArrayList<double[]> paths`
 
-Pixels - holds the `double[]` data mapped to `int[]` screen pixels
+Pixels - holds the `double[]` data mapped to `int[][]` screen pixels
 
-Packages `.finite.`, `.infinite.`, `.euler.`, `.phoenix.`
+Packages `finite`, `infinite`, `euler`, `phoenix` contains implementations for various kinds of fractals this
+application can calculate.
 
-Contains implementations for various kinds of fractals this application can calculate.
-
-`fine.fractals.fractal.mandelbrot.`
+`fine.fractals.fractal.mandelbrot`
 
 Area - defines domain for Finebrot calculation, all the interesting pints are at the horizon of Mandelbrot set.
 
 Pixels - holds the Mandelbrot data `MandelbrotElement[RESOLUTION_WIDTH][RESOLUTION_HEIGHT]`    
 Which contain relevant Mandelbrot pixel states. These states are important to optimize calculation.
 
-`fine.fractals.machine.`
+`fine.fractals.machine`
 
-`FractalEngine` - Fractal engine sequentially triggers the calculation and organizes relevant
-steps before and after the calculation.  
-It is the centre functional core of this application.
+`FractalEngine` - Fractal engine sequentially triggers the calculation and organizes relevant steps before and after the
+calculation.  
+It is the centre functional core of this program.
 
-`CalculationPathThread` - Performs the actual calculations for `MandelbrotElements` and
+`CalculationPathThread` - Performs the actual calculations for `MandelbrotElements` and  
 puts good results (calculation paths) in `PathsFinebrot`
 
-`Target` - represents point `re,im` at the center of displayed `AreaFinebrot` and `AreaMandelbrot`   
+`Target` - Represents point `re,im` at the center of displayed `AreaFinebrot` and `AreaMandelbrot`.   
 Towards this point the application zooms
 
 ## How to use this application
@@ -185,7 +195,7 @@ https://github.com/rusty-brown/fine-fractals-zoom-videos.git
 
 Make fine fractal from Riemann Zeta function and zoom into -1/12
 
-Redo area Mandelbrot, don't make it smaller each zoom, only recalculate `plank` and cut area borders
-when elements on sides don't add any relevant data.
+Redo area Mandelbrot, don't make it smaller each zoom, only recalculate `plank` and cut off area corners when elements
+on far sides don't add any relevant data.
 
 Optimize `ITERATION_MAX` and `ITERATION_min` by small finebrot chunks, not by the whole screen data.
