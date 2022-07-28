@@ -1,6 +1,6 @@
 package fine.fractals;
 
-import fine.fractals.color.PaletteBlackToRed;
+import fine.fractals.color.PaletteBlueToWhite;
 import fine.fractals.fractal.finebrot.gpu.FractalGPU;
 
 import static fine.fractals.color.common.PaletteImpl.Palette;
@@ -30,14 +30,14 @@ public class Finebrot_Side_Gpu extends FractalGPU {
 
     public static void main(String[] args) {
 
-        RESOLUTION_WIDTH = 800;
-        RESOLUTION_HEIGHT = 800;
+        RESOLUTION_WIDTH = 1280;
+        RESOLUTION_HEIGHT = 720;
         RESOLUTION_MULTIPLIER = none;
 
         REPEAT = true;
         SAVE_IMAGES = false;
         FinebrotFractal = new Finebrot_Side_Gpu();
-        Palette = new PaletteBlackToRed();
+        Palette = new PaletteBlueToWhite();
 
         Application.execute();
     }

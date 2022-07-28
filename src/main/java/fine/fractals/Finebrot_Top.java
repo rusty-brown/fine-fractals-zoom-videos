@@ -33,7 +33,7 @@ public class Finebrot_Top extends FractalFinite {
         RESOLUTION_MULTIPLIER = square_alter;
 
         REPEAT = true;
-        SAVE_IMAGES = true;
+        SAVE_IMAGES = false;
         FinebrotFractal = new Finebrot_Top();
         Palette = new PalettePurpleToWhite();
 
