@@ -97,6 +97,5 @@ public class PerfectColorDistributionImpl extends PerfectColorDistributionAbstra
 
         log.debug("clear pixels");
         pixels.clear();
-        PixelsFinebrot.clear();
     }
 }

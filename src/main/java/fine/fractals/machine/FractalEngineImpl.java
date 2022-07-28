@@ -8,6 +8,7 @@ import static fine.fractals.fractal.finebrot.AreaFinebrotImpl.AreaFinebrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.Mandelbrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.PathsFinebrot;
+import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.PixelsFinebrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PerfectColorDistribution;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.SAVE_IMAGES;
 import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
@@ -79,6 +80,7 @@ public class FractalEngineImpl extends Thread {
                  * Update relevant variables to decide if ITERATION_MAX & min should be changed
                  */
                 FinebrotFractal.update();
+                PixelsFinebrot.clear();
 
                 Application.zoomIn();
             }

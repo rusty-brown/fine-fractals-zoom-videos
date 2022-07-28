@@ -87,11 +87,11 @@ public abstract class FinebrotAbstractImpl {
 
         Stats.update(iteration);
 
-        if (Stats.notEnoughPixelsTotalValue) {
+        if (Stats.notEnoughPixelsBestValue) {
             log.info("increase ITERATION_MAX, not enough Points (2)");
             ITERATION_MAX += 20_000;
         }
-        if (Stats.lessPixelsTotalValue) {
+        if (Stats.lessPixelsBestValue) {
             ITERATION_MAX += 2_000;
             log.info("increase ITERATION_MAX, bit less Points (+)");
         }

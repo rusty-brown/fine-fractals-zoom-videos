@@ -197,5 +197,3 @@ Make fine fractal from Riemann Zeta function and zoom into -1/12
 
 Redo area Mandelbrot, don't make it smaller each zoom, only recalculate `plank` and cut off area corners when elements
 on far sides don't add any relevant data.
-
-Optimize `ITERATION_MAX` and `ITERATION_min` by small finebrot chunks, not by the whole screen data.
