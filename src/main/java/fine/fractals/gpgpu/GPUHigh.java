@@ -150,8 +150,8 @@ public final class GPUHigh extends GPULow {
                     log.error("{} -> {} = {} -> {} - {} = {}", gid, ITERATION_MAX, it, t, f, l);
                 }
 
-                final ArrayList<double[]> path = new ArrayList<>();
-                for (int i = f; i <= t; i++) {
+                final ArrayList<double[]> path = new ArrayList<>(l);
+                for (int i = f; i < t; i++) {
                     path.add(new double[]{pathRe[i], pathIm[i]});
                 }
                 PathsFinebrot.addEscapePathLong(path);
