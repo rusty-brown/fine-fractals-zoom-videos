@@ -1,11 +1,11 @@
 package fine.fractals;
 
-import fine.fractals.color.PaletteBlackToWhite;
+import fine.fractals.color.PaletteBlueToWhite;
 import fine.fractals.data.mem.MemPhoenix;
 import fine.fractals.fractal.finebrot.phoenix.FractalPhoenix;
 
 import static fine.fractals.color.common.PaletteImpl.Palette;
-import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
+import static fine.fractals.data.mandelbrot.ResolutionMultiplier.square_5;
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.ApplicationImpl.REPEAT;
 
@@ -16,6 +16,7 @@ public class GloriousHead extends FractalPhoenix {
 
         c = 0.35;
         p = -0.25;
+        phoenix_initializer = 1;
 
         ITERATION_MAX = 2500;
         ITERATION_min = 8;
@@ -31,14 +32,14 @@ public class GloriousHead extends FractalPhoenix {
 
     public static void main(String[] args) {
 
-        RESOLUTION_WIDTH = 1920;
-        RESOLUTION_HEIGHT = 1080;
-        RESOLUTION_MULTIPLIER = none;
+        RESOLUTION_WIDTH = 1280;
+        RESOLUTION_HEIGHT = 720;
+        RESOLUTION_MULTIPLIER = square_5;
 
-        REPEAT = false;
+        REPEAT = true;
         SAVE_IMAGES = false;
         FinebrotFractal = new GloriousHead();
-        Palette = new PaletteBlackToWhite();
+        Palette = new PaletteBlueToWhite();
 
         Application.execute();
     }

@@ -13,6 +13,6 @@ public abstract class FinebrotCpu extends FinebrotAbstractImpl {
     }
 
     @ThreadSafe
-    public abstract boolean calculatePath(MandelbrotElement el, final ArrayList<double[]> path);
+    public abstract ArrayList<double[]> calculatePath(MandelbrotElement el);
 
 }

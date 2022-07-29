@@ -54,21 +54,43 @@ public abstract class FractalEuler extends FinebrotCpu {
 
     @Override
     @ThreadSafe
-    public boolean calculatePath(MandelbrotElement el, ArrayList<double[]> path) {
+    public ArrayList<double[]> calculatePath(MandelbrotElement el) {
         int iterator = 0;
+        int length = 0;
         final MemEuler m = new MemEuler(el.originRe, el.originIm);
         while (m.quadrance() < CALCULATION_BOUNDARY && iterator < ITERATION_MAX) {
+
             /*
-             * fractal calculation
+             * Investigate if this is a good calculation path
+             * Don't create path data yet. Too many origin's don't produce good data
+             * Most long expensive calculations end up inside Mandelbrot set
              */
             math(m, el.originRe, el.originIm);
-
             if (AreaFinebrot.contains(m)) {
-                path.add(new double[]{m.re, m.im});
+                length++;
             }
             iterator++;
         }
-        el.setFinishedState(iterator, path.size());
-        return iterator < ITERATION_MAX;
+        el.setFinishedState(iterator, length);
+
+        /* Verify divergent path length */
+        if (length > ITERATION_min && iterator < ITERATION_MAX) {
+
+            /*
+             * This origin produced good data, record calculation path
+             */
+            m.re = el.originRe;
+            m.im = el.originIm;
+            final ArrayList<double[]> path = new ArrayList<>(length);
+            for (int i = 0; i < iterator; i++) {
+                math(m, el.originRe, el.originIm);
+                if (AreaFinebrot.contains(m)) {
+                    path.add(new double[]{m.re, m.im});
+                }
+            }
+            return path;
+        } else {
+            return null;
+        }
     }
 }
