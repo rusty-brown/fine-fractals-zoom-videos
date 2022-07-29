@@ -44,7 +44,7 @@ public class ApplicationImpl {
     public static final ApplicationImpl Application;
     private static final Logger log = LogManager.getLogger(ApplicationImpl.class);
     public static int COREs = Runtime.getRuntime().availableProcessors() - 1;
-    public static boolean REPEAT = true;
+    public static boolean REPEAT;
     /* Increase this only in FractalEngine */
     public static int iteration = 0;
 

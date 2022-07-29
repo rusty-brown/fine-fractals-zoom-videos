@@ -17,7 +17,7 @@ public class PaletteBlueToWhite extends PaletteImpl {
     public PaletteBlueToWhite() {
         log.debug("constructor");
         ColorUtils.toPalette(spectrum, circleUp,
-                new Color(4, 23, 53),
+                new Color(4, 13, 33),
                 new Color(255, 255, 255)
         );
     }
