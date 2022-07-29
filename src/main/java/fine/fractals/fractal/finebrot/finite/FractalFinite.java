@@ -38,6 +38,10 @@ public abstract class FractalFinite extends FinebrotCommonImpl {
             iterator++;
         }
         el.setFinishedState(iterator, path.size());
+        /*
+         * Consider only calculation paths which diverged.
+         * Origins for which calculation didn't diverge are inside the Mandelbrot set.
+         */
         return iterator < ITERATION_MAX;
     }
 }

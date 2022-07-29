@@ -1,8 +1,9 @@
 package fine.fractals.data.mem;
 
+/**
+ * Memory object to carry calculation results.
+ */
 public class Mem {
-
-    public static final int NOT = Integer.MIN_VALUE;
 
     public double re;
     public double im;
@@ -10,11 +11,14 @@ public class Mem {
      * pixel x
      */
     public int px;
-
     /**
      * pixel y
      */
     public int py;
+    /**
+     * to validate [re,im] <-> [px,py] translation
+     */
+    public boolean good;
 
     public Mem() {
     }

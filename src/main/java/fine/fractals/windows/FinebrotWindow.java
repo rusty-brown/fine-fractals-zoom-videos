@@ -29,7 +29,7 @@ public class FinebrotWindow extends UIWindow {
                           UIKeyDispatcher uiKeyDispatcher
     ) {
         log.debug("constructor");
-        super.name = NAME + " - " + APP_NAME;
+        super.name = NAME + APP_NAME;
 
         this.frame = new JFrame(name);
         this.frame.setDefaultCloseOperation(EXIT_ON_CLOSE);

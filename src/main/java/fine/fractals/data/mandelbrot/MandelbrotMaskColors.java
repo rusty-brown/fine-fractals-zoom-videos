@@ -13,6 +13,7 @@ public class MandelbrotMaskColors {
 
     /**
      * For refresh during Mandelbrot pixels recalculation.
+     * When zooming, elements move to new positions and create empty gaps.
      */
     public static final Color NULL = new Color(40, 80, 100);
 

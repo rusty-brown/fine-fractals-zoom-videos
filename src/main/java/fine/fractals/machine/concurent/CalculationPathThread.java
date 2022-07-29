@@ -2,12 +2,12 @@ package fine.fractals.machine.concurent;
 
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
+import fine.fractals.fractal.finebrot.common.FinebrotCpu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.FinebrotFractal;
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.Mandelbrot;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.ITERATION_min;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.PathsFinebrot;
@@ -22,9 +22,11 @@ public class CalculationPathThread implements Runnable {
     private static long lastMandelbrotRefresh = 0;
 
     private final ArrayList<MandelbrotElement> mandelbrotElementsPart;
+    private final FinebrotCpu finebrotFractal;
 
-    public CalculationPathThread(ArrayList<MandelbrotElement> mandelbrotElementsPart) {
+    public CalculationPathThread(FinebrotCpu finebrotFractal, ArrayList<MandelbrotElement> mandelbrotElementsPart) {
         this.mandelbrotElementsPart = mandelbrotElementsPart;
+        this.finebrotFractal = finebrotFractal;
     }
 
     @ThreadSafe
@@ -35,7 +37,7 @@ public class CalculationPathThread implements Runnable {
             /*
              * Investigate calculation path for each mandelbrot pixel
              */
-            final boolean pathTest = FinebrotFractal.calculatePath(el, path);
+            final boolean pathTest = finebrotFractal.calculatePath(el, path);
             if (pathTest) {
                 /*
                  * Removed lastIteration, lastVisitedRe, lastVisitedIm

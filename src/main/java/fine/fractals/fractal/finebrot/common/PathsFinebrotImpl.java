@@ -18,17 +18,13 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
         log.debug("constructor");
     }
 
-    /*
-     * All elements on escape path are already inside displayed area
-     * Because they are filtered like that during calculation
-     */
     public void addEscapePathLong(ArrayList<double[]> path) {
         Stats.pathsNewPointsAmount += path.size();
         paths.add(path);
     }
 
-    public void domainToScreenGrid() {
-        log.debug("domainToScreenGrid()");
+    public void translatePathsToPixelGrid() {
+        log.debug("translatePathsToPixelGrid()");
 
         int pixelsTotal = 0;
 
@@ -38,8 +34,9 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
             if (path != null) {
                 for (int i = 0; i < path.size() - 1; i++) {
                     tmp = path.get(i);
-                    AreaFinebrot.domainToScreenCarry(m, tmp[0], tmp[1]);
-                    if (m.px != Mem.NOT && m.py != Mem.NOT) {
+                    /* translate [re,im] to [px,py] */
+                    AreaFinebrot.pointToPixel(m, tmp[0], tmp[1]);
+                    if (m.good) {
                         pixelsTotal++;
                         PixelsFinebrot.add(m.px, m.py);
                     }
@@ -50,7 +47,7 @@ public class PathsFinebrotImpl extends PathsFinebrotCommonImpl {
         }
         log.debug("pixelsTotal:   " + pixelsTotal);
 
-        /* remove elements which moved our fo zoomed area */
+        /* remove elements which moved out of tiny area */
         removeElementsOutside();
 
         Stats.pathsTotalAmount = paths.size();

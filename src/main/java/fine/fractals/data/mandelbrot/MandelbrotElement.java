@@ -16,6 +16,10 @@ public class MandelbrotElement implements Comparable<MandelbrotElement> {
     public final double originRe;
     public final double originIm;
 
+    /**
+     * Element state is decided by calculation result. Alternatively:
+     * If all it's neighbours finished too long, it is going to be created as HibernatedBlack and its origin won't seed any calculation path.
+     */
     private MandelbrotPixelState state;
 
     MandelbrotElement(double originRe, double originIm, MandelbrotPixelState state) {

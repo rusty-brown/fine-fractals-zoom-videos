@@ -1,6 +1,5 @@
 package fine.fractals.fractal.finebrot.euler;
 
-import fine.fractals.data.mem.Mem;
 import fine.fractals.data.mem.MemEuler;
 import fine.fractals.fractal.finebrot.common.PathsFinebrotCommonImpl;
 import org.apache.logging.log4j.LogManager;
@@ -19,17 +18,13 @@ public class PathsEulerFinebrotImpl extends PathsFinebrotCommonImpl {
     public PathsEulerFinebrotImpl() {
     }
 
-    /**
-     * All elements on escape path are already inside displayed area
-     * Because they are filtered like that during calculation
-     */
     public void addEscapePathLong(ArrayList<double[]> path) {
         requireNonNull(path, "Path can't be null;");
         paths.add(path);
     }
 
-    public void domainToScreenGrid() {
-        log.debug("constructor");
+    public void translatePathsToPixelGrid() {
+        log.debug("translatePathsToPixelGrid");
 
         int added = 0;
         final MemEuler m = new MemEuler();
@@ -37,8 +32,9 @@ public class PathsEulerFinebrotImpl extends PathsFinebrotCommonImpl {
         for (ArrayList<double[]> path : paths) {
             for (int i = 0; i < path.size() - 1; i++) {
                 tmp = path.get(i);
-                AreaFinebrot.domainToScreenCarry(m, tmp[0], tmp[1]);
-                if (m.px != Mem.NOT && m.py != Mem.NOT) {
+                /* translate [re,im] to [px,py] */
+                AreaFinebrot.pointToPixel(m, tmp[0], tmp[1]);
+                if (m.good) {
                     added++;
                     FractalEuler.colorsFor(m, i, path.size());
                     PixelsEulerFinebrot.add(m.px, m.py, m.spectra);
@@ -47,7 +43,7 @@ public class PathsEulerFinebrotImpl extends PathsFinebrotCommonImpl {
         }
         log.debug("* Added:   " + added);
 
-        /* remove elements which moved our fo zoomed area */
+        /* remove elements which moved ouf of tiny area */
         removeElementsOutside();
     }
 }

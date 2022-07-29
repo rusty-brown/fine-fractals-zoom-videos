@@ -2,6 +2,7 @@ package fine.fractals.fractal.mandelbrot;
 
 import fine.fractals.data.mem.Mem;
 import fine.fractals.formatter.Formatter;
+import fine.fractals.fractal.finebrot.common.AreaAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,14 +14,13 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTIO
 import static fine.fractals.machine.ApplicationImpl.ZOOM;
 import static fine.fractals.machine.TargetImpl.Target;
 
-public class AreaMandelbrotImpl {
-
-    private static final Logger log = LogManager.getLogger(AreaMandelbrotImpl.class);
+public class AreaMandelbrotImpl extends AreaAbstract {
 
     /**
      * Singleton instance
      */
     public static final AreaMandelbrotImpl AreaMandelbrot;
+    private static final Logger log = LogManager.getLogger(AreaMandelbrotImpl.class);
 
     static {
         log.debug("init");
@@ -31,14 +31,6 @@ public class AreaMandelbrotImpl {
 
     private final double[] numbersRe;
     private final double[] numbersIm;
-    private final int resolutionHalfRe;
-    private final int resolutionHalfIm;
-    /* position of the centre of domain area */
-    public double centerRe;
-    public double centerIm;
-    /* size of domain area */
-    public double sizeRe;
-    public double sizeIm;
     private double borderLowRe;
     private double borderLowIm;
     private double borderHighRe;
@@ -47,10 +39,7 @@ public class AreaMandelbrotImpl {
 
     private AreaMandelbrotImpl() {
         log.debug("constructor");
-        double size = INIT_MANDELBROT_AREA_SIZE;
-        this.resolutionHalfRe = RESOLUTION_WIDTH / 2;
-        this.resolutionHalfIm = RESOLUTION_HEIGHT / 2;
-
+        final double size = INIT_MANDELBROT_AREA_SIZE;
         final double scrRatioX = (double) RESOLUTION_HEIGHT / (double) RESOLUTION_WIDTH;
         this.sizeRe = size;
         this.sizeIm = size * scrRatioX;
@@ -88,21 +77,8 @@ public class AreaMandelbrotImpl {
         }
     }
 
-
-    public void domainToScreenCarry(Mem m, double re, double im) {
-        m.px = (int) Math.round((RESOLUTION_WIDTH * (re - this.centerRe) / this.sizeRe) + resolutionHalfRe);
-        if (m.px >= RESOLUTION_WIDTH || m.px < 0) {
-            m.px = Mem.NOT;
-            return;
-        }
-        m.py = (int) Math.round(((RESOLUTION_HEIGHT * (im - this.centerIm)) / this.sizeIm) + resolutionHalfIm);
-        if (m.py >= RESOLUTION_HEIGHT || m.py < 0) {
-            m.py = Mem.NOT;
-        }
-    }
-
     /**
-     * call after Zoom in or out
+     * call after Zoom in
      */
     private void initiate() {
         this.borderLowRe = centerRe - (sizeRe / 2);

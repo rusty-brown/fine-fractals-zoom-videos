@@ -3,7 +3,7 @@ package fine.fractals.fractal.finebrot.euler;
 import fine.fractals.data.annotation.ThreadSafe;
 import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mem.MemEuler;
-import fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl;
+import fine.fractals.fractal.finebrot.common.FinebrotCpu;
 import fine.fractals.fractal.mandelbrot.MandelbrotImpl;
 import fine.fractals.perfect.coloring.EulerPerfectColorDistributionImpl;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +17,14 @@ import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spect
 import static fine.fractals.fractal.finebrot.euler.PixelsEulerFinebrotImpl.Spectra.red;
 import static fine.fractals.math.MathematicianImpl.Mathematician;
 
-public abstract class FractalEuler extends FinebrotAbstractImpl {
+/**
+ * Fractal Euler type uses three color spectra for better mathematical analysis and better coloring results.
+ * Possible use as:
+ * - prime path lengths     -> red spectrum
+ * - Fibonacci path lengths -> green spectrum
+ * - other path lengths     -> blue spectrum
+ */
+public abstract class FractalEuler extends FinebrotCpu {
 
     private static final Logger log = LogManager.getLogger(FractalEuler.class);
 
@@ -28,7 +35,7 @@ public abstract class FractalEuler extends FinebrotAbstractImpl {
         PixelsEulerFinebrot = new PixelsEulerFinebrotImpl();
         PerfectColorDistribution = new EulerPerfectColorDistributionImpl();
         PathsFinebrot = new PathsEulerFinebrotImpl();
-        Mandelbrot = new MandelbrotImpl();
+        Mandelbrot = new MandelbrotImpl(this);
     }
 
     public static void colorsFor(MemEuler m, int elementIndex, int pathLength) {

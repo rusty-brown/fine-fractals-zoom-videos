@@ -2,6 +2,7 @@ package fine.fractals.fractal.finebrot;
 
 import fine.fractals.data.mem.Mem;
 import fine.fractals.formatter.Formatter;
+import fine.fractals.fractal.finebrot.common.AreaAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +14,7 @@ import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.RESOLUTIO
 import static fine.fractals.machine.ApplicationImpl.ZOOM;
 import static fine.fractals.machine.TargetImpl.Target;
 
-public class AreaFinebrotImpl {
+public class AreaFinebrotImpl extends AreaAbstract {
 
     private static final Logger log = LogManager.getLogger(AreaFinebrotImpl.class);
 
@@ -31,14 +32,6 @@ public class AreaFinebrotImpl {
 
     private final double[] numbersRe;
     private final double[] numbersIm;
-    private final int resolutionHalfRe;
-    private final int resolutionHalfIm;
-    /* position of the centre of image area */
-    public double centerRe;
-    public double centerIm;
-    /* size of image area */
-    public double sizeRe;
-    public double sizeIm;
     public double borderLowRe;
     public double borderLowIm;
     public double borderHighRe;
@@ -47,8 +40,6 @@ public class AreaFinebrotImpl {
 
     private AreaFinebrotImpl() {
         log.debug("constructor");
-        this.resolutionHalfRe = RESOLUTION_WIDTH / 2;
-        this.resolutionHalfIm = RESOLUTION_HEIGHT / 2;
 
         final double scrRatioX = (double) RESOLUTION_HEIGHT / (double) RESOLUTION_WIDTH;
         this.sizeRe = INIT_FINEBROT_AREA_SIZE;
@@ -76,19 +67,6 @@ public class AreaFinebrotImpl {
                 || im < this.borderLowIm
                 || im > this.borderHighIm;
     }
-
-    public void domainToScreenCarry(Mem m, double re, double im) {
-        m.px = (int) Math.round((RESOLUTION_WIDTH * (re - this.centerRe) / this.sizeRe) + resolutionHalfRe);
-        if (m.px >= RESOLUTION_WIDTH || m.px < 0) {
-            m.px = Mem.NOT;
-            return;
-        }
-        m.py = (int) Math.round(((RESOLUTION_HEIGHT * (im - this.centerIm)) / this.sizeIm) + resolutionHalfIm);
-        if (m.py >= RESOLUTION_HEIGHT || m.py < 0) {
-            m.py = Mem.NOT;
-        }
-    }
-
 
     public double screenToDomainCreateRe(int x) {
         return numbersRe[x];

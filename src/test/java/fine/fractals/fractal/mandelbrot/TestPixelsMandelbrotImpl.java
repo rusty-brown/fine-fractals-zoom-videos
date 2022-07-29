@@ -1,7 +1,6 @@
-package fine.fractals.test.fractal.mandelbrot;
+package fine.fractals.fractal.mandelbrot;
 
 import fine.fractals.data.mandelbrot.MandelbrotElement;
-import fine.fractals.fractal.mandelbrot.PixelsMandelbrotImpl;
 import org.junit.Test;
 
 import java.util.ArrayList;

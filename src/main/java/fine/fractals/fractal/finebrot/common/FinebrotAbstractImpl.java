@@ -1,8 +1,6 @@
 package fine.fractals.fractal.finebrot.common;
 
 import fine.fractals.data.Stats;
-import fine.fractals.data.annotation.ThreadSafe;
-import fine.fractals.data.mandelbrot.MandelbrotElement;
 import fine.fractals.data.mandelbrot.ResolutionMultiplier;
 import fine.fractals.fractal.finebrot.PixelsFinebrotImpl;
 import fine.fractals.fractal.mandelbrot.MandelbrotCommonImpl;
@@ -10,14 +8,12 @@ import fine.fractals.perfect.coloring.common.PerfectColorDistributionAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-
 import static fine.fractals.machine.ApplicationImpl.iteration;
 
 /**
- * Top level Fine Fractal Implementation
- * Subclasses must define specific abstract method definition or implementation
- * - math() with relevant MemX object
+ * Top parent class for Fine Fractals
+ * Each fractal type must implement methods
+ * - math()
  * - calculatePath()
  * Fractal Types extend {@link FinebrotCommonImpl} or must define implementation for
  * - pixels, paths, and coloring implementation
@@ -26,11 +22,14 @@ public abstract class FinebrotAbstractImpl {
 
     private static final Logger log = LogManager.getLogger(FinebrotAbstractImpl.class);
     /**
-     * 4 worked well for all fractals so far
-     * 4 is distance from (0, 0)
+     * 4 is quadrance from (0, 0)
+     * If intermediate calculation result [re,im] spirals beyond this boundary. Calculation stops as divergent.
      */
     public static final int CALCULATION_BOUNDARY = 4;
-    public static PixelsFinebrotImpl PixelsFinebrot;
+    /**
+     * Delete shorter paths then this
+     */
+    public static final int TOLERATE_PATH_LENGTH_min = 4;
     /**
      * Image resolution height & width
      *  800  600
@@ -43,22 +42,16 @@ public abstract class FinebrotAbstractImpl {
     public static int RESOLUTION_HEIGHT;
     public static boolean SAVE_IMAGES;
     public static ResolutionMultiplier RESOLUTION_MULTIPLIER;
-    /**
-     * Instantiated by fractal type
+
+    /*
+     * Application singletons
      */
+    public static PixelsFinebrotImpl PixelsFinebrot;
+    public static MandelbrotCommonImpl Mandelbrot;
+    public static FinebrotAbstractImpl FinebrotFractal;
+    public static PathsFinebrotCommonImpl PathsFinebrot;
     public static PerfectColorDistributionAbstract PerfectColorDistribution;
 
-    /**
-     * Instantiated by specific fractal
-     * A specific fractal which is going to be calculated
-     */
-    public static FinebrotAbstractImpl FinebrotFractal;
-
-    /**
-     * Instantiated by fractal type
-     */
-    public static PathsFinebrotCommonImpl PathsFinebrot;
-    public static MandelbrotCommonImpl Mandelbrot;
     public static String NAME;
 
     public static int ITERATION_MAX;
@@ -76,9 +69,6 @@ public abstract class FinebrotAbstractImpl {
         log.debug("constructor");
         log.info(this.getClass().getSimpleName());
     }
-
-    @ThreadSafe
-    public abstract boolean calculatePath(MandelbrotElement el, final ArrayList<double[]> path);
 
     public void update() {
         log.debug("update()");

@@ -63,5 +63,6 @@ public class PixelsEulerFinebrotImpl {
         }
     }
 
+    /* For simplicity Euler Fractal uses only three explicitly defined spectra */
     public enum Spectra {red, green, blue}
 }

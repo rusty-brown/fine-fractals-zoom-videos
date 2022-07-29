@@ -34,7 +34,7 @@ public class MandelbrotWindow extends UIWindow {
                             UIMouseWheelListener uiMouseWheelListener,
                             UIKeyDispatcher uiKeyDispatcher) {
         log.debug("initialize");
-        super.name = NAME + " - " + APP_NAME;
+        super.name = NAME + APP_NAME;
 
         this.frame = new JFrame(name);
         this.frame.setDefaultCloseOperation(EXIT_ON_CLOSE);

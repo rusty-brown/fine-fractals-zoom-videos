@@ -19,6 +19,9 @@ public abstract class ColorUtils {
 
     private static final Logger log = LogManager.getLogger(ColorUtils.class);
 
+    /**
+     * Colors for Mandelbrot image based on Mandelbrot element's state
+     */
     public static Color colorForState(MandelbrotElement element) {
         if (element == null) {
             return NULL;
@@ -48,6 +51,13 @@ public abstract class ColorUtils {
         }
     }
 
+    /**
+     * Fill color spectrum with colors between colors:
+     *
+     * @param from     color for lower values
+     * @param to       color for higher values
+     * @param function defines gradient of color change
+     */
     public static void toPalette(ArrayList<Color> SPECTRUM, Function function, Color from, Color to) {
         log.debug("toPalette()");
         final int rFrom = from.getRed();
@@ -86,7 +96,6 @@ public abstract class ColorUtils {
                 d = i / maxDif;
                 v = function(d, function);
                 value = v * maxDif;
-                // dots((int) value);
 
                 rr = (int) (rFrom + (value * rStep));
                 gg = (int) (gFrom + (value * gStep));
@@ -164,7 +173,7 @@ public abstract class ColorUtils {
             /* green has the biggest difference */
             return g;
         } else if (a(b) >= a(r) && a(b) >= a(g)) {
-            /* red has the biggest difference */
+            /* blue has the biggest difference */
             return b;
         }
         throw new RuntimeException("Palette.fromToLinear() Unknown Max; " + r + " | " + g + " | " + b);
@@ -175,7 +184,10 @@ public abstract class ColorUtils {
     }
 
     /**
-     * 0 <= d <= 1
+     * Calculates how much should color in smooth color palette change
+     *
+     * @param d        : 0 <= d <= 1
+     * @param function defines gradient of change from color "from" (d=0) to color "to" (d=1)
      */
     private static double function(double d, Function function) {
         return switch (function) {

@@ -23,12 +23,10 @@ import static fine.fractals.machine.ApplicationImpl.neighbours;
 public class PixelsMandelbrotImpl {
 
     private static final Logger log = LogManager.getLogger(PixelsMandelbrotImpl.class);
-
     /**
      * Singleton instance
      */
     public static final PixelsMandelbrotImpl PixelsMandelbrot = new PixelsMandelbrotImpl();
-
     /**
      * Don't do any wrapping the first time
      * Because Mandelbrot elements are not optimized
@@ -206,18 +204,15 @@ public class PixelsMandelbrotImpl {
          * If there is a conflict, two or more points moved to same pixel, then use the active one if there is any.
          * Don't drop conflicts around, simply calculate new elements in the next calculation iteration.
          */
-        int newPositionX;
-        int newPositionY;
         MandelbrotElement filledAlready;
         final Mem m = new Mem();
 
         for (MandelbrotElement el : elementsToRemember) {
-            AreaMandelbrot.domainToScreenCarry(m, el.originRe, el.originIm);
-            newPositionX = m.px;
-            newPositionY = m.py;
+            /* translate [px,py] to [re,im] */
+            AreaMandelbrot.pointToPixel(m, el.originRe, el.originIm);
 
-            if (newPositionY != Mem.NOT && newPositionX != Mem.NOT) {
-                filledAlready = elementsStaticMandelbrot[newPositionX][newPositionY];
+            if (m.good) {
+                filledAlready = elementsStaticMandelbrot[m.px][m.py];
                 if (filledAlready != null) {
                     /* conflict */
                     if (filledAlready.hasWorseStateThen(el)) {
@@ -226,11 +221,11 @@ public class PixelsMandelbrotImpl {
                          * Better to delete the other one, then to drop it to other empty px.
                          * That would cause problem with optimization, better calculate new and shiny px.
                          */
-                        elementsStaticMandelbrot[newPositionX][newPositionY] = el;
+                        elementsStaticMandelbrot[m.px][m.py] = el;
                     }
                 } else {
                     /* Good, there is no conflict */
-                    elementsStaticMandelbrot[newPositionX][newPositionY] = el;
+                    elementsStaticMandelbrot[m.px][m.py] = el;
                 }
             }
         }

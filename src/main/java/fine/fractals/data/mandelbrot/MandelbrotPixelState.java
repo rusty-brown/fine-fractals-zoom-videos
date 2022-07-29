@@ -4,8 +4,10 @@ public enum MandelbrotPixelState {
 
     /**
      * 1.
-     * Finished success, but updated state from previous calculation iteration.
-     * If there was a conflict when moving pixels to new location after zoomIn(), use this state, there won't be any difference in data, only color.
+     * Calculation path Finished with success in previous calculation iteration (zoom).
+     * This is updated state from previous state {@link #FinishedSuccess}.
+     * If there was a conflict when moving pixels to new location after zoomIn(), use this state.
+     * There won't be any difference in Finebrot data, only in mandelbrot pixel state and color.
      * color = {@link MandelbrotMaskColors#FINISHED_SUCCESS_PAST}
      */
     FinishedSuccessPast,
@@ -20,7 +22,7 @@ public enum MandelbrotPixelState {
 
     /**
      * 3.
-     * New element just added to pixels
+     * New element just added to Mandelbrot Pixels
      * color = {@link MandelbrotMaskColors#ACTIVE_NEW}
      */
     ActiveNew,
@@ -36,6 +38,7 @@ public enum MandelbrotPixelState {
     /**
      * 5.
      * Path length reached ITERATION_MAX.
+     * It is considered as inside of Mandelbrot set.
      * color = {@link MandelbrotMaskColors#FINISHED_TOO_LONG}
      */
     FinishedTooLong,
@@ -43,8 +46,8 @@ public enum MandelbrotPixelState {
     /**
      * 6.
      * Created as already hibernated, and won't be calculated.
-     * No: Because it didn't have any good, data producing neighbours {@link #FinishedSuccess} near enough.
-     * Yes: Because it had only {@link MandelbrotPixelState#FinishedTooLong} neighbours.
+     * It didn't have any good data producing neighbours {@link #FinishedSuccess} near enough.
+     * It had only {@link #FinishedTooLong} neighbours.
      * color = {@link MandelbrotMaskColors#HIBERNATED_DEEP_BLACK}
      */
     HibernatedDeepBlack,

@@ -5,10 +5,18 @@ import org.apache.logging.log4j.Logger;
 
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.PixelsFinebrot;
 
+/**
+ * Keeps data to decide if iteration Max or min should be changed.
+ * As zoom progress, fewer elements hit tiny Finebrot Area.
+ * IT is necessary to do more calculations to produce enough Finebrot data.
+ */
 public class Stats {
 
     private static final Logger log = LogManager.getLogger(Stats.class);
 
+    /*
+     * Take snapshot of data for comparison at well colored frame.
+     */
     private static final int TAKE_MEASURES_AT_FRAME = 20;
     public static int newElementsTooLong;
     public static int newElementsTooShort;
@@ -37,43 +45,48 @@ public class Stats {
 
     private static int newElementsLong_measure;
     private static int newElementsLong_tolerance;
+
     private static int pathsTotalAmount_measure;
     private static int pathsTotalAmount_tolerance;
+
     private static int pixelsValueTotal_measure;
     private static int pixelsValueTotal_tolerance;
     private static int pixelsValueBest_measure;
     private static int pixelsValueBest_tolerance;
+
     private static int averagePathLength_measure;
 
-    private static void frame(int it) {
-        if (it == TAKE_MEASURES_AT_FRAME) {
+    private static void rememberThis() {
+        log.debug("newElementsLong  = " + newElementsLong);
+        log.debug("pixelsValueTotal = " + pixelsValueTotal);
+        log.debug("pathsTotalAmount = " + pathsTotalAmount);
 
-            log.debug("newElementsLong  " + newElementsLong);
-            log.debug("pixelsValueTotal " + pixelsValueTotal);
-            log.debug("pathsTotalAmount " + pathsTotalAmount);
+        newElementsLong_measure = newElementsLong;
+        pixelsValueTotal_measure = pixelsValueTotal;
+        pathsTotalAmount_measure = pathsTotalAmount;
+        averagePathLength_measure = (int) ((double) pixelsValueTotal / (double) pathsTotalAmount);
+        pixelsValueBest_measure = PixelsFinebrot.bestFourChunksValue();
 
-            newElementsLong_measure = newElementsLong;
-            pixelsValueTotal_measure = pixelsValueTotal;
-            pathsTotalAmount_measure = pathsTotalAmount;
-            averagePathLength_measure = (int) ((double) pixelsValueTotal / (double) pathsTotalAmount);
-            pixelsValueBest_measure = PixelsFinebrot.bestFourChunksValue();
+        newElementsLong_tolerance = (int) (newElementsLong_measure * 0.5);
+        pixelsValueTotal_tolerance = (int) (pixelsValueTotal_measure * 0.5);
+        pathsTotalAmount_tolerance = (int) (pathsTotalAmount_measure * 0.5);
+        pixelsValueBest_tolerance = (int) (pixelsValueBest_measure * 0.5);
 
-            newElementsLong_tolerance = (int) (newElementsLong_measure * 0.5);
-            pixelsValueTotal_tolerance = (int) (pixelsValueTotal_measure * 0.5);
-            pathsTotalAmount_tolerance = (int) (pathsTotalAmount_measure * 0.5);
-            pixelsValueBest_tolerance = (int) (pixelsValueBest_measure * 0.5);
-
-            log.info("* elementsLong_measure      = " + newElementsLong_measure);
-            log.info("* pixelsValueTotal_measure  = " + pixelsValueTotal_measure);
-            log.info("* pixelsValueBest_measure   = " + pixelsValueBest_measure);
-            log.info("* pathsTotalAmount_measure  = " + pathsTotalAmount_measure);
-            log.info("* averagePathLength_measure = " + averagePathLength_measure);
-        }
+        log.info("elementsLong_measure      = " + newElementsLong_measure);
+        log.info("pixelsValueTotal_measure  = " + pixelsValueTotal_measure);
+        log.info("pixelsValueBest_measure   = " + pixelsValueBest_measure);
+        log.info("pathsTotalAmount_measure  = " + pathsTotalAmount_measure);
+        log.info("averagePathLength_measure = " + averagePathLength_measure);
     }
 
     public static void update(int it) {
-        frame(it);
 
+        /* Check if Stats should remember this iteration data for subsequent comparison */
+        if (it == TAKE_MEASURES_AT_FRAME) {
+            rememberThis();
+        }
+
+        /* Subsequent comparison */
         if (it > TAKE_MEASURES_AT_FRAME) {
 
             /* Total value */
@@ -105,25 +118,25 @@ public class Stats {
                 tooManyPathsTotal = pathsTotalAmount - pathsTotalAmount_measure > pathsTotalAmount_tolerance;
             }
 
-            /* Mandelbrot long elements */
+            /* Mandelbrot long successful elements */
             notEnoughLongElements = false;
             if (newElementsLong < newElementsLong_measure) {
                 notEnoughLongElements = newElementsLong_measure - newElementsLong > newElementsLong_tolerance;
             }
 
-            log.debug("> notEnoughPixelsTotalValue: " + notEnoughPixelsTotalValue);
-            log.debug("> lessPixelsTotalValue:      " + lessPixelsTotalValue);
-            log.debug("> lessPixelsBestValue:       " + lessPixelsBestValue + " (" + pixelsValueBest + " < " + pixelsValueBest_measure + ")");
-            log.debug("> tooManyPixelsTotalValue:   " + tooManyPixelsTotalValue);
-            log.debug("> tooManyPathsTotal:         " + tooManyPathsTotal);
-            log.debug("> notEnoughLongElements:     " + notEnoughLongElements);
+            log.debug("notEnoughPixelsTotalValue = " + notEnoughPixelsTotalValue);
+            log.debug("lessPixelsTotalValue      = " + lessPixelsTotalValue);
+            log.debug("lessPixelsBestValue       = " + lessPixelsBestValue + " (" + pixelsValueBest + " < " + pixelsValueBest_measure + ")");
+            log.debug("tooManyPixelsTotalValue   = " + tooManyPixelsTotalValue);
+            log.debug("tooManyPathsTotal         = " + tooManyPathsTotal);
+            log.debug("notEnoughLongElements     = " + notEnoughLongElements);
 
             final int averagePathLength = (int) ((double) pixelsValueTotal / (double) pathsTotalAmount);
             final int newElementsAll = newElementsLong + newElementsTooShort + newElementsTooLong;
             final double domainElementsToNewCalculationPathPoints = ((double) pathsNewPointsAmount) / ((double) newElementsAll);
 
-            log.debug(String.format("averagePathLength: %s \t(%s)", averagePathLength, averagePathLength_measure));
-            log.debug("domainElementsToNewCalculationPathPoints:   " + domainElementsToNewCalculationPathPoints);
+            log.debug("averagePathLength {} ({})", averagePathLength, averagePathLength_measure);
+            log.debug("domainElementsToNewCalculationPathPoints: " + domainElementsToNewCalculationPathPoints);
         }
     }
 

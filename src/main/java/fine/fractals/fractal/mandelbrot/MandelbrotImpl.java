@@ -1,6 +1,7 @@
 package fine.fractals.fractal.mandelbrot;
 
 import fine.fractals.data.mandelbrot.MandelbrotElement;
+import fine.fractals.fractal.finebrot.common.FinebrotCpu;
 import fine.fractals.machine.concurent.CalculationPathThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,8 +19,11 @@ public class MandelbrotImpl extends MandelbrotCommonImpl {
 
     private static final Logger log = LogManager.getLogger(MandelbrotImpl.class);
 
-    public MandelbrotImpl() {
+    private final FinebrotCpu finebrotFractal;
+
+    public MandelbrotImpl(FinebrotCpu finebrotFractal) {
         log.debug("constructor");
+        this.finebrotFractal = finebrotFractal;
     }
 
     /*
@@ -37,7 +41,7 @@ public class MandelbrotImpl extends MandelbrotCommonImpl {
             /*
              * Calculate independently each domain chunk
              */
-            executor.execute(new CalculationPathThread(part));
+            executor.execute(new CalculationPathThread(finebrotFractal, part));
         }
 
         try {
