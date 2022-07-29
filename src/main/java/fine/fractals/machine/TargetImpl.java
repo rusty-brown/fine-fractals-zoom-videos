@@ -50,7 +50,6 @@ public class TargetImpl {
                 this.cTextIm = "-";
             }
         }
-        /* Don't move AreaMandelbrot or AreaFinebrot - I may want to zoom in with space bar */
     }
 
     public int getScreenFromCenterX() {

@@ -1,11 +1,11 @@
 package fine.fractals.fractal.finebrot;
 
 import fine.fractals.data.mem.Mem;
-import fine.fractals.formatter.Formatter;
 import fine.fractals.fractal.finebrot.common.AreaAbstract;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static fine.fractals.formatter.Formatter.format;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.INIT_FINEBROT_AREA_SIZE;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.INIT_FINEBROT_TARGET_im;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.INIT_FINEBROT_TARGET_re;
@@ -21,14 +21,7 @@ public class AreaFinebrotImpl extends AreaAbstract {
     /**
      * Singleton instance
      */
-    public static final AreaFinebrotImpl AreaFinebrot;
-
-    static {
-        log.debug("init");
-        AreaFinebrot = new AreaFinebrotImpl();
-        log.debug("initiate");
-        AreaFinebrot.initiate();
-    }
+    public static final AreaFinebrotImpl AreaFinebrot = new AreaFinebrotImpl();
 
     private final double[] numbersRe;
     private final double[] numbersIm;
@@ -52,6 +45,8 @@ public class AreaFinebrotImpl extends AreaAbstract {
 
         this.numbersRe = new double[RESOLUTION_WIDTH];
         this.numbersIm = new double[RESOLUTION_HEIGHT];
+
+        initiate();
     }
 
     public boolean contains(Mem m) {
@@ -77,14 +72,21 @@ public class AreaFinebrotImpl extends AreaAbstract {
     }
 
     /**
-     * call after Zoom in or out
+     * call after Zoom in
      */
     private void initiate() {
         this.borderLowRe = centerRe - (sizeRe / 2);
         this.borderHighRe = centerRe + (sizeRe / 2);
         this.borderLowIm = centerIm - (sizeIm / 2);
         this.borderHighIm = centerIm + (sizeIm / 2);
-        calculatePoints();
+
+        /* Generate domain elements */
+        for (int x = 0; x < RESOLUTION_WIDTH; x++) {
+            numbersRe[x] = borderLowRe + (this.plank * x);
+        }
+        for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
+            numbersIm[y] = borderLowIm + (this.plank * y);
+        }
     }
 
     public void zoomIn() {
@@ -95,27 +97,17 @@ public class AreaFinebrotImpl extends AreaAbstract {
     }
 
     public String sizeReString() {
-        return Formatter.roundString(this.sizeRe);
+        return format(this.sizeRe);
     }
 
     public String sizeImString() {
-        return Formatter.roundString(this.sizeIm);
+        return format(this.sizeIm);
     }
 
     public void moveToCoordinates() {
         this.centerRe = screenToDomainCreateRe(Target.getScreenFromCornerX());
         this.centerIm = screenToDomainCreateIm(Target.getScreenFromCornerY());
         log.debug("Move to: " + this.centerRe + "," + this.centerIm);
-    }
-
-    /* Generate domain elements */
-    private void calculatePoints() {
-        for (int x = 0; x < RESOLUTION_WIDTH; x++) {
-            numbersRe[x] = borderLowRe + (this.plank * x);
-        }
-        for (int y = 0; y < RESOLUTION_HEIGHT; y++) {
-            numbersIm[y] = borderLowIm + (this.plank * y);
-        }
     }
 
     /**

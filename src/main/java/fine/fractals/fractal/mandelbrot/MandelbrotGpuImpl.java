@@ -1,7 +1,6 @@
-package fine.fractals.fractal.mandelbrot.gpu;
+package fine.fractals.fractal.mandelbrot;
 
 import fine.fractals.data.mandelbrot.MandelbrotElement;
-import fine.fractals.fractal.mandelbrot.MandelbrotCommonImpl;
 import fine.fractals.gpgpu.GPU;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

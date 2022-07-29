@@ -17,7 +17,6 @@ public class UIMouseWheelListener implements MouseWheelListener {
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent mwe) {
-
         if (UIKeyDispatcher.isCtrl()) {
             log.debug("ctrl");
         } else if (UIKeyDispatcher.isAlt()) {

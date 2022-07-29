@@ -1,7 +1,7 @@
 package fine.fractals;
 
 import fine.fractals.color.PaletteBlueToWhite;
-import fine.fractals.fractal.finebrot.gpu.FractalGPU;
+import fine.fractals.fractal.finebrot.common.FinebrotGPU;
 
 import static fine.fractals.color.common.PaletteImpl.Palette;
 import static fine.fractals.data.mandelbrot.ResolutionMultiplier.none;
@@ -11,7 +11,7 @@ import static fine.fractals.machine.ApplicationImpl.REPEAT;
 /*
  * Unstable GPU Test
  */
-public class Finebrot_Side_Gpu extends FractalGPU {
+public class Finebrot_Side_Gpu extends FinebrotGPU {
 
     public Finebrot_Side_Gpu() {
         NAME = "Finebrot_Side_Gpu";

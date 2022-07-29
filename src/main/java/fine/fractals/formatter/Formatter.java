@@ -11,7 +11,7 @@ public class Formatter {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH-mm-ss").withZone(ZoneId.of("CET"));
     private static final NumberFormat nf = new DecimalFormat("#0.000000000000000000");
 
-    public static String roundString(double d) {
+    public static String format(double d) {
         return nf.format(d);
     }
 

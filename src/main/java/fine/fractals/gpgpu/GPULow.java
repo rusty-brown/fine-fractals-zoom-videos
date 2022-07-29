@@ -45,27 +45,27 @@ abstract sealed class GPULow permits GPUHigh {
 
         setExceptionsEnabled(true);
 
-        // Obtain the number of platforms
+        /* Obtain the number of platforms */
         int[] numPlatformsArray = new int[GPU_COUNT];
         clGetPlatformIDs(0, null, numPlatformsArray);
         int numPlatforms = numPlatformsArray[0];
         log.debug("numPlatforms " + numPlatforms);
 
-        // Obtain a platform ID
+        /* Obtain a platform ID */
         cl_platform_id[] platforms = new cl_platform_id[numPlatforms];
         clGetPlatformIDs(platforms.length, platforms, null);
         cl_platform_id platform = platforms[platformIndex];
 
-        // Initialize the context properties
+        /* Initialize the context properties */
         cl_context_properties contextProperties = new cl_context_properties();
         contextProperties.addProperty(CL_CONTEXT_PLATFORM, platform);
 
-        // Obtain the number of devices for the platform
+        /* Obtain the number of devices for the platform */
         int[] numDevicesArray = new int[1];
         clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 0, null, numDevicesArray);
         int numDevices = numDevicesArray[0];
 
-        // Obtain a device ID
+        /* Obtain a org.bytedeco.librealsense.device ID */
         cl_device_id[] devices = new cl_device_id[numDevices];
         clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, numDevices, devices, null);
         this.device = devices[deviceIndex];

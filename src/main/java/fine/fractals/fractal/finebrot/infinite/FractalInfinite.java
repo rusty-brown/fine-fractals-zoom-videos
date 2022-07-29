@@ -41,6 +41,7 @@ public abstract class FractalInfinite extends FinebrotCommonImpl {
 
         /*
          * Infinite fractal
+         * Consider only paths which didn't diverge even after many calculation iterations.
          */
         return iterator == ITERATION_MAX;
     }

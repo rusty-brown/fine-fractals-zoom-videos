@@ -11,7 +11,7 @@ public abstract class MandelbrotCommonImpl {
     private static final Logger log = LogManager.getLogger(MandelbrotCommonImpl.class);
 
     /*
-     * Calculate Domain Values
+     * Calculate all the intermediate calculation path results of math() for all points on each Mandelbrot pixel
      */
     public abstract void calculate();
 

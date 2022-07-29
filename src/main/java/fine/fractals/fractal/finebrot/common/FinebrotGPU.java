@@ -1,18 +1,16 @@
-package fine.fractals.fractal.finebrot.gpu;
+package fine.fractals.fractal.finebrot.common;
 
 import fine.fractals.fractal.finebrot.PixelsFinebrotImpl;
-import fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl;
-import fine.fractals.fractal.finebrot.common.PathsFinebrotImpl;
-import fine.fractals.fractal.mandelbrot.gpu.MandelbrotGpuImpl;
+import fine.fractals.fractal.mandelbrot.MandelbrotGpuImpl;
 import fine.fractals.perfect.coloring.PerfectColorDistributionImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public abstract class FractalGPU extends FinebrotAbstractImpl {
+public abstract class FinebrotGPU extends FinebrotAbstractImpl {
 
-    private static final Logger log = LogManager.getLogger(FractalGPU.class);
+    private static final Logger log = LogManager.getLogger(FinebrotGPU.class);
 
-    public FractalGPU() {
+    public FinebrotGPU() {
         log.debug("constructor");
         PixelsFinebrot = new PixelsFinebrotImpl();
         PerfectColorDistribution = new PerfectColorDistributionImpl();

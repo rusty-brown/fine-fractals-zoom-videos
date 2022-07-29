@@ -67,7 +67,7 @@ public class ApplicationImpl {
     }
 
     public void initUIWindows() {
-        log.debug("listeners");
+        log.debug("initUIWindows()");
         final UIMouseListener uiMouseListener = new UIMouseListener();
         final UIKeyDispatcher uiKeyDispatcher = new UIKeyDispatcher();
         final UIMouseWheelListener uiMouseWheelListener = new UIMouseWheelListener();
@@ -76,7 +76,7 @@ public class ApplicationImpl {
         mandelbrotWindow = new MandelbrotWindow(uiMouseListener, uiMouseWheelListener, uiKeyDispatcher);
         finebrotWindow = new FinebrotWindow(uiMouseListener, uiMouseWheelListener, uiKeyDispatcher);
 
-        log.debug("initUIWindows()");
+        log.debug("setWindows");
         finebrotWindow.setMandelbrotWindow(mandelbrotWindow);
         mandelbrotWindow.setFinebrotWindow(finebrotWindow);
 
@@ -124,7 +124,6 @@ public class ApplicationImpl {
 
     public void alwaysOnTheTop() {
         log.debug("alwaysOnTheTop()");
-
         mandelbrotWindow.alwaysOnTheTop(switchTop);
         finebrotWindow.alwaysOnTheTop(switchTop);
         switchTop = !switchTop;

@@ -53,5 +53,4 @@ public abstract class UIWindow extends JComponent {
     public void deactivate() {
         this.active = false;
     }
-
 }

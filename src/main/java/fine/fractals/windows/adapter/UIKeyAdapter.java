@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 
 import static fine.fractals.fractal.finebrot.common.FinebrotAbstractImpl.ITERATION_min;
 import static fine.fractals.fractal.finebrot.common.FinebrotCommonImpl.ITERATION_MAX;
-import static fine.fractals.fractal.mandelbrot.AreaMandelbrotImpl.AreaMandelbrot;
 import static fine.fractals.machine.ApplicationImpl.Application;
 import static fine.fractals.machine.TargetImpl.Target;
 import static fine.fractals.windows.MandelbrotWindow.showInfo;
@@ -38,8 +37,7 @@ public class UIKeyAdapter extends KeyAdapter {
         switch (code) {
             case VK_C -> {
                 final String targetString
-                        = "INIT_MANDELBROT_AREA_SIZE = " + AreaMandelbrot.sizeImString() + ";\n"
-                        + "INIT_MANDELBROT_TARGET_re = " + Target.getTextRe() + ";\n"
+                        = "INIT_MANDELBROT_TARGET_re = " + Target.getTextRe() + ";\n"
                         + "INIT_MANDELBROT_TARGET_im = " + Target.getTextIm() + ";\n";
                 /* Write cursor location to console */
                 System.out.println(targetString);

@@ -26,9 +26,6 @@ public class MandelbrotImpl extends MandelbrotCommonImpl {
         this.finebrotFractal = finebrotFractal;
     }
 
-    /*
-     * Calculate Domain Values
-     */
     @Override
     public void calculate() {
         log.debug("calculate()");
@@ -57,7 +54,10 @@ public class MandelbrotImpl extends MandelbrotCommonImpl {
                 int countOneHour = 60 * 60;
                 while (!executor.isTerminated()) {
                     log.error("ExecutorService not terminated <- " + countOneHour);
-                    // wait 1s
+                    /*
+                     * wait 1s
+                     * because sometimes executor.awaitTermination() simply doesn't work, may be a bug
+                     */
                     Thread.sleep(1000);
                     countOneHour--;
                 }
